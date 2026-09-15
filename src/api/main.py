@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-import json
+import hashlib
 import logging
+import uuid
 from datetime import datetime, timezone
+from functools import partial
 from typing import Any, Dict, List, Optional
 
+from fastapi.concurrency import run_in_threadpool
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, ValidationError, field_validator
@@ -24,7 +27,9 @@ if not logger.handlers:
 
 
 class CodeReviewRequest(BaseModel):
-    code_snippet: str = Field(..., min_length=1, description="Source code to review")
+    code_snippet: str = Field(
+        ..., min_length=1, max_length=5000, description="Source code to review"
+    )
     compiler_warnings: Optional[List[str]] = Field(
         default_factory=list,
         description="Optional compiler or static analysis warnings",
@@ -64,24 +69,20 @@ app = FastAPI(
 async def audit_middleware(request: Request, call_next):
     """Log all requests and responses as a local audit trail for review traceability."""
     start_time = datetime.now(timezone.utc)
-    request_body = None
-    try:
-        body = await request.body()
-        if body:
-            request_body = body.decode("utf-8", errors="replace")
-    except Exception:
-        request_body = "[unreadable request body]"
+    request_id = str(uuid.uuid4())
+    request.state.request_id = request_id
 
     response = await call_next(request)
     end_time = datetime.now(timezone.utc)
 
     logger.info(
-        "AUDIT|method=%s|path=%s|status=%s|duration_ms=%s|request_body=%s",
+        "AUDIT|request_id=%s|method=%s|path=%s|status=%s|duration_ms=%s|content_length=%s",
+        request_id,
         request.method,
         request.url.path,
         response.status_code,
         round((end_time - start_time).total_seconds() * 1000, 2),
-        request_body,
+        request.headers.get("content-length", "unknown"),
     )
 
     return response
@@ -120,15 +121,29 @@ async def health_check() -> Dict[str, str]:
 
 
 @app.post("/api/v1/review", response_model=CodeReviewResponse)
-async def review_endpoint(payload: CodeReviewRequest) -> CodeReviewResponse:
+async def review_endpoint(request: Request, payload: CodeReviewRequest) -> CodeReviewResponse:
     """Review code snippets using the local RAG-based secure coding policy engine."""
+    request_id = getattr(request.state, "request_id", "unknown")
+    code_hash = hashlib.sha256(payload.code_snippet.encode("utf-8")).hexdigest()
+    warnings_text = "\n".join(payload.compiler_warnings or [])
+    warnings_hash = hashlib.sha256(warnings_text.encode("utf-8")).hexdigest()
     try:
-        findings = review_code(
-            code_snippet=payload.code_snippet,
-            compiler_warnings=payload.compiler_warnings,
+        findings = await run_in_threadpool(
+            partial(
+                review_code,
+                code_snippet=payload.code_snippet,
+                compiler_warnings=payload.compiler_warnings,
+            )
         )
     except Exception as exc:
-        logger.exception("REVIEW_FAILURE|code_snippet_length=%s|warnings=%s", len(payload.code_snippet), payload.compiler_warnings)
+        logger.exception(
+            "REVIEW_FAILURE|request_id=%s|code_hash=%s|code_length=%s|warnings_hash=%s|warning_count=%s",
+            request_id,
+            code_hash,
+            len(payload.code_snippet),
+            warnings_hash,
+            len(payload.compiler_warnings or []),
+        )
         raise HTTPException(
             status_code=500,
             detail="The secure code review orchestrator could not produce a valid result.",
@@ -151,8 +166,12 @@ async def review_endpoint(payload: CodeReviewRequest) -> CodeReviewResponse:
     )
 
     logger.info(
-        "REVIEW_RESULT|rule_reference=%s|confidence=%s|source_evidence_count=%s",
-        response.rule_reference,
+        "REVIEW_RESULT|request_id=%s|code_hash=%s|code_length=%s|warnings_hash=%s|warning_count=%s|confidence=%s|source_evidence_count=%s",
+        request_id,
+        code_hash,
+        len(payload.code_snippet),
+        warnings_hash,
+        len(payload.compiler_warnings or []),
         response.confidence,
         len(response.source_evidence),
     )

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import os
+import hashlib
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import List
 
 import fitz  # PyMuPDF
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -17,6 +17,8 @@ DATA_DIR = PROJECT_ROOT / "data"
 STANDARDS_DIR = DATA_DIR / "standards"
 VECTOR_STORE_DIR = DATA_DIR / "vector_store"
 CHROMA_COLLECTION_NAME = "misra_rules"
+MAX_PDF_SIZE_BYTES = 10 * 1024 * 1024
+MAX_PDF_PAGES = 200
 
 
 class LocalSentenceTransformerEmbeddings(Embeddings):
@@ -44,14 +46,23 @@ def extract_pdf_text(pdf_path: str | Path) -> str:
     path = Path(pdf_path)
     if not path.exists():
         raise FileNotFoundError(f"PDF not found: {path}")
+    if not path.is_file():
+        raise ValueError(f"PDF path is not a regular file: {path}")
+    if path.stat().st_size > MAX_PDF_SIZE_BYTES:
+        raise ValueError(
+            f"PDF exceeds the maximum allowed size of {MAX_PDF_SIZE_BYTES} bytes: {path}"
+        )
 
-    document = fitz.open(path)
     pages: List[str] = []
-    for page in document:
-        text = page.get_text("text")
-        if text:
-            pages.append(text)
-    document.close()
+    with fitz.open(path) as document:
+        if document.page_count > MAX_PDF_PAGES:
+            raise ValueError(
+                f"PDF exceeds the maximum allowed page count of {MAX_PDF_PAGES}: {path}"
+            )
+        for page in document:
+            text = page.get_text("text")
+            if text:
+                pages.append(text)
     return "\n\n".join(pages)
 
 
@@ -82,6 +93,12 @@ def build_documents_from_pdf(pdf_path: str | Path) -> List[Document]:
     return docs
 
 
+def _document_id(source_pdf: str, chunk_index: int) -> str:
+    """Return a stable ID for a source file and its chunk position."""
+    identity = f"{source_pdf}:{chunk_index}".encode("utf-8")
+    return hashlib.sha256(identity).hexdigest()
+
+
 def _list_pdf_files(directory: str | Path) -> List[Path]:
     path = Path(directory)
     if not path.exists():
@@ -106,15 +123,25 @@ def ingest_standard_documents(
     for pdf_file in pdf_files:
         all_documents.extend(build_documents_from_pdf(pdf_file))
 
-    embeddings = LocalSentenceTransformerEmbeddings(model_name=model_name)
+    if not all_documents:
+        raise ValueError("No text chunks were extracted from the standards PDFs.")
 
-    vector_store = Chroma.from_documents(
-        documents=all_documents,
-        embedding=embeddings,
+    embeddings = LocalSentenceTransformerEmbeddings(model_name=model_name)
+    vector_store = Chroma(
         persist_directory=str(Path(persist_dir) / collection_name),
+        embedding_function=embeddings,
         collection_name=collection_name,
     )
-    vector_store.persist()
+
+    existing_ids = vector_store.get()["ids"]
+    if existing_ids:
+        vector_store.delete(ids=existing_ids)
+
+    document_ids = [
+        _document_id(str(document.metadata["source_pdf"]), int(document.metadata["chunk_index"]))
+        for document in all_documents
+    ]
+    vector_store.add_documents(documents=all_documents, ids=document_ids)
     return vector_store
 
 

@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import json
 import html
+import os
 from typing import Any, Dict, Optional
 
 import requests
 import streamlit as st
 
-API_URL = "http://localhost:8000/api/v1/review"
+API_URL = os.getenv("REVIEW_API_URL", "http://localhost:8000/api/v1/review")
 
 st.set_page_config(
     page_title="Automotive Compliance Review",
