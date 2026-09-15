@@ -47,7 +47,9 @@ def build_mock_misra_pdf(output_path: Path) -> Path:
         "Rule 2: Use explicit type conversions when narrowing values.\n"
         "Rule 3: Prefer static allocation for safety-critical embedded modules.\n"
         "Rule 4: Validate every external input before use.\n"
-        "Rule 5: Document deviations with a traceable justification."
+        "Rule 5: Document deviations with a traceable justification.\n"
+        "Rule 9.1 (Required): All automatic variables shall have been assigned a value before being used to prevent uninitialized memory reads.\n"
+        "Rule 11.3 (Required): A cast shall not be performed between a pointer to object type and a pointer to a different object type."
     )
 
     pdf.chapter_title("3. Review Notes")

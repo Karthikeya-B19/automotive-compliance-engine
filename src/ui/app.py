@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import requests
 import streamlit as st
@@ -9,9 +9,55 @@ import streamlit as st
 API_URL = "http://localhost:8000/api/v1/review"
 
 st.set_page_config(
-    page_title="Secure Code Review Assistant",
-    page_icon="🛡️",
+    page_title="Automotive Compliance Review",
+    page_icon="A",
     layout="wide",
+)
+
+st.markdown(
+    """
+    <style>
+    :root {
+        --navy: #102433;
+        --ink: #182b36;
+        --line: #d9e2e5;
+        --paper: #f7faf9;
+        --accent: #d77742;
+        --accent-dark: #a94e26;
+    }
+    .stApp { background: var(--paper); color: var(--ink); }
+    .block-container { max-width: 1500px; padding: 2.5rem 3rem 4rem; }
+    [data-testid="stHeader"] { background: transparent; }
+    .hero {
+        background: var(--navy);
+        border-left: 8px solid var(--accent);
+        color: #f5f8f7;
+        padding: 1.6rem 2rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero h1 { margin: 0; font-size: 2rem; letter-spacing: 0; }
+    .hero p { color: #c7d5d8; margin: .45rem 0 0; }
+    [data-testid="stFileUploader"] {
+        border: 1px dashed #afc0c4;
+        background: #eef4f2;
+        padding: .35rem;
+    }
+    [data-testid="stMetric"] {
+        background: white;
+        border: 1px solid var(--line);
+        padding: .75rem;
+    }
+    .section-label {
+        color: var(--accent-dark);
+        font-size: .75rem;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        margin: .25rem 0 .5rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 
@@ -36,72 +82,101 @@ def submit_review(code_snippet: str, compiler_warnings: Optional[str]) -> Dict[s
     return response.json()
 
 
-st.title("Secure Code Debugging and Review Assistant")
-st.caption("Offline-only automotive secure code review for engineering teams.")
+st.markdown(
+    """
+    <div class="hero">
+        <h1>Automotive Compliance Review</h1>
+        <p>Evidence-bound secure code analysis for embedded engineering teams.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
-with st.container():
-    st.markdown(
-        """
-        This local review assistant checks source code against retrieved automotive coding standards and evidence-based secure coding guidance.
-        It never sends source code to external services.
-        """
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.markdown('<div class="section-label">Review Input</div>', unsafe_allow_html=True)
+    uploaded_file = st.file_uploader(
+        "Load source file",
+        type=["c", "cpp", "h"],
+        help="Upload a C, C++, or header file to populate the editor.",
     )
+    uploaded_code = ""
+    if uploaded_file is not None:
+        try:
+            uploaded_code = uploaded_file.getvalue().decode("utf-8")
+        except UnicodeDecodeError:
+            st.error("The uploaded file is not valid UTF-8 text.")
 
-code_snippet = st.text_area(
-    "Code Snippet",
-    height=260,
-    placeholder="Paste C or embedded code here...",
-)
-compiler_warnings = st.text_area(
-    "Compiler / Static Analysis Warnings (optional)",
-    height=120,
-    placeholder="Optional warnings or diagnostics...",
-)
+    code_snippet = st.text_area(
+        "Code Snippet",
+        value=uploaded_code,
+        height=330,
+        placeholder="Paste C or embedded code here...",
+    )
+    compiler_warnings = st.text_area(
+        "Compiler / Static Analysis Warnings",
+        height=120,
+        placeholder="Optional warnings or diagnostics, one per line...",
+    )
+    run_review = st.button("Run Secure Review", type="primary", use_container_width=True)
 
-run_review = st.button("Run Secure Review", type="primary")
+with col2:
+    st.markdown('<div class="section-label">Code Preview</div>', unsafe_allow_html=True)
+    st.code(code_snippet or "No source loaded.", language="c")
 
-if run_review:
-    if not code_snippet.strip():
-        st.error("Please provide a code snippet before running the review.")
-    else:
-        with st.spinner("Running local secure review..."):
-            try:
-                result = submit_review(code_snippet, compiler_warnings)
-            except requests.exceptions.RequestException as exc:
-                st.error(f"Unable to connect to the local review API: {exc}")
-            except RuntimeError as exc:
-                st.error(str(exc))
-            else:
-                st.success("Review completed successfully.")
+    if run_review:
+        if not code_snippet.strip():
+            st.error("Please provide a code snippet before running the review.")
+        else:
+            with st.spinner("Running local secure review..."):
+                try:
+                    result = submit_review(code_snippet, compiler_warnings)
+                except requests.exceptions.RequestException as exc:
+                    st.error(f"Unable to connect to the local review API: {exc}")
+                except RuntimeError as exc:
+                    st.error(str(exc))
+                else:
+                    st.success("Review completed successfully.")
+                    st.markdown('<div class="section-label">Review Result</div>', unsafe_allow_html=True)
+                    st.subheader("Executive Summary")
+                    st.write(result.get("review_summary", "No summary available."))
 
-                st.subheader("Executive Summary")
-                st.markdown(f"**{result.get('review_summary', 'No summary available.')}**")
+                    metric_col1, metric_col2 = st.columns(2)
+                    with metric_col1:
+                        st.metric("Confidence", result.get("confidence", "unknown"))
+                    with metric_col2:
+                        st.metric("Rule Reference", result.get("rule_reference", "N/A"))
 
-                col1, col2, col3 = st.columns(3)
-                with col1:
-                    st.metric("Confidence", result.get("confidence", "unknown"))
-                with col2:
-                    st.metric("Rule Reference", result.get("rule_reference", "N/A"))
-                with col3:
-                    st.metric("Sources", str(len(result.get("source_evidence", []))))
+                    st.subheader("Suggested Remediation")
+                    st.write(result.get("suggested_remediation", "No remediation guidance available."))
 
-                st.subheader("Candidate Root Causes")
-                causes = result.get("candidate_root_causes") or ["No candidate root causes were identified from retrieved evidence."]
-                for cause in causes:
-                    st.markdown(f"- {cause}")
+                    st.subheader("Candidate Root Causes")
+                    causes = result.get("candidate_root_causes") or [
+                        "No candidate root causes were identified from retrieved evidence."
+                    ]
+                    for cause in causes:
+                        st.markdown(f"- {cause}")
 
-                st.subheader("Suggested Remediation")
-                st.markdown(result.get("suggested_remediation", "No remediation guidance available."))
+                    with st.expander("Source Evidence"):
+                        evidence = result.get("source_evidence") or ["No source evidence was returned."]
+                        for item in evidence:
+                            st.markdown(item)
 
-                st.subheader("Evidence and Rule Citations")
-                evidence = result.get("source_evidence") or ["No source evidence was returned."]
-                for idx, item in enumerate(evidence, start=1):
-                    with st.expander(f"Evidence {idx}"):
-                        st.markdown(item)
+                    retrieved_context = result.get("retrieved_context")
+                    if retrieved_context:
+                        with st.expander("Retrieved Standards Context"):
+                            for item in retrieved_context:
+                                st.markdown(
+                                    f"**{item.get('source', 'Unknown source')} / chunk "
+                                    f"{item.get('chunk_index', 0)}**"
+                                )
+                                st.code(item.get("content", ""), language="text")
 
-                retrieved_context = result.get("retrieved_context")
-                if retrieved_context:
-                    st.subheader("Retrieved Standards Context")
-                    for item in retrieved_context:
-                        with st.expander(f"{item.get('source', 'Unknown source')} / chunk {item.get('chunk_index', 0)}"):
-                            st.code(item.get("content", ""), language="text")
+                    st.download_button(
+                        "Download Compliance Report",
+                        data=json.dumps(result, indent=2),
+                        file_name="compliance_report.json",
+                        mime="application/json",
+                        use_container_width=True,
+                    )

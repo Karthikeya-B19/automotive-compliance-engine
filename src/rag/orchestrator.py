@@ -4,19 +4,28 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from langchain.prompts import PromptTemplate
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import Chroma
-from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnableSerializable
-from sentence_transformers import SentenceTransformer
+from pydantic import BaseModel, Field
 
 from src.ingestion.ingest import LocalSentenceTransformerEmbeddings
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 VECTOR_STORE_DIR = PROJECT_ROOT / "data" / "vector_store"
 COLLECTION_NAME = "misra_rules"
+
+
+class ReviewOutput(BaseModel):
+    """Structured JSON contract for the local model's review response."""
+
+    review_summary: str
+    candidate_root_causes: List[str] = Field(default_factory=list)
+    suggested_remediation: str
+    rule_reference: str
+    source_evidence: List[str] = Field(default_factory=list)
+    confidence: str
 
 
 class CodeReviewRAGOrchestrator:
@@ -83,6 +92,7 @@ class CodeReviewRAGOrchestrator:
         return results
 
     def _build_review_prompt(self) -> ChatPromptTemplate:
+        output_parser = PydanticOutputParser(pydantic_object=ReviewOutput)
         prompt = ChatPromptTemplate.from_messages(
             [
                 (
@@ -99,15 +109,15 @@ class CodeReviewRAGOrchestrator:
                     "RETRIEVED_CONTEXT:\n{context}\n\n"
                     "SOURCE_CODE:\n{code_snippet}\n\n"
                     "COMPILER_WARNINGS:\n{compiler_warnings}\n\n"
-                    "Return valid JSON with exactly these fields: "
-                    "review_summary, candidate_root_causes, suggested_remediation, rule_reference, source_evidence, confidence. "
+                    "Return ONLY one valid JSON object. Do not use markdown fences, commentary, or a conversational introduction. "
+                    "The JSON object must match this schema exactly:\n{format_instructions}\n"
                     "The rule_reference field must include a rule number or standard citation when present in retrieved context. "
                     "The source_evidence field must quote or summarize the exact retrieved standard text that supports the finding. "
                     "Do not answer from memory. Only use the retrieved context."
                 ),
             ]
         )
-        return prompt
+        return prompt.partial(format_instructions=output_parser.get_format_instructions())
 
     def review_code(self, code_snippet: str, compiler_warnings: Optional[List[str]] = None) -> Dict[str, Any]:
         """Execute retrieval + review and return a structured JSON review payload."""
@@ -130,7 +140,8 @@ class CodeReviewRAGOrchestrator:
             for doc in context_docs
         )
 
-        chain = prompt | self.llm
+        output_parser = PydanticOutputParser(pydantic_object=ReviewOutput)
+        chain = prompt | self.llm | output_parser
         response = chain.invoke(
             {
                 "context": context_block,
@@ -139,18 +150,7 @@ class CodeReviewRAGOrchestrator:
             }
         )
 
-        raw_text = getattr(response, "content", str(response))
-        try:
-            parsed = json.loads(raw_text)
-        except json.JSONDecodeError:
-            parsed = {
-                "review_summary": raw_text,
-                "candidate_root_causes": [],
-                "suggested_remediation": "Review the raw model response for evidence-based remediation.",
-                "rule_reference": "Not extracted",
-                "source_evidence": [context_block],
-                "confidence": "medium",
-            }
+        parsed = response.model_dump()
 
         result = {
             "review_summary": parsed.get("review_summary", "No summary available."),
