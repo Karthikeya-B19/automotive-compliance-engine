@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.env
+.env.*
+
+# Local tooling / caches
+.uv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage.xml
+.htmlcov/
+
+# Vector DB and local data
+chroma_db/
+vector_store/
+*.db
+*.sqlite3
+
+# Logs and local runtime output
+logs/
+*.log
+local_debug/
+secrets/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker/local builds
+.docker/
+
+# Build output
+build/
+dist/
+*.tar.gz
+
+# Node optional tooling (not required for this project)
+node_modules/

@@ -1,0 +1,35 @@
+# Core runtime
+fastapi==0.115.1
+uvicorn[standard]==0.30.6
+streamlit==1.38.0
+pydantic==2.9.2
+python-dotenv==1.0.1
+
+# AI / retrieval
+langchain==0.3.20
+langchain-community==0.3.20
+langchain-chroma==0.2.1
+chromadb==0.5.15
+sentence-transformers==3.2.1
+transformers==4.44.2
+torch==2.4.1
+
+# Document ingestion
+PyMuPDF==1.24.10
+fpdf2==2.7.9
+
+# Utilities
+requests==2.32.2
+numpy==2.1.2
+pandas==2.2.3
+
+# Security / auth / logging
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.12.0
+
+# Testing
+pytest==8.3.3
+httpx==0.27.2
+
+# Optional: local LLM via Ollama
+ollama==0.3.3

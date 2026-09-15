@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  review-assistant-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: secure-code-review-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ..:/app
+    networks:
+      - secure-review-net
+
+  review-assistant-ui:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: secure-code-review-ui
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ..:/app
+    networks:
+      - secure-review-net
+
+networks:
+  secure-review-net:
+    driver: bridge
