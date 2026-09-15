@@ -56,6 +56,7 @@ st.markdown(
         border: 1px solid var(--line);
         padding: .75rem;
     }
+    [data-testid="stMetricValue"] { color: #1f2937 !important; }
     .section-label {
         color: var(--accent-dark);
         font-size: .75rem;

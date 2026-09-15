@@ -24,6 +24,7 @@ vector_store/
 data/vector_store/
 *.db
 *.sqlite3
+*.pdf
 
 # Logs and local runtime output
 logs/
