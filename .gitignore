@@ -21,6 +21,7 @@ coverage.xml
 # Vector DB and local data
 chroma_db/
 vector_store/
+data/vector_store/
 *.db
 *.sqlite3
 
