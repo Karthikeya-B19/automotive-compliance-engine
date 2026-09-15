@@ -23,9 +23,13 @@ class ReviewOutput(BaseModel):
     review_summary: str
     candidate_root_causes: List[str] = Field(default_factory=list)
     suggested_remediation: str
-    rule_reference: str
+    rule_reference: str = Field(
+        description="The exact MISRA rule from the context. If no rule perfectly matches the bug, you MUST output exactly 'No applicable rule found'."
+    )
     source_evidence: List[str] = Field(default_factory=list)
-    confidence: str
+    confidence: str = Field(
+        description="Must be 'Low' if no applicable rule is found in the context."
+    )
 
 
 class CodeReviewRAGOrchestrator:
@@ -58,7 +62,7 @@ class CodeReviewRAGOrchestrator:
 
         self.llm = ChatOllama(
             model=self.llm_model,
-            temperature=0,
+            temperature=0.0,
             base_url="http://localhost:11434",
         )
 
@@ -101,7 +105,12 @@ class CodeReviewRAGOrchestrator:
                     "Your answer must be grounded only in the retrieved coding standard context. "
                     "Do not use external knowledge or make up rules. "
                     "If the retrieved evidence is insufficient, say so clearly. "
-                    "Always provide source evidence, citations, and a confidence score."
+                    "Always provide source evidence, citations, and a confidence score. "
+                    "CRITICAL INSTRUCTION: You must ONLY cite a rule if it directly and explicitly addresses the defect found in the code. "
+                    "Never use a merely related, nearby, or semantically similar rule as a citation. "
+                    "Use this validation sequence before producing the JSON: "
+                    "Step 1: Identify the bugs. Step 2: Read the retrieved context. "
+                    "Step 3: If the bugs do NOT explicitly match the context rules, reject the context and state 'No applicable rule found'."
                 ),
                 (
                     "user",
@@ -111,8 +120,13 @@ class CodeReviewRAGOrchestrator:
                     "COMPILER_WARNINGS:\n{compiler_warnings}\n\n"
                     "Return ONLY one valid JSON object. Do not use markdown fences, commentary, or a conversational introduction. "
                     "The JSON object must match this schema exactly:\n{format_instructions}\n"
-                    "The rule_reference field must include a rule number or standard citation when present in retrieved context. "
-                    "The source_evidence field must quote or summarize the exact retrieved standard text that supports the finding. "
+                    "CRITICAL INSTRUCTION: You must ONLY cite a rule if it directly and explicitly addresses the bug found in the code. "
+                    "Before assigning rule_reference, compare the defect itself with the meaning and scope of each retrieved rule. "
+                    "If the retrieved context does not contain a rule that matches the defect "
+                    "(for example, if the code has a division by zero bug but the context only discusses uninitialized variables), "
+                    "you MUST set rule_reference to exactly 'No applicable rule found'. "
+                    "When no applicable rule is found, you MUST set confidence to exactly 'Low' and must not invent or infer a rule citation. "
+                    "The source_evidence field must quote or summarize only retrieved standard text that directly supports the finding. "
                     "Do not answer from memory. Only use the retrieved context."
                 ),
             ]

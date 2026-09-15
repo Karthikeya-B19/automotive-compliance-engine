@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import html
 from typing import Any, Dict, Optional
 
 import requests
@@ -28,6 +29,11 @@ st.markdown(
     .stApp { background: var(--paper); color: var(--ink); }
     .block-container { max-width: 1500px; padding: 2.5rem 3rem 4rem; }
     [data-testid="stHeader"] { background: transparent; }
+    h1, h2, h3,
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li,
+    label { color: #1f2937 !important; }
     .hero {
         background: var(--navy);
         border-left: 8px solid var(--accent);
@@ -37,6 +43,8 @@ st.markdown(
     }
     .hero h1 { margin: 0; font-size: 2rem; letter-spacing: 0; }
     .hero p { color: #c7d5d8; margin: .45rem 0 0; }
+    .hero h1 { color: #f5f8f7 !important; }
+    .hero p { color: #c7d5d8 !important; }
     [data-testid="stFileUploader"] {
         border: 1px dashed #afc0c4;
         background: #eef4f2;
@@ -55,6 +63,22 @@ st.markdown(
         text-transform: uppercase;
         margin: .25rem 0 .5rem;
     }
+    .rule-reference {
+        background: #e8f0f2;
+        border-left: 4px solid var(--accent);
+        color: #1f2937;
+        padding: .9rem 1rem;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+    .rule-reference strong { color: #1f2937; display: block; margin-bottom: .25rem; }
+    [data-testid="stDownloadButton"] button {
+        background: var(--navy);
+        border-color: var(--navy);
+        color: #ffffff !important;
+    }
+    [data-testid="stDownloadButton"] button p,
+    [data-testid="stDownloadButton"] button span { color: #ffffff !important; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -142,11 +166,12 @@ with col2:
                     st.subheader("Executive Summary")
                     st.write(result.get("review_summary", "No summary available."))
 
-                    metric_col1, metric_col2 = st.columns(2)
-                    with metric_col1:
-                        st.metric("Confidence", result.get("confidence", "unknown"))
-                    with metric_col2:
-                        st.metric("Rule Reference", result.get("rule_reference", "N/A"))
+                    st.metric("Confidence", result.get("confidence", "unknown"))
+                    rule_reference = html.escape(str(result.get("rule_reference", "N/A")))
+                    st.markdown(
+                        f'<div class="rule-reference"><strong>Rule Reference</strong>{rule_reference}</div>',
+                        unsafe_allow_html=True,
+                    )
 
                     st.subheader("Suggested Remediation")
                     st.write(result.get("suggested_remediation", "No remediation guidance available."))
