@@ -1,0 +1,3 @@
+unsafe_ecu_state.c:16:5: warning: call to 'strcpy' may overflow destination buffer
+unsafe_ecu_state.c:17:10: warning: dereference of null pointer 'state'
+unsafe_ecu_state.c:14:25: warning: potential memory leak of 'work_buffer'

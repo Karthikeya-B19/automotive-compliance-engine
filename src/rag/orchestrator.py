@@ -1,23 +1,28 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 from xml.sax.saxutils import escape
 
 from langchain_community.chat_models import ChatOllama
 from langchain_community.vectorstores import Chroma
+from chromadb.config import Settings
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
+from src.analysis.static_analyzer import analyze_source
 from src.ingestion.ingest import LocalSentenceTransformerEmbeddings
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 VECTOR_STORE_DIR = PROJECT_ROOT / "data" / "vector_store"
 COLLECTION_NAME = "misra_rules"
 NO_APPLICABLE_RULE = "No applicable rule found"
+logger = logging.getLogger("secure_code_review_rag")
 
 
 class ReviewOutput(BaseModel):
@@ -26,9 +31,12 @@ class ReviewOutput(BaseModel):
     review_summary: str
     candidate_root_causes: List[str] = Field(default_factory=list)
     suggested_remediation: str
-    analysis_scratchpad: str = Field(
+    analysis_summary: str = Field(
         default="",
-        description="Step-by-step execution trace. You MUST trace the control flow (switch/if-else) for every variable to check for initialization before use. Ignore variable names (e.g., 'uninitialized_flag'); look ONLY at actual memory assignments.",
+        description=(
+            "A concise verification summary describing the relevant control-flow facts. "
+            "Do not reveal hidden chain-of-thought or unsupported assumptions."
+        ),
     )
     rule_reference: str = Field(
         description="The exact MISRA rule from the context. If no rule perfectly matches the bug, you MUST output exactly 'No applicable rule found'."
@@ -61,6 +69,7 @@ class CodeReviewRAGOrchestrator:
             persist_directory=str(self.persist_dir / self.collection_name),
             embedding_function=self.embedding_model,
             collection_name=self.collection_name,
+            client_settings=Settings(anonymized_telemetry=False),
         )
 
         self.retriever = self.vector_store.as_retriever(
@@ -73,7 +82,15 @@ class CodeReviewRAGOrchestrator:
             base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
         )
 
-    def _build_retrieval_prompt(self, code_snippet: str, compiler_warnings: List[str]) -> str:
+    def _build_retrieval_prompt(
+        self,
+        code_snippet: str,
+        compiler_warnings: List[str],
+        build_logs: str,
+        preflight_findings: List[Dict[str, Any]],
+        related_files: List[Dict[str, str]],
+        historical_findings: List[Dict[str, Any]],
+    ) -> str:
         warnings_text = "\n".join(
             f"- {escape(warning)}" for warning in compiler_warnings
         )
@@ -86,12 +103,34 @@ class CodeReviewRAGOrchestrator:
             "<untrusted_compiler_warnings>\n"
             f"{warnings_text}\n"
             "</untrusted_compiler_warnings>\n\n"
+            "<untrusted_build_logs>\n"
+            f"{escape(build_logs[-12000:]) if build_logs else 'No build logs provided.'}\n"
+            "</untrusted_build_logs>\n\n"
+            "<deterministic_preflight_candidates>\n"
+            f"{escape(json.dumps(preflight_findings, ensure_ascii=True))}\n"
+            "</deterministic_preflight_candidates>\n\n"
+            "<untrusted_related_source_files>\n"
+            f"{escape(json.dumps(related_files, ensure_ascii=True))}\n"
+            "</untrusted_related_source_files>\n\n"
+            "<human_approved_historical_findings>\n"
+            f"{escape(json.dumps(historical_findings, ensure_ascii=True))}\n"
+            "</human_approved_historical_findings>\n\n"
             "If the retrieved context does not contain enough evidence, state that the conclusion is limited by the available text and do not invent rules."
         )
 
-    def retrieve_relevant_context(self, code_snippet: str, compiler_warnings: List[str]) -> List[Dict[str, Any]]:
+    def retrieve_relevant_context(
+        self,
+        code_snippet: str,
+        compiler_warnings: List[str],
+        build_logs: str,
+        preflight_findings: List[Dict[str, Any]],
+        related_files: List[Dict[str, str]],
+        historical_findings: List[Dict[str, Any]],
+    ) -> List[Dict[str, Any]]:
         """Retrieve the most relevant standard excerpts using the local embedding model."""
-        query = self._build_retrieval_prompt(code_snippet, compiler_warnings)
+        query = self._build_retrieval_prompt(
+            code_snippet, compiler_warnings, build_logs, preflight_findings, related_files, historical_findings
+        )
         docs = self.retriever.invoke(query)
 
         results: List[Dict[str, Any]] = []
@@ -129,6 +168,10 @@ class CodeReviewRAGOrchestrator:
                     "<retrieved_standard_context>\n{context}\n</retrieved_standard_context>\n\n"
                     "<untrusted_source_code>\n{code_snippet}\n</untrusted_source_code>\n\n"
                     "<untrusted_compiler_warnings>\n{compiler_warnings}\n</untrusted_compiler_warnings>\n\n"
+                    "<untrusted_build_logs>\n{build_logs}\n</untrusted_build_logs>\n\n"
+                    "<deterministic_preflight_candidates>\n{preflight_findings}\n</deterministic_preflight_candidates>\n\n"
+                    "<untrusted_related_source_files>\n{related_files}\n</untrusted_related_source_files>\n\n"
+                    "<human_approved_historical_findings>\n{historical_findings}\n</human_approved_historical_findings>\n\n"
                     "Return ONLY one valid JSON object. Do not use markdown fences, commentary, or a conversational introduction. "
                     "The JSON object must match this schema exactly:\n{format_instructions}\n"
                     "CRITICAL INSTRUCTION: You must ONLY cite a rule if it directly and explicitly addresses the bug found in the code. "
@@ -147,19 +190,45 @@ class CodeReviewRAGOrchestrator:
         )
         return prompt.partial(format_instructions=output_parser.get_format_instructions())
 
-    def review_code(self, code_snippet: str, compiler_warnings: Optional[List[str]] = None) -> Dict[str, Any]:
+    def review_code(
+        self,
+        code_snippet: str,
+        compiler_warnings: Optional[List[str]] = None,
+        *,
+        file_name: str = "pasted_snippet.c",
+        build_logs: str = "",
+        code_summary: Optional[Dict[str, Any]] = None,
+        preflight_findings: Optional[List[Dict[str, Any]]] = None,
+        related_files: Optional[List[Dict[str, str]]] = None,
+        historical_findings: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
         """Execute retrieval + review and return a structured JSON review payload."""
         warnings = compiler_warnings or []
-        context_docs = self.retrieve_relevant_context(code_snippet, warnings)
+        summary = code_summary or {}
+        repository_files = related_files or []
+        approved_history = historical_findings or []
+        summary["related_file_count"] = len(repository_files)
+        summary["related_files"] = [item["file_name"] for item in repository_files]
+        findings = [dict(item, file=file_name) for item in (preflight_findings or [])]
+        context_docs = self.retrieve_relevant_context(
+            code_snippet, warnings, build_logs, findings, repository_files, approved_history
+        )
 
         if not context_docs:
             return {
                 "review_summary": "No relevant coding-standard context was retrieved for this code snippet.",
-                "candidate_root_causes": [],
+                "candidate_root_causes": [item["title"] for item in findings],
                 "suggested_remediation": "Add or index relevant MISRA or coding standard PDFs to the local standards directory before review.",
                 "rule_reference": NO_APPLICABLE_RULE,
                 "source_evidence": [],
                 "confidence": "Low",
+                "code_summary": summary,
+                "findings": findings,
+                "retrieved_context": [],
+                "review_mode": "deterministic-only",
+                "limitations": [
+                    "No coding-standard evidence was retrieved; preflight candidates require human confirmation."
+                ],
             }
 
         prompt = self._build_review_prompt()
@@ -177,6 +246,10 @@ class CodeReviewRAGOrchestrator:
                 "context": context_block,
                 "code_snippet": escape(code_snippet),
                 "compiler_warnings": escape("\n".join(warnings)) if warnings else "No compiler warnings provided.",
+                "build_logs": escape(build_logs[-12000:]) if build_logs else "No build logs provided.",
+                "preflight_findings": escape(json.dumps(findings, ensure_ascii=True)),
+                "related_files": escape(json.dumps(repository_files, ensure_ascii=True)),
+                "historical_findings": escape(json.dumps(approved_history, ensure_ascii=True)),
             }
         )
 
@@ -201,20 +274,79 @@ class CodeReviewRAGOrchestrator:
             "review_summary": parsed.get("review_summary", "No summary available."),
             "candidate_root_causes": parsed.get("candidate_root_causes", []),
             "suggested_remediation": parsed.get("suggested_remediation", "No remediation suggested."),
-            "analysis_scratchpad": parsed.get("analysis_scratchpad", ""),
+            "analysis_summary": parsed.get("analysis_summary", ""),
             "rule_reference": parsed.get("rule_reference", NO_APPLICABLE_RULE),
             "source_evidence": parsed.get("source_evidence", [context_block]),
             "confidence": parsed.get("confidence", "medium"),
             "retrieved_context": context_docs,
+            "code_summary": summary,
+            "findings": findings,
+            "review_mode": "rag-assisted",
+            "limitations": [
+                "Findings are advisory and require compilation, tests, certified analysis, and qualified human review."
+            ],
         }
 
         return result
 
 
-def review_code(code_snippet: str, compiler_warnings: Optional[List[str]] = None) -> Dict[str, Any]:
-    """Convenience function for direct use from the API or UI."""
-    orchestrator = CodeReviewRAGOrchestrator()
-    return orchestrator.review_code(code_snippet=code_snippet, compiler_warnings=compiler_warnings)
+@lru_cache(maxsize=1)
+def _get_orchestrator() -> CodeReviewRAGOrchestrator:
+    """Reuse the expensive embedding model and vector-store connection."""
+    return CodeReviewRAGOrchestrator()
+
+
+def review_code(
+    code_snippet: str,
+    compiler_warnings: Optional[List[str]] = None,
+    *,
+    file_name: str = "pasted_snippet.c",
+    build_logs: str = "",
+    related_files: Optional[List[Dict[str, str]]] = None,
+    historical_findings: Optional[List[Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """Run local preflight analysis and augment it with grounded RAG when available."""
+    code_summary, preflight_findings = analyze_source(code_snippet)
+    repository_files = related_files or []
+    code_summary["related_file_count"] = len(repository_files)
+    code_summary["related_files"] = [item["file_name"] for item in repository_files]
+    try:
+        return _get_orchestrator().review_code(
+            code_snippet=code_snippet,
+            compiler_warnings=compiler_warnings,
+            file_name=file_name,
+            build_logs=build_logs,
+            code_summary=code_summary,
+            preflight_findings=preflight_findings,
+            related_files=repository_files,
+            historical_findings=historical_findings or [],
+        )
+    except Exception as exc:
+        logger.warning("RAG unavailable; returning deterministic preflight: %s", type(exc).__name__)
+        findings = [dict(item, file=file_name) for item in preflight_findings]
+        return {
+            "review_summary": (
+                f"Local preflight identified {len(findings)} candidate finding(s). "
+                "The grounded LLM review was unavailable, so no MISRA rule was assigned."
+            ),
+            "candidate_root_causes": [item["title"] for item in findings],
+            "suggested_remediation": (
+                "Address the listed candidates, then compile, run tests and a certified analyzer, "
+                "and repeat the review with Ollama and the local standards index available."
+            ),
+            "analysis_summary": "Deterministic pattern checks completed locally.",
+            "rule_reference": NO_APPLICABLE_RULE,
+            "source_evidence": [],
+            "confidence": "Low",
+            "retrieved_context": [],
+            "code_summary": code_summary,
+            "findings": findings,
+            "review_mode": "deterministic-fallback",
+            "limitations": [
+                "The local RAG/LLM stage was unavailable.",
+                "Preflight candidates are not proof of MISRA compliance or non-compliance.",
+            ],
+        }
 
 
 if __name__ == "__main__":

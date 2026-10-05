@@ -1,0 +1,16 @@
+...............                                                          [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\starlette\testclient.py:40
+  DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated; use anyio.from_thread.BlockingPortal instead.
+
+15 passed, 1 upstream dependency warning in 6.97s
+
+Secured live repository verification:
+- Authenticated API request: PASS
+- Repository permission policy: PASS
+- Authorized source path prefix: PASS
+- Repository scan: 3 files, 2 dependencies, 4 findings
+- Structured clang-tidy SARIF: 1 diagnostic parsed with rule, level, file and line
+- Performance observation: dynamic allocation detected
+- CI SARIF output: 4 results and 4 rules
+- CI severity gate: exit 1 for High/Critical findings, as configured

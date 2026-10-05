@@ -1,0 +1,86 @@
+{
+  "review_summary": "No relevant coding-standard context was retrieved for this code snippet.",
+  "candidate_root_causes": [
+    "Possible null-pointer dereference",
+    "Potential unbounded string copy",
+    "Allocated resource may not be released"
+  ],
+  "suggested_remediation": "Add or index relevant MISRA or coding standard PDFs to the local standards directory before review.",
+  "rule_reference": "No applicable rule found",
+  "source_evidence": [],
+  "confidence": "Low",
+  "code_summary": {
+    "line_count": 20,
+    "function_count": 1,
+    "functions": [
+      {
+        "name": "update_vehicle_state",
+        "start_line": 9,
+        "end_line": 20
+      }
+    ],
+    "branch_count": 0,
+    "loop_count": 0,
+    "called_functions": [
+      "malloc",
+      "strcpy"
+    ],
+    "related_file_count": 0,
+    "related_files": []
+  },
+  "findings": [
+    {
+      "finding_id": "ecc2726f5a84",
+      "title": "Possible null-pointer dereference",
+      "category": "Pointer safety",
+      "severity": "Critical",
+      "line": 17,
+      "function": "update_vehicle_state",
+      "evidence": "state->diagnostic_state = 1U;",
+      "recommendation": "Prove 'state' is non-null before dereference and handle the failure path.",
+      "rule_reference": "Requires confirmation against an approved coding standard",
+      "cwe": "CWE-476",
+      "confidence": "High",
+      "status": "Open",
+      "analysis_method": "deterministic-preflight",
+      "file": "CB.AI.U4AID23109_UnsafeECUState_v1.0.c"
+    },
+    {
+      "finding_id": "64279e8d3975",
+      "title": "Potential unbounded string copy",
+      "category": "Boundary safety",
+      "severity": "High",
+      "line": 16,
+      "function": "update_vehicle_state",
+      "evidence": "strcpy(local_message, diagnostic_input);",
+      "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+      "rule_reference": "Requires confirmation against an approved coding standard",
+      "cwe": "CWE-120",
+      "confidence": "High",
+      "status": "Open",
+      "analysis_method": "deterministic-preflight",
+      "file": "CB.AI.U4AID23109_UnsafeECUState_v1.0.c"
+    },
+    {
+      "finding_id": "8ce543fe9420",
+      "title": "Allocated resource may not be released",
+      "category": "Resource management",
+      "severity": "Medium",
+      "line": 13,
+      "function": "update_vehicle_state",
+      "evidence": "char *work_buffer = malloc(32U);",
+      "recommendation": "Define ownership for 'work_buffer' and release it on every exit path, or use a scoped wrapper.",
+      "rule_reference": "Requires confirmation against an approved coding standard",
+      "cwe": "CWE-401",
+      "confidence": "Medium",
+      "status": "Open",
+      "analysis_method": "deterministic-preflight",
+      "file": "CB.AI.U4AID23109_UnsafeECUState_v1.0.c"
+    }
+  ],
+  "retrieved_context": [],
+  "review_mode": "deterministic-only",
+  "limitations": [
+    "No coding-standard evidence was retrieved; preflight candidates require human confirmation."
+  ]
+}

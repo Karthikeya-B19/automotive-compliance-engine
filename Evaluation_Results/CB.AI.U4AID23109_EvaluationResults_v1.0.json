@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-10-05T13:42:11.416767+00:00",
+  "scope": "Five-case synthetic unit benchmark for targeted deterministic patterns",
+  "case_count": 5,
+  "passed_cases": 5,
+  "true_positives": 4,
+  "false_positives": 0,
+  "false_negatives": 0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1_score": 1.0,
+  "limitations": [
+    "The dataset is synthetic and intentionally small.",
+    "Metrics cover only the implemented deterministic patterns.",
+    "These results do not measure full MISRA compliance or production defect recall."
+  ],
+  "cases": [
+    {
+      "case_id": "NULL_001",
+      "description": "A pointer initialized to NULL is dereferenced",
+      "expected": [
+        "Possible null-pointer dereference"
+      ],
+      "predicted": [
+        "Possible null-pointer dereference"
+      ],
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "passed": true
+    },
+    {
+      "case_id": "BOUNDARY_001",
+      "description": "An unbounded copy targets a fixed-size buffer",
+      "expected": [
+        "Potential unbounded string copy"
+      ],
+      "predicted": [
+        "Potential unbounded string copy"
+      ],
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "passed": true
+    },
+    {
+      "case_id": "RESOURCE_001",
+      "description": "Allocated memory is not released",
+      "expected": [
+        "Allocated resource may not be released"
+      ],
+      "predicted": [
+        "Allocated resource may not be released"
+      ],
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "passed": true
+    },
+    {
+      "case_id": "CONTROL_001",
+      "description": "A switch statement omits a default branch",
+      "expected": [
+        "Switch statement has no default branch"
+      ],
+      "predicted": [
+        "Switch statement has no default branch"
+      ],
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "passed": true
+    },
+    {
+      "case_id": "SAFE_001",
+      "description": "A simple bounded arithmetic function contains no targeted pattern",
+      "expected": [],
+      "predicted": [],
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "passed": true
+    }
+  ]
+}

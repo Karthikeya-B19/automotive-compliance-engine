@@ -1,0 +1,10 @@
+...........                                                              [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\starlette\testclient.py:40
+  DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated; use anyio.from_thread.BlockingPortal instead.
+
+11 passed, 1 warning in 5.16s
+
+Repository acceptance evaluation:
+PASS: 3 supported source files scanned, 2 internal dependencies resolved,
+4 expected findings reported, vendor directory excluded, and all local includes resolved.

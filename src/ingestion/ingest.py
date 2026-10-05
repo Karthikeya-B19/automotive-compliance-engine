@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List
 
 import fitz  # PyMuPDF
+from chromadb.config import Settings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
@@ -25,7 +26,9 @@ class LocalSentenceTransformerEmbeddings(Embeddings):
     """Embedding wrapper for locally stored sentence-transformer model."""
 
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
-        self.model = SentenceTransformer(model_name)
+        # Never let the review path resolve or download a model over the network.
+        # Administrators must pre-stage the approved embedding model locally.
+        self.model = SentenceTransformer(model_name, local_files_only=True)
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         embeddings = self.model.encode(texts, convert_to_numpy=True, normalize_embeddings=True)
@@ -131,6 +134,7 @@ def ingest_standard_documents(
         persist_directory=str(Path(persist_dir) / collection_name),
         embedding_function=embeddings,
         collection_name=collection_name,
+        client_settings=Settings(anonymized_telemetry=False),
     )
 
     existing_ids = vector_store.get()["ids"]
@@ -156,6 +160,7 @@ def load_vector_store(
         persist_directory=str(Path(persist_dir) / collection_name),
         embedding_function=embeddings,
         collection_name=collection_name,
+        client_settings=Settings(anonymized_telemetry=False),
     )
 
 

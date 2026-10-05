@@ -1,0 +1,60 @@
+{
+  "artifact": "CB.AI.U4AID23109_RepositoryEvaluation_v1.0",
+  "generated_at_utc": "2026-10-05T17:35:02.382070+00:00",
+  "archive": "CB.AI.U4AID23109_AutomotiveECURepository_v1.0.zip",
+  "overall_status": "PASS",
+  "checks": {
+    "three_supported_source_files_scanned": true,
+    "two_internal_include_dependencies_resolved": true,
+    "four_expected_findings_reported": true,
+    "only_unsafe_module_affected": true,
+    "all_local_includes_resolved": true,
+    "vendor_directory_excluded": true
+  },
+  "repository_summary": {
+    "archive_name": "CB.AI.U4AID23109_AutomotiveECURepository_v1.0.zip",
+    "source_file_count": 3,
+    "total_source_bytes": 903,
+    "total_lines": 44,
+    "function_count": 2,
+    "finding_count": 4,
+    "affected_file_count": 1,
+    "dependency_edge_count": 2,
+    "unresolved_include_count": 0,
+    "skipped_file_count": 2,
+    "severity_counts": {
+      "Critical": 1,
+      "High": 1,
+      "Medium": 2
+    },
+    "language_counts": {
+      ".c": 2,
+      ".h": 1
+    },
+    "root_directories": [
+      "automotive_ecu_demo"
+    ]
+  },
+  "dependency_edges": [
+    {
+      "source": "automotive_ecu_demo/src/main.c",
+      "target": "automotive_ecu_demo/include/vehicle_state.h",
+      "include": "../include/vehicle_state.h"
+    },
+    {
+      "source": "automotive_ecu_demo/src/vehicle_state.c",
+      "target": "automotive_ecu_demo/include/vehicle_state.h",
+      "include": "../include/vehicle_state.h"
+    }
+  ],
+  "finding_titles": [
+    "Possible null-pointer dereference",
+    "Potential unbounded string copy",
+    "Allocated resource may not be released",
+    "Switch statement has no default branch"
+  ],
+  "limitations": [
+    "Synthetic acceptance scenario; not a production-accuracy benchmark.",
+    "Regex-based findings require compiler, approved analyzer, tests, and human validation."
+  ]
+}

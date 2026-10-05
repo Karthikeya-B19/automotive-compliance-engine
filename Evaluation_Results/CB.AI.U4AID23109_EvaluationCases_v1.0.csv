@@ -1,0 +1,6 @@
+case_id,description,expected,predicted,true_positives,false_positives,false_negatives,passed
+NULL_001,A pointer initialized to NULL is dereferenced,Possible null-pointer dereference,Possible null-pointer dereference,1,0,0,True
+BOUNDARY_001,An unbounded copy targets a fixed-size buffer,Potential unbounded string copy,Potential unbounded string copy,1,0,0,True
+RESOURCE_001,Allocated memory is not released,Allocated resource may not be released,Allocated resource may not be released,1,0,0,True
+CONTROL_001,A switch statement omits a default branch,Switch statement has no default branch,Switch statement has no default branch,1,0,0,True
+SAFE_001,A simple bounded arithmetic function contains no targeted pattern,,,0,0,0,True

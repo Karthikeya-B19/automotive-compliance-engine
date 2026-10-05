@@ -1,0 +1,5 @@
+REPLACE THIS FILE WITH:
+
+CB.AI.U4AID23109_Demo_v1.0.mp4
+
+The recording must be 5–10 minutes and demonstrate the same submitted version, including inputs, pipeline, interactions/results, grounding/citations or explicit deterministic fallback, evaluation evidence, and human oversight.

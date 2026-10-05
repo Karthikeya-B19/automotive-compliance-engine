@@ -1,0 +1,32 @@
+[
+  {
+    "case_id": "NULL_001",
+    "description": "A pointer initialized to NULL is dereferenced",
+    "source": "void set_value(void) { int *value = NULL; *value = 7; }",
+    "expected_titles": ["Possible null-pointer dereference"]
+  },
+  {
+    "case_id": "BOUNDARY_001",
+    "description": "An unbounded copy targets a fixed-size buffer",
+    "source": "void copy_name(const char *input) { char name[8]; strcpy(name, input); }",
+    "expected_titles": ["Potential unbounded string copy"]
+  },
+  {
+    "case_id": "RESOURCE_001",
+    "description": "Allocated memory is not released",
+    "source": "void allocate_buffer(void) { char *buffer = malloc(32U); buffer[0] = 0; }",
+    "expected_titles": ["Allocated resource may not be released"]
+  },
+  {
+    "case_id": "CONTROL_001",
+    "description": "A switch statement omits a default branch",
+    "source": "int map_state(int state) { switch (state) { case 1: return 10; } return 0; }",
+    "expected_titles": ["Switch statement has no default branch"]
+  },
+  {
+    "case_id": "SAFE_001",
+    "description": "A simple bounded arithmetic function contains no targeted pattern",
+    "source": "int add_values(int left, int right) { return left + right; }",
+    "expected_titles": []
+  }
+]

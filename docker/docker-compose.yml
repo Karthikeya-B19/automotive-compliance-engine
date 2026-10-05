@@ -9,11 +9,18 @@ services:
     environment:
       PYTHONUNBUFFERED: "1"
       OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+      REVIEW_API_KEY: "${REVIEW_API_KEY:-}"
+      REVIEW_DATABASE: "/app/data/reviews.db"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
     volumes:
       - ..:/app
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - secure-review-net
 
@@ -27,9 +34,11 @@ services:
     environment:
       PYTHONUNBUFFERED: "1"
       REVIEW_API_URL: "http://review-assistant-api:8000/api/v1/review"
+      REVIEW_API_KEY: "${REVIEW_API_KEY:-}"
     command: ["streamlit", "run", "src/ui/app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
     depends_on:
-      - review-assistant-api
+      review-assistant-api:
+        condition: service_healthy
     volumes:
       - ..:/app
     networks:
