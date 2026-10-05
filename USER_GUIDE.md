@@ -38,6 +38,10 @@ python run.py
 
 Open `http://localhost:8501`. API documentation is available at `http://localhost:8000/docs`.
 
+### Readable display
+
+The dashboard uses a high-contrast light theme. Text, inputs, placeholders, tabs, metrics, alerts, tables, expanders, and buttons have explicit readable foreground and background colors. If an earlier color remains visible after an update, stop the app, run `python run.py` again, and hard-refresh the browser with `Ctrl+Shift+R`.
+
 ### Review a repository
 
 1. Open **Repository ZIP review**.

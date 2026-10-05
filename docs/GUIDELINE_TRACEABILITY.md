@@ -21,6 +21,7 @@ Public implementation repository: `https://github.com/Karthikeya-B19/automotive-
 | Human approval | Accepted, Rejected and Needs changes disposition with reviewer/notes/events | Workflow test |
 | Workflow integration | SQLite record plus CI JSON/SARIF export | Metrics, history and `tools/ci_review.py` |
 | CI/CD | Severity-gated CLI and example GitHub Actions SARIF workflow | Local CI command and workflow file |
+| Review interface accessibility | Explicit high-contrast light theme for application surfaces, text, inputs, tabs, metrics, alerts, tables and buttons | Theme configuration plus UI style rules; contrast ratios verified for normal, accent, placeholder and button text |
 | Prompt-injection boundary | Repository, logs, diagnostics and history delimited as data | Prompt guardrails |
 | Source confidentiality | Local processing; source body excluded from database and audit logs | Storage schema and tests |
 | Review metrics | Counts, findings, actionable-review rate and average disposition time | `/api/v1/metrics` |

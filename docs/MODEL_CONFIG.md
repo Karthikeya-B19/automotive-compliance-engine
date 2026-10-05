@@ -18,6 +18,7 @@ Case study: CS4 — Automotive Secure Code Debugging and Review Assistant
 | Deterministic analysis | Project Python module | Conservative regex/control-pattern preflight | Reproducible candidate detection and offline fallback |
 | Repository analysis | Project Python module | In-memory ZIP validation; max 8 MB compressed, 300 source files, 256 KB/file, 2 MB total source, ratio 200 | All-file scan, module summaries, repository tree, include dependencies and path-specific findings |
 | Access control | API middleware and JSON permission policy | Random per-run key, authenticated user, repository ID and path prefixes | Reject unauthenticated or unauthorized repository access |
+| Interface theme | Streamlit theme configuration and scoped UI CSS | Explicit foreground/background pairs for text, widgets, tabs, metrics, alerts, tables and buttons | Prevent unreadable text when browser or Streamlit theme defaults differ |
 | Static-analysis evidence | SARIF 2.1 parser | Up to 100 bounded results | Normalize tool, rule, severity, message, file and line |
 | CI integration | `tools/ci_review.py` | JSON/SARIF output and configurable severity gate | Pull-request evidence and machine-readable results |
 | Workflow store | SQLite | Review metadata, input hashes, output, status and audit events | Human-review traceability; source body is not stored |

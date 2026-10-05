@@ -203,6 +203,10 @@ Copy `.env.example` values into your approved runtime configuration. `run.py` do
 | `REVIEW_DATABASE` | `data/reviews.db` | SQLite workflow database |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Local/private Ollama service |
 
+## Interface accessibility
+
+The dashboard uses an explicit high-contrast light theme. It sets readable foreground and background colors for text, inputs, placeholders, tabs, metrics, alerts, data tables, expanders, and primary, secondary, and download buttons. Restart `python run.py` after changing theme files, then hard-refresh the browser if it has cached an earlier stylesheet.
+
 ## Tests
 
 ```bash

@@ -26,6 +26,8 @@ Show the title slide and identify yourself, the university, register number and 
 
 Show the architecture slide. Explain Streamlit, FastAPI, deterministic preflight, ChromaDB, local Ollama and SQLite. Emphasize that source bodies are not stored in SQLite and embeddings are local-only.
 
+Briefly point out the high-contrast dashboard theme: inputs, tabs, metrics, findings and buttons remain readable during the live review.
+
 ### 1:25–2:10 — Inputs and knowledge base
 
 Open the Repository ZIP review page. Point out:

@@ -29,7 +29,7 @@ data/vector_store/
 *.db
 *.sqlite3
 *.pdf
-!deliverables/CB.AI.U4AID23109_TechnicalReport_v1.2.pdf
+!deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.pdf
 
 # Logs and local runtime output
 logs/
@@ -57,12 +57,16 @@ submission/
 submission_v1.1/
 submission_v1.3/
 submission_v1.4/
+submission_v1.5/
 
 # Publish only the current evaluator-facing report and presentation.
 deliverables/*
 !deliverables/CB.AI.U4AID23109_TechnicalReport_v1.2.docx
 !deliverables/CB.AI.U4AID23109_TechnicalReport_v1.2.pdf
 !deliverables/CB.AI.U4AID23109_Presentation_v1.4.pptx
+!deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.docx
+!deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.pdf
+!deliverables/CB.AI.U4AID23109_Presentation_v1.5.pptx
 
 # Node optional tooling (not required for this project)
 node_modules/

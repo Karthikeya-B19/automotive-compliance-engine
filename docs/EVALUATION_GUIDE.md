@@ -52,6 +52,7 @@ Connect the pilot’s authentication, repository/path permission, SARIF and CI c
 - Standards PDF indexed successfully.
 - `python -m pytest -q -p no:cacheprovider` passes.
 - Dashboard and API docs open in separate tabs.
+- Verify that text, inputs, tabs, metrics, alerts and buttons remain readable on their displayed backgrounds.
 - Demo repository ZIP and warnings ready.
 - A fallback explanation ready if the local model is slow.
 - Never describe the synthetic MISRA-style PDF as the official MISRA standard.

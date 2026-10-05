@@ -7,6 +7,7 @@ Root folder: `AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_C
 - [ ] Obtain faculty approval and signature on the synopsis approval record.
 - [ ] Review, tick, sign and date the Academic Integrity & AI Usage Declaration.
 - [ ] Record a 5–10 minute demo video named `CB.AI.U4AID23109_Demo_v1.0.mp4` and place it in `Video/`.
+- [ ] Restart the dashboard and verify readable text, inputs, tabs, metrics, alerts and buttons before recording.
 - [ ] Confirm the demonstrated build exactly matches the submitted code.
 - [ ] If using RAG mode, pre-stage the approved embedding model, local Ollama model and approved/licensed standards index.
 - [ ] Run `python -m pytest -q -p no:cacheprovider` and the evaluation script on the submission machine.
