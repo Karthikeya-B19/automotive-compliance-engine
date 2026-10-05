@@ -24,12 +24,53 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    :root { --navy:#102433; --ink:#182b36; --line:#d9e2e5; --paper:#f7faf9; --accent:#d77742; }
-    .stApp { background:var(--paper); color:var(--ink); }
+    :root {
+      --navy:#102433; --ink:#182b36; --muted:#4c5f68; --line:#cbd7db;
+      --paper:#f7faf9; --surface:#ffffff; --surface-muted:#e8f0f2;
+      --accent:#a94e26; --accent-hover:#853d1e; --on-dark:#f7fbfb;
+    }
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+      background:var(--paper) !important; color:var(--ink) !important;
+    }
     .block-container { max-width:1500px; padding:2rem 3rem 4rem; }
     [data-testid="stHeader"] { background:transparent; }
     h1,h2,h3,[data-testid="stMarkdownContainer"],[data-testid="stMarkdownContainer"] p,
     [data-testid="stMarkdownContainer"] li,label { color:#1f2937 !important; }
+    p, span, small, [data-testid="stCaptionContainer"], [data-testid="stText"] {
+      color:var(--ink);
+    }
+    [data-baseweb="input"] > div, [data-baseweb="textarea"] > div,
+    [data-baseweb="select"] > div, [data-baseweb="base-input"],
+    input, textarea {
+      background:var(--surface) !important; color:var(--ink) !important;
+      border-color:#9fb1b7 !important;
+    }
+    input::placeholder, textarea::placeholder { color:#61747c !important; opacity:1; }
+    [data-baseweb="tab-list"] { border-bottom-color:var(--line) !important; }
+    button[data-baseweb="tab"] { color:var(--ink) !important; }
+    button[data-baseweb="tab"][aria-selected="true"] {
+      color:var(--accent) !important; border-bottom-color:var(--accent) !important;
+    }
+    [data-testid="stMetric"] { background:var(--surface) !important; border:1px solid var(--line); padding:.65rem; }
+    [data-testid="stMetricLabel"] p, [data-testid="stMetricValue"],
+    [data-testid="stMetricDelta"] { color:var(--ink) !important; }
+    [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { color:var(--ink); }
+    [data-testid="stDataFrame"] { background:var(--surface); }
+    [data-testid="stExpander"] details { background:var(--surface); border-color:var(--line); }
+    [data-testid="stExpander"] summary, [data-testid="stExpander"] summary span { color:var(--ink) !important; }
+    [data-testid="stAlert"] { color:var(--ink) !important; }
+    [data-testid="stAlert"] * { color:var(--ink) !important; }
+    button[kind="primary"], [data-testid="stDownloadButton"] button {
+      background:var(--navy) !important; color:var(--on-dark) !important;
+    }
+    button[kind="primary"] *, [data-testid="stDownloadButton"] button * {
+      color:var(--on-dark) !important;
+    }
+    button[kind="primary"]:hover, [data-testid="stDownloadButton"] button:hover {
+      background:var(--accent-hover) !important; color:var(--on-dark) !important;
+    }
+    button[kind="secondary"] { background:var(--surface) !important; color:var(--ink) !important; border-color:#9fb1b7 !important; }
+    button[kind="secondary"] * { color:var(--ink) !important; }
     .hero { background:var(--navy); border-left:8px solid var(--accent); color:#f5f8f7;
             padding:1.5rem 2rem; margin-bottom:1.2rem; }
     .hero h1 { margin:0; font-size:2rem; color:#f5f8f7 !important; }
@@ -42,8 +83,7 @@ st.markdown(
                       padding:.9rem 1rem; overflow-wrap:anywhere; }
     .finding { background:white; border:1px solid var(--line); border-left:5px solid var(--accent);
                padding:1rem 1.1rem; margin:.6rem 0; }
-    [data-testid="stMetric"] { background:white; border:1px solid var(--line); padding:.65rem; }
-    [data-testid="stDownloadButton"] button { background:var(--navy); color:white !important; }
+    ::selection { background:#f3c7b3; color:var(--navy); }
     </style>
     """,
     unsafe_allow_html=True,
