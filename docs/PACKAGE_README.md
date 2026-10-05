@@ -27,6 +27,7 @@ Open **Repository ZIP review** and upload one of the three ZIPs in `Input_Data/`
 - `MixedSensorNetwork`: 3 scanned files, 2 dependencies, 1 boundary finding and an ignored generated file.
 
 Optional compiler warnings and SARIF evidence are also provided. See `Documentation/CB.AI.U4AID23109_UserGuide_v1.4.md` for what the application does and how to use it.
+For a concise purpose-by-purpose map of the project materials, see `Documentation/CB.AI.U4AID23109_FileReference_v1.0.md`.
 
 The maintained public source repository is `https://github.com/Karthikeya-B19/automotive-compliance-engine`.
 
