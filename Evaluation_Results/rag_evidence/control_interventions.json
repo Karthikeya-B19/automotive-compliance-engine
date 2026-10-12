@@ -1,0 +1,652 @@
+{
+  "generated_at": "2026-10-12T14:22:57.054509+00:00",
+  "source": "int rpm_rate(int rpm) { return rpm / 0; }",
+  "strategy": "bm25 in every corpus variant to isolate the corpus intervention",
+  "checks": {
+    "relevant_present_supports": true,
+    "relevant_deleted_abstains": true,
+    "unrelated_only_abstains": true,
+    "same_query": true,
+    "same_input_findings": true,
+    "valid_quote_accepted": true,
+    "forged_id_rejected": true,
+    "invented_quote_rejected": true,
+    "empty_evidence_rejected": true
+  },
+  "corpus_cases": [
+    {
+      "case": "relevant_present",
+      "input_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "grounded_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "AUTO-DIV-ZERO (synthetic project guidance)",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO",
+          "grounding": {
+            "rule_id": "AUTO-DIV-ZERO",
+            "source": "automotive_rule_cards.json",
+            "excerpt": "Validate the denominator and define a safe fallback before dividing.",
+            "content_sha256": "9ed506776fd393542fefff529419dcd9fec4a2eced76874f8ce0d80adbcbb6b1",
+            "assumptions": [
+              "32-bit int target for shift checks",
+              "Heuristic candidate requires human confirmation"
+            ],
+            "authority": "Advisory project rule, not a MISRA or ISO clause"
+          }
+        }
+      ],
+      "trace": {
+        "architecture": "automotive-evidence-gated-retrieval-v2",
+        "corpus_sha256": "ba523dcb8d4d678774ed47d0432dffff096fb30d609b43062a780f065e9834a2",
+        "corpus_rule_count": 20,
+        "per_finding": [
+          {
+            "query": "Literal division or modulo by zero Arithmetic safety Validate the denominator and define a safe fallback before dividing.",
+            "strategy": "bm25",
+            "dense_error": null,
+            "candidates": [
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "Arithmetic safety",
+                "cwe": "CWE-369",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-DIV-ZERO",
+                "severity": "Critical",
+                "text": "Validate the denominator and define a safe fallback before dividing.",
+                "title": "Literal division or modulo by zero",
+                "version": "2.0",
+                "lexical_score": 34.579088,
+                "dense_score": null,
+                "fusion_score": 0.01639344,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 0,
+                "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+                "content_sha256": "9ed506776fd393542fefff529419dcd9fec4a2eced76874f8ce0d80adbcbb6b1"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "Arithmetic safety",
+                "cwe": "CWE-758",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-SHIFT-WIDTH",
+                "severity": "High",
+                "text": "Validate the shift count against the operand width.",
+                "title": "Shift count outside fixed-width operand range",
+                "version": "2.0",
+                "lexical_score": 6.015769,
+                "dense_score": null,
+                "fusion_score": 0.01612903,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 2,
+                "content": "Shift count outside fixed-width operand range. Validate the shift count against the operand width.",
+                "content_sha256": "b3946b1d63b44e013fd2537b9d2e01426ad30f5135e6fe8850da5ed56830a64e"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-STRCAT",
+                "text": "For strcat, prove remaining destination capacity before appending.",
+                "title": "Potential unbounded string concatenation",
+                "version": "2.0",
+                "lexical_score": 2.62563,
+                "dense_score": null,
+                "fusion_score": 0.01587302,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 15,
+                "content": "Potential unbounded string concatenation. For strcat, prove remaining destination capacity before appending.",
+                "content_sha256": "88bdfb5c21f280ef880f61efc0f848bfb4541fa2202d3f778c8ee844b864380f"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "Boundary safety",
+                "cwe": "CWE-125",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-ARRAY-BOUND",
+                "severity": "High",
+                "text": "Keep the index in [0, capacity) and test the boundary.",
+                "title": "Constant array index outside declared capacity",
+                "version": "2.0",
+                "lexical_score": 2.574921,
+                "dense_score": null,
+                "fusion_score": 0.015625,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 1,
+                "content": "Constant array index outside declared capacity. Keep the index in [0, capacity) and test the boundary.",
+                "content_sha256": "4124272145964736dd66ce29537a9fe94baa3c609dac572904d4b61bbb273220"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-NULL",
+                "text": "Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "title": "Possible null-pointer dereference",
+                "version": "2.0",
+                "lexical_score": 2.515672,
+                "dense_score": null,
+                "fusion_score": 0.01538462,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 17,
+                "content": "Possible null-pointer dereference. Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "content_sha256": "0870f6192bffbf11593a188faa7b42389f058230c1e97de7d592f28d5798f2bc"
+              }
+            ],
+            "finding_id": "1d285e6cbfc8",
+            "expected_rule_id": "AUTO-DIV-ZERO",
+            "decision": "supported-candidate",
+            "cited_rule_id": "AUTO-DIV-ZERO"
+          }
+        ],
+        "supported_count": 1,
+        "abstained_count": 0,
+        "limitations": [
+          "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+          "Synthetic rule cards do not establish MISRA or ISO compliance"
+        ]
+      }
+    },
+    {
+      "case": "relevant_deleted",
+      "input_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "grounded_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO",
+          "grounding": {
+            "decision": "abstain",
+            "reason": "No retrieved applicable typed rule"
+          }
+        }
+      ],
+      "trace": {
+        "architecture": "automotive-evidence-gated-retrieval-v2",
+        "corpus_sha256": "f349ad1ec458ac5f0c635bcb338714340c324bb18e679cc06c0cbbb19381fae7",
+        "corpus_rule_count": 19,
+        "per_finding": [
+          {
+            "query": "Literal division or modulo by zero Arithmetic safety Validate the denominator and define a safe fallback before dividing.",
+            "strategy": "bm25",
+            "dense_error": null,
+            "candidates": [
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "Arithmetic safety",
+                "cwe": "CWE-758",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-SHIFT-WIDTH",
+                "severity": "High",
+                "text": "Validate the shift count against the operand width.",
+                "title": "Shift count outside fixed-width operand range",
+                "version": "2.0",
+                "lexical_score": 6.982637,
+                "dense_score": null,
+                "fusion_score": 0.01639344,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 1,
+                "content": "Shift count outside fixed-width operand range. Validate the shift count against the operand width.",
+                "content_sha256": "b3946b1d63b44e013fd2537b9d2e01426ad30f5135e6fe8850da5ed56830a64e"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-STRCAT",
+                "text": "For strcat, prove remaining destination capacity before appending.",
+                "title": "Potential unbounded string concatenation",
+                "version": "2.0",
+                "lexical_score": 3.151284,
+                "dense_score": null,
+                "fusion_score": 0.01612903,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 14,
+                "content": "Potential unbounded string concatenation. For strcat, prove remaining destination capacity before appending.",
+                "content_sha256": "88bdfb5c21f280ef880f61efc0f848bfb4541fa2202d3f778c8ee844b864380f"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-NULL",
+                "text": "Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "title": "Possible null-pointer dereference",
+                "version": "2.0",
+                "lexical_score": 2.849109,
+                "dense_score": null,
+                "fusion_score": 0.01587302,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 16,
+                "content": "Possible null-pointer dereference. Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "content_sha256": "0870f6192bffbf11593a188faa7b42389f058230c1e97de7d592f28d5798f2bc"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "Boundary safety",
+                "cwe": "CWE-125",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-ARRAY-BOUND",
+                "severity": "High",
+                "text": "Keep the index in [0, capacity) and test the boundary.",
+                "title": "Constant array index outside declared capacity",
+                "version": "2.0",
+                "lexical_score": 2.830386,
+                "dense_score": null,
+                "fusion_score": 0.015625,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 0,
+                "content": "Constant array index outside declared capacity. Keep the index in [0, capacity) and test the boundary.",
+                "content_sha256": "4124272145964736dd66ce29537a9fe94baa3c609dac572904d4b61bbb273220"
+              },
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-LEAK",
+                "text": "Define allocation ownership and release resources on all applicable exit paths.",
+                "title": "Allocated resource may not be released",
+                "version": "2.0",
+                "lexical_score": 2.700187,
+                "dense_score": null,
+                "fusion_score": 0.01538462,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 17,
+                "content": "Allocated resource may not be released. Define allocation ownership and release resources on all applicable exit paths.",
+                "content_sha256": "6ee2d80e259e25d7ec6972ab0ff39ec578081edd8a8e34e3252018c784a310fb"
+              }
+            ],
+            "finding_id": "1d285e6cbfc8",
+            "expected_rule_id": "AUTO-DIV-ZERO",
+            "decision": "abstain",
+            "cited_rule_id": null
+          }
+        ],
+        "supported_count": 0,
+        "abstained_count": 1,
+        "limitations": [
+          "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+          "Synthetic rule cards do not establish MISRA or ISO compliance"
+        ]
+      }
+    },
+    {
+      "case": "unrelated_only",
+      "input_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "grounded_findings": [
+        {
+          "finding_id": "1d285e6cbfc8",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 1,
+          "function": "rpm_rate",
+          "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO",
+          "grounding": {
+            "decision": "abstain",
+            "reason": "No retrieved applicable typed rule"
+          }
+        }
+      ],
+      "trace": {
+        "architecture": "automotive-evidence-gated-retrieval-v2",
+        "corpus_sha256": "d33a04d14223b41edbef2d78d8f88a32b8bb0fe171355923066c7d3273bfd7e1",
+        "corpus_rule_count": 1,
+        "per_finding": [
+          {
+            "query": "Literal division or modulo by zero Arithmetic safety Validate the denominator and define a safe fallback before dividing.",
+            "strategy": "bm25",
+            "dense_error": null,
+            "candidates": [
+              {
+                "assumptions": [
+                  "32-bit int target for shift checks",
+                  "Heuristic candidate requires human confirmation"
+                ],
+                "authority": "Advisory project rule, not a MISRA or ISO clause",
+                "category": "C/C++ safety",
+                "domain": "automotive-embedded",
+                "language": [
+                  "C",
+                  "C++"
+                ],
+                "origin": "synthetic-project-guidance",
+                "rule_id": "AUTO-NULL",
+                "text": "Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "title": "Possible null-pointer dereference",
+                "version": "2.0",
+                "lexical_score": 0.863046,
+                "dense_score": null,
+                "fusion_score": 0.01639344,
+                "source": "automotive_rule_cards.json",
+                "chunk_index": 0,
+                "content": "Possible null-pointer dereference. Do not dereference a null pointer. Check validity and define failure behaviour.",
+                "content_sha256": "0870f6192bffbf11593a188faa7b42389f058230c1e97de7d592f28d5798f2bc"
+              }
+            ],
+            "finding_id": "1d285e6cbfc8",
+            "expected_rule_id": "AUTO-DIV-ZERO",
+            "decision": "abstain",
+            "cited_rule_id": null
+          }
+        ],
+        "supported_count": 0,
+        "abstained_count": 1,
+        "limitations": [
+          "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+          "Synthetic rule cards do not establish MISRA or ISO compliance"
+        ]
+      }
+    }
+  ],
+  "citation_cases": [
+    {
+      "case": "valid_quote",
+      "proposal": {
+        "rule_reference": "AUTO-DIV-ZERO",
+        "source_evidence": [
+          "Validate the denominator and define a safe fallback before dividing."
+        ]
+      },
+      "context": [
+        {
+          "rule_id": "AUTO-DIV-ZERO",
+          "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+          "applicability": "supported-candidate"
+        }
+      ],
+      "decision": {
+        "accepted": true,
+        "reason": "Exact applicable citation and extractive evidence",
+        "proposed_rule_reference": "AUTO-DIV-ZERO",
+        "proposed_evidence": [
+          "Validate the denominator and define a safe fallback before dividing."
+        ],
+        "applicable_rule_ids": [
+          "AUTO-DIV-ZERO"
+        ]
+      },
+      "validated_output": {
+        "rule_reference": "AUTO-DIV-ZERO",
+        "source_evidence": [
+          "Validate the denominator and define a safe fallback before dividing."
+        ]
+      }
+    },
+    {
+      "case": "forged_id",
+      "proposal": {
+        "rule_reference": "MISRA 999",
+        "source_evidence": [
+          "Validate the denominator and define a safe fallback before dividing."
+        ]
+      },
+      "context": [
+        {
+          "rule_id": "AUTO-DIV-ZERO",
+          "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+          "applicability": "supported-candidate"
+        }
+      ],
+      "decision": {
+        "accepted": false,
+        "reason": "Unsupported citation or evidence rejected",
+        "proposed_rule_reference": "MISRA 999",
+        "proposed_evidence": [
+          "Validate the denominator and define a safe fallback before dividing."
+        ],
+        "applicable_rule_ids": [
+          "AUTO-DIV-ZERO"
+        ]
+      },
+      "validated_output": {
+        "rule_reference": "No applicable rule found",
+        "source_evidence": [],
+        "confidence": "Low",
+        "review_summary": "Model response failed citation validation. Use the independently reported deterministic candidates.",
+        "candidate_root_causes": [],
+        "suggested_remediation": "No model remediation passed evidence validation."
+      }
+    },
+    {
+      "case": "invented_quote",
+      "proposal": {
+        "rule_reference": "AUTO-DIV-ZERO",
+        "source_evidence": [
+          "Invented guidance absent from context."
+        ]
+      },
+      "context": [
+        {
+          "rule_id": "AUTO-DIV-ZERO",
+          "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+          "applicability": "supported-candidate"
+        }
+      ],
+      "decision": {
+        "accepted": false,
+        "reason": "Unsupported citation or evidence rejected",
+        "proposed_rule_reference": "AUTO-DIV-ZERO",
+        "proposed_evidence": [
+          "Invented guidance absent from context."
+        ],
+        "applicable_rule_ids": [
+          "AUTO-DIV-ZERO"
+        ]
+      },
+      "validated_output": {
+        "rule_reference": "No applicable rule found",
+        "source_evidence": [],
+        "confidence": "Low",
+        "review_summary": "Model response failed citation validation. Use the independently reported deterministic candidates.",
+        "candidate_root_causes": [],
+        "suggested_remediation": "No model remediation passed evidence validation."
+      }
+    },
+    {
+      "case": "empty_evidence",
+      "proposal": {
+        "rule_reference": "AUTO-DIV-ZERO",
+        "source_evidence": []
+      },
+      "context": [
+        {
+          "rule_id": "AUTO-DIV-ZERO",
+          "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+          "applicability": "supported-candidate"
+        }
+      ],
+      "decision": {
+        "accepted": false,
+        "reason": "Unsupported citation or evidence rejected",
+        "proposed_rule_reference": "AUTO-DIV-ZERO",
+        "proposed_evidence": [],
+        "applicable_rule_ids": [
+          "AUTO-DIV-ZERO"
+        ]
+      },
+      "validated_output": {
+        "rule_reference": "No applicable rule found",
+        "source_evidence": [],
+        "confidence": "Low",
+        "review_summary": "Model response failed citation validation. Use the independently reported deterministic candidates.",
+        "candidate_root_causes": [],
+        "suggested_remediation": "No model remediation passed evidence validation."
+      }
+    }
+  ],
+  "implementation_sha256": {
+    "src/analysis/static_analyzer.py": "b468c51ad9dd3c93203869142284dfca41ac6514c359fdb10fb0b33db237ebbb",
+    "src/rag/automotive_retrieval.py": "26d2e6d3ab843aaf82c5b334b74ec121788287d5e9dacbc92f8b25d228458f2b"
+  },
+  "scope": "Programmatic retrieval/validator controls. These proposals do not claim actual LLM generation."
+}

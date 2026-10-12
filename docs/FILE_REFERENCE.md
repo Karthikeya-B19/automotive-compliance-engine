@@ -163,3 +163,12 @@ Files inside each ECU fixture include the selected source, upstream license, `PR
 The `submission_v*` folders and their ZIP files are versioned, self-contained copies prepared for final delivery. They repeat the maintained materials above under the prescribed submission folder structure. They are deliberately not tracked by Git to avoid duplicating the repository content.
 
 During normal use, the app may also create local SQLite data, Chroma/RAG indexes, temporary extracted uploads, and Python cache folders. These files are operational state rather than submission artifacts; they are excluded by `.gitignore` and should not be committed or submitted unless an evaluator explicitly requests them.
+
+## RAG proof supplements
+
+| File | Purpose |
+| --- | --- |
+| `evaluation/export_rag_controls.py` | Exports same-query present/deleted/unrelated corpus interventions and valid/forged/invented/empty citation proposals without changing the application's knowledge corpus. |
+| `Evaluation_Results/rag_evidence/control_interventions.json` | Preserves all nine control checks, full ranked results, unchanged detector inputs, hashes and validator decisions. Programmatic controls are separate from actual LLM evidence. |
+| `docs/RAG_PROOF_GUIDE.md` | Explains all measured evaluation metrics, the RAG proof argument, reproduction commands and professor demonstration. |
+| `deliverables/CB.AI.U4AID23109_RAGProof_v2.1.pptx` | Dedicated 20-slide editable evaluation/RAG presentation with detailed speaker notes and all 20 query ranks. |

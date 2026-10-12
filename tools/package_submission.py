@@ -43,9 +43,10 @@ def main():
     shutil.copy2(ROOT/'demo'/'compiler_warnings.txt',PACKAGE/'Input_Data'/f'{REGISTER}_CompilerWarnings_v2.0.txt')
     docs={'USER_GUIDE.md':'UserGuide','docs/TECHNICAL_REPORT_v2.md':'TechnicalReport',
           'docs/EVALUATION_GUIDE.md':'EvaluationGuide','docs/FILE_REFERENCE.md':'FileReference',
-          'docs/GUIDELINE_TRACEABILITY.md':'GuidelineTraceability','docs/SUBMISSION_CHECKLIST.md':'SubmissionChecklist'}
+          'docs/GUIDELINE_TRACEABILITY.md':'GuidelineTraceability','docs/SUBMISSION_CHECKLIST.md':'SubmissionChecklist',
+          'docs/RAG_PROOF_GUIDE.md':'RAGProofGuide'}
     for source,artifact in docs.items(): shutil.copy2(ROOT/source,PACKAGE/'Documentation'/f'{REGISTER}_{artifact}_v2.0.md')
-    for name in ['CB.AI.U4AID23109_TechnicalReport_v2.0.pdf','CB.AI.U4AID23109_RAGEvidencePresentation_v2.0.pptx']:
+    for name in ['CB.AI.U4AID23109_TechnicalReport_v2.0.pdf','CB.AI.U4AID23109_RAGEvidencePresentation_v2.0.pptx','CB.AI.U4AID23109_RAGProof_v2.1.pptx']:
         shutil.copy2(ROOT/'deliverables'/name,PACKAGE/'Documentation'/name)
     for source,artifact in [('MODEL_CONFIG.md','ModelConfig'),('PROMPT_GUARDRAILS.md','PromptGuardrails')]:
         shutil.copy2(ROOT/'docs'/source,PACKAGE/'Model_Prompts_Config'/f'{REGISTER}_{artifact}_v2.0.md')

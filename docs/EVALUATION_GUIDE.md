@@ -13,12 +13,15 @@ Version 2.0. The evidence is divided by the question each experiment answers.
 
 ## Reproduce
 
+For the professor-facing RAG explanation, use `deliverables/CB.AI.U4AID23109_RAGProof_v2.1.pptx` and `docs/RAG_PROOF_GUIDE.md`. Supplementary `rag_evidence/control_interventions.json` preserves complete same-query corpus interventions and citation proposals, with all nine checks passing. This is separate from actual LLM generation evidence.
+
 Run from the repository root with the project environment active:
 
 ```powershell
 python tools/build_rule_corpus.py
 python evaluation/component_verification.py
 python evaluation/prove_rag.py
+python evaluation/export_rag_controls.py
 python evaluation/prove_live_rag.py
 python evaluation/ecu_mutation_study.py
 python evaluation/benchmark_public_repos.py --target 100 --workers 6
