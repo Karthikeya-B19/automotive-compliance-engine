@@ -1,0 +1,11 @@
+--- baseline/firmware/controllers/actuators/gppwm/gppwm.cpp
++++ mutant/firmware/controllers/actuators/gppwm/gppwm.cpp
+@@ -38,6 +38,8 @@
+ 
+ 
+ void initGpPwm() {
++    char ecu_proof_name[4]; strcpy(ecu_proof_name, "diagnostic request too long");
++
+ 	for (size_t i = 0; i < efi::size(channels); i++) {
+ 		auto& cfg = engineConfiguration->gppwm[i];
+ 

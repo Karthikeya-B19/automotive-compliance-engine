@@ -1,0 +1,388 @@
+[
+  {
+    "rule_id": "AUTO-DIV-ZERO",
+    "title": "Literal division or modulo by zero",
+    "category": "Arithmetic safety",
+    "text": "Validate the denominator and define a safe fallback before dividing.",
+    "cwe": "CWE-369",
+    "severity": "Critical",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-ARRAY-BOUND",
+    "title": "Constant array index outside declared capacity",
+    "category": "Boundary safety",
+    "text": "Keep the index in [0, capacity) and test the boundary.",
+    "cwe": "CWE-125",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-SHIFT-WIDTH",
+    "title": "Shift count outside fixed-width operand range",
+    "category": "Arithmetic safety",
+    "text": "Validate the shift count against the operand width.",
+    "cwe": "CWE-758",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-ASSIGN-COND",
+    "title": "Assignment used as an if condition",
+    "category": "Control flow",
+    "text": "Confirm intent and use an explicit comparison where required.",
+    "cwe": "CWE-481",
+    "severity": "Medium",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-FORMAT",
+    "title": "Nonliteral printf format argument",
+    "category": "Input validation",
+    "text": "Use a constant format string and pass external text as an argument.",
+    "cwe": "CWE-134",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-DOUBLE-FREE",
+    "title": "Repeated free without reassignment",
+    "category": "Resource management",
+    "text": "Give each allocation one owner and release it once.",
+    "cwe": "CWE-415",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-USE-AFTER-FREE",
+    "title": "Pointer access after free without reassignment",
+    "category": "Pointer safety",
+    "text": "Remove accesses after release and clarify object lifetime.",
+    "cwe": "CWE-416",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-ISR-HEAP",
+    "title": "Dynamic allocation in interrupt-style function",
+    "category": "Real-time safety",
+    "text": "Use preallocated storage and measure worst-case interrupt latency.",
+    "cwe": "CWE-400",
+    "severity": "Medium",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-ISR-BLOCK",
+    "title": "Blocking call in interrupt-style function",
+    "category": "Real-time safety",
+    "text": "Defer blocking work to a task and bound interrupt execution time.",
+    "cwe": "CWE-833",
+    "severity": "Medium",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-RECURSION",
+    "title": "Direct recursion requires stack bound review",
+    "category": "Real-time safety",
+    "text": "Use bounded iteration or prove maximum recursion depth and stack usage.",
+    "cwe": "CWE-674",
+    "severity": "Medium",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-CAN-DLC",
+    "title": "Classical CAN DLC exceeds eight bytes",
+    "category": "Protocol safety",
+    "text": "Validate classical CAN DLC in [0, 8]. Confirm CAN FD context separately.",
+    "cwe": "CWE-20",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "Field can_dlc denotes classical CAN length",
+      "CAN FD needs a separate protocol profile"
+    ]
+  },
+  {
+    "rule_id": "AUTO-BUSY-WAIT",
+    "title": "Empty unbounded busy-wait loop",
+    "category": "Real-time safety",
+    "text": "Add a timeout, watchdog strategy, or bounded scheduler wait.",
+    "cwe": "CWE-835",
+    "severity": "Medium",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-SHELL",
+    "title": "Shell command execution in embedded source",
+    "category": "Input validation",
+    "text": "Avoid shell execution or use a tightly constrained approved interface.",
+    "cwe": "CWE-78",
+    "severity": "High",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-GETS",
+    "title": "Unbounded input function",
+    "category": "C/C++ safety",
+    "text": "Avoid gets because it cannot enforce a destination bound.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-STRCPY",
+    "title": "Potential unbounded string copy",
+    "category": "C/C++ safety",
+    "text": "For strcpy, prove destination capacity and source length including the terminator.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-STRCAT",
+    "title": "Potential unbounded string concatenation",
+    "category": "C/C++ safety",
+    "text": "For strcat, prove remaining destination capacity before appending.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-SPRINTF",
+    "title": "Potential unbounded formatted write",
+    "category": "C/C++ safety",
+    "text": "Use a bounded formatted write and inspect the return value for truncation.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-NULL",
+    "title": "Possible null-pointer dereference",
+    "category": "C/C++ safety",
+    "text": "Do not dereference a null pointer. Check validity and define failure behaviour.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-LEAK",
+    "title": "Allocated resource may not be released",
+    "category": "C/C++ safety",
+    "text": "Define allocation ownership and release resources on all applicable exit paths.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  },
+  {
+    "rule_id": "AUTO-DEFAULT",
+    "title": "Switch statement has no default branch",
+    "category": "C/C++ safety",
+    "text": "Give a switch a defined default or documented handling of unexpected state.",
+    "origin": "synthetic-project-guidance",
+    "version": "2.0",
+    "language": [
+      "C",
+      "C++"
+    ],
+    "domain": "automotive-embedded",
+    "authority": "Advisory project rule, not a MISRA or ISO clause",
+    "assumptions": [
+      "32-bit int target for shift checks",
+      "Heuristic candidate requires human confirmation"
+    ]
+  }
+]

@@ -1,0 +1,11 @@
+--- baseline/speeduino/board_native.cpp
++++ mutant/speeduino/board_native.cpp
+@@ -73,6 +73,8 @@
+ software_timer_t oneMSTimer;
+ 
+ void initBoard(uint32_t /*baudRate*/) {
++    int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;
++
+     idleTimer.setCallback(idleInterrupt);
+     fanTimer.setCallback(fanInterrupt);
+     boostTimer.setCallback(boostInterrupt);

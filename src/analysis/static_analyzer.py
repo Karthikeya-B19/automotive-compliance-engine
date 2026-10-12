@@ -3,10 +3,12 @@ from __future__ import annotations
 import hashlib
 import re
 from typing import Any, Dict, List, Optional, Tuple
+from src.analysis.lexical import mask_non_code
+from src.analysis.automotive_checks import automotive_candidates
 
 
 FUNCTION_PATTERN = re.compile(
-    r"(?m)^\s*(?:[A-Za-z_]\w*[\s\*]+)+(?P<name>[A-Za-z_]\w*)\s*"
+    r"(?m)^[ \t]*(?:[A-Za-z_]\w*[ \t\*]+)+(?P<name>[A-Za-z_]\w*)\s*"
     r"\([^;{}]*\)\s*\{"
 )
 CONTROL_WORDS = {"if", "for", "while", "switch", "return", "sizeof"}
@@ -104,6 +106,8 @@ def analyze_source(source: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
     These checks intentionally report candidates for human confirmation. They do not
     claim MISRA compliance and do not replace compilation or a certified analyzer.
     """
+    original_source = source
+    source = mask_non_code(source)
     summary = summarize_source(source)
     functions = summary["functions"]
     findings: List[Dict[str, Any]] = []
@@ -155,7 +159,12 @@ def analyze_source(source: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
 
     null_assignments: Dict[str, int] = {}
     allocation_lines: Dict[str, int] = {}
+    current_function = None
     for line_no, line in enumerate(lines, start=1):
+        function_name = _function_for_line(functions, line_no)
+        if function_name != current_function:
+            null_assignments.clear()
+            current_function = function_name
         code = re.sub(r"//.*$", "", line)
         null_match = re.search(
             r"(?:\b[A-Za-z_]\w*[\s\*]+)?\b([A-Za-z_]\w*)\s*=\s*(?:NULL|nullptr)\s*;",
@@ -184,6 +193,12 @@ def analyze_source(source: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
             guard = re.search(
                 rf"\bif\s*\([^)]*{re.escape(variable)}[^)]*\)", search_code
             )
+            prior_reassignment = re.search(
+                rf"(?<!\*)\b{re.escape(variable)}\s*=\s*(?!(?:NULL|nullptr)\b)", search_code
+            )
+            if prior_reassignment and (not dereference or prior_reassignment.start() < dereference.start()):
+                null_assignments.pop(variable, None)
+                continue
             if dereference and not guard:
                 findings.append(
                     _finding(
@@ -243,6 +258,15 @@ def analyze_source(source: str) -> Tuple[Dict[str, Any], List[Dict[str, Any]]]:
                     )
                 )
 
+    for candidate in automotive_candidates(original_source, functions):
+        rule_id = candidate.pop("rule_id")
+        item = _finding(**candidate)
+        item["rule_id"] = rule_id
+        item["confidence"] = "Medium"
+        findings.append(item)
+    raw_lines = original_source.splitlines()
+    for item in findings:
+        item["evidence"] = raw_lines[item["line"] - 1].strip()
     findings.sort(
         key=lambda item: (
             {"Critical": 0, "High": 1, "Medium": 2, "Low": 3}.get(item["severity"], 4),

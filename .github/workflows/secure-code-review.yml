@@ -1,8 +1,14 @@
 name: Secure code review
 
 on:
+  push:
+    branches: [master]
   pull_request:
   workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
   repository-review:
@@ -14,10 +20,12 @@ jobs:
           python-version: "3.12"
       - name: Install deterministic review dependencies
         run: pip install -r requirements.txt
+      - name: Run component and adversarial regression tests
+        run: python -m pytest -q
       - name: Review repository and emit SARIF
-        continue-on-error: true
-        run: python tools/ci_review.py . --format sarif --output automotive-review.sarif --fail-on High
+        run: python tools/ci_review.py demo/repository/clean_speed_monitor --format sarif --output automotive-review.sarif --fail-on High
       - name: Upload SARIF
+        if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: automotive-review.sarif

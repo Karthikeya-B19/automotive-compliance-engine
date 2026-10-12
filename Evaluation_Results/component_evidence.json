@@ -1,0 +1,712 @@
+{
+  "generated_at": "2026-10-12T11:06:26.469073+00:00",
+  "summary": {
+    "test_cases": 93,
+    "passed": 93,
+    "failed": 0,
+    "skipped": 0,
+    "cli_gates_passed": true
+  },
+  "test_cases": [
+    {
+      "name": "test_health_endpoint_returns_ok",
+      "module": "tests.test_api",
+      "seconds": "0.017",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_review_endpoint_returns_validated_response",
+      "module": "tests.test_api",
+      "seconds": "0.047",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_review_rejects_unsupported_file_type",
+      "module": "tests.test_api",
+      "seconds": "0.014",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_review_scans_entire_zip_and_persists_result",
+      "module": "tests.test_api",
+      "seconds": "0.025",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_review_rejects_invalid_archive",
+      "module": "tests.test_api",
+      "seconds": "0.009",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_synthetic_evaluation_dataset_matches_expected_patterns",
+      "module": "tests.test_evaluation",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-DIV-ZERO-int f(int rpm) { return rpm / 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-ARRAY-BOUND-int f(void) { int a[4]; a[4] = 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-SHIFT-WIDTH-int f(void) { uint32_t a = 1; return a << 32; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-ASSIGN-COND-int f(int state) { if (state = 2) return 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-FORMAT-void f(char *input) { printf(input); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-USE-AFTER-FREE-void f(void) { char *p=malloc(8); free(p); p[0]=1; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-ISR-HEAP-void CAN_IRQHandler(void) { void *p=malloc(8); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-ISR-BLOCK-void timer_ISR(void) { HAL_Delay(10); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-RECURSION-int f(int a) { return f(a); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-CAN-DLC-void f(void) { struct can_frame frame; frame.can_dlc=12; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-BUSY-WAIT-void f(void) { while (1) {} }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[-AUTO-SHELL-void f(char *cmd) { system(cmd); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-DIV-ZERO-int f(int rpm) { return rpm / 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ARRAY-BOUND-int f(void) { int a[4]; a[4] = 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-SHIFT-WIDTH-int f(void) { uint32_t a = 1; return a << 32; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ASSIGN-COND-int f(int state) { if (state = 2) return 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-FORMAT-void f(char *input) { printf(input); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-USE-AFTER-FREE-void f(void) { char *p=malloc(8); free(p); p[0]=1; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ISR-HEAP-void CAN_IRQHandler(void) { void *p=malloc(8); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ISR-BLOCK-void timer_ISR(void) { HAL_Delay(10); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-RECURSION-int f(int a) { return f(a); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-CAN-DLC-void f(void) { struct can_frame frame; frame.can_dlc=12; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-BUSY-WAIT-void f(void) { while (1) {} }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-SHELL-void f(char *cmd) { system(cmd); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-DIV-ZERO-int f(int rpm) { return rpm / 2; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-ARRAY-BOUND-int f(void) { int a[4]; a[3] = 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-SHIFT-WIDTH-int f(void) { uint32_t a = 1; return a << 31; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-ASSIGN-COND-int f(int state) { if (state == 2) return 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-FORMAT-void f(char *input) { printf(\"%s\", input); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); p=malloc(8); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-USE-AFTER-FREE-void f(void) { char *p=malloc(8); p[0]=1; free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-ISR-HEAP-void background(void) { void *p=malloc(8); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-ISR-BLOCK-void background(void) { HAL_Delay(10); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-RECURSION-int f(int a) { return a; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-CAN-DLC-void f(void) { struct can_frame frame; frame.can_dlc=8; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-BUSY-WAIT-void f(void) { while (ready) { ready=0; } }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corrected_counterexample[AUTO-SHELL-void f(char *cmd) { validate(cmd); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_comments_strings_and_pointer_scope_do_not_create_candidates[// strcpy(a,b);\\nint f(void){return 0;}]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_comments_strings_and_pointer_scope_do_not_create_candidates[/* gets(p);\\nstrcat(x,y); */\\nint f(void){return 0;}]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_comments_strings_and_pointer_scope_do_not_create_candidates[void f(void) { const char *s=\"strcpy(x,y); while(1){}\"; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_comments_strings_and_pointer_scope_do_not_create_candidates[void first(void) { int *p=NULL; }\\nvoid second(int *p) { *p=1; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_comments_strings_and_pointer_scope_do_not_create_candidates[void f(void) { int *p=NULL; p=get_pointer(); *p=1; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-DIV-ZERO-int f(int rpm) { return rpm / 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.002",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-ARRAY-BOUND-int f(void) { int a[4]; a[4] = 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-SHIFT-WIDTH-int f(void) { uint32_t a = 1; return a << 32; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-ASSIGN-COND-int f(int state) { if (state = 2) return 1; return 0; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-FORMAT-void f(char *input) { printf(input); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-USE-AFTER-FREE-void f(void) { char *p=malloc(8); free(p); p[0]=1; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-ISR-HEAP-void CAN_IRQHandler(void) { void *p=malloc(8); free(p); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-ISR-BLOCK-void timer_ISR(void) { HAL_Delay(10); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-RECURSION-int f(int a) { return f(a); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.002",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-CAN-DLC-void f(void) { struct can_frame frame; frame.can_dlc=12; }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-BUSY-WAIT-void f(void) { while (1) {} }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-SHELL-void f(char *cmd) { system(cmd); }]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_missing_corpus_rule_abstains",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[AUTO-DIV-ZERO-evidence0-True]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[MISRA 999.9-evidence1-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[AUTO-DIV-ZERO-evidence2-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[AUTO-DIV-ZERO-evidence3-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[AUTO-DIV-ZERO-evidence4-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[-evidence5-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_model_citation_gate[AUTO-NULL-evidence6-False]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_hostile_archive_paths[../bad.c]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_hostile_archive_paths[/bad.c]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_hostile_archive_paths[C:/bad.c]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_hostile_archive_paths[repo/../../bad.c]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_hostile_archive_paths[repo\\\\..\\\\bad.c]",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_cached_retrieval_cannot_be_mutated_by_caller",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.002",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_rule_corpus_has_unique_explicit_synthetic_authority",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_real_fallback_preserves_retrieval_evidence",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_api_preserves_real_grounding_trace",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.024",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_corpus_removal_changes_guidance_but_not_detector",
+      "module": "tests.test_expanded_scenarios",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_sarif_is_structurally_parsed",
+      "module": "tests.test_guideline_alignment",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_path_permission_is_enforced",
+      "module": "tests.test_guideline_alignment",
+      "seconds": "0.000",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_performance_observation_reports_dynamic_allocation",
+      "module": "tests.test_guideline_alignment",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_api_authenticates_and_checks_repository_permission",
+      "module": "tests.test_guideline_alignment",
+      "seconds": "0.022",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_zip_maps_modules_dependencies_and_findings",
+      "module": "tests.test_repository_analyzer",
+      "seconds": "0.010",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_zip_rejects_path_traversal",
+      "module": "tests.test_repository_analyzer",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_repository_zip_rejects_symbolic_links",
+      "module": "tests.test_repository_analyzer",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_analyzer_reports_location_and_function_for_high_value_defects",
+      "module": "tests.test_static_analyzer",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_analyzer_does_not_claim_compliance_when_no_pattern_matches",
+      "module": "tests.test_static_analyzer",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_workspace_renders_all_review_areas",
+      "module": "tests.test_ui",
+      "seconds": "4.917",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_review_renders_findings_and_retrieval_proof",
+      "module": "tests.test_ui",
+      "seconds": "4.185",
+      "passed": true,
+      "skipped": false
+    },
+    {
+      "name": "test_theme_text_pairs_meet_wcag_aa_normal_text",
+      "module": "tests.test_ui",
+      "seconds": "0.001",
+      "passed": true,
+      "skipped": false
+    }
+  ],
+  "cli_checks": [
+    {
+      "sample": "automotive_ecu_demo",
+      "expected_exit": 1,
+      "actual_exit": 1,
+      "result_count": 4,
+      "passed": true
+    },
+    {
+      "sample": "clean_speed_monitor",
+      "expected_exit": 0,
+      "actual_exit": 0,
+      "result_count": 0,
+      "passed": true
+    }
+  ],
+  "compiler_cross_check": {
+    "compiler": "C:\\MinGW\\bin\\gcc.EXE",
+    "status": "executed",
+    "exit_code": 0,
+    "diagnostic": "<stdin>: In function 'rpm_rate':\n<stdin>:1:34: warning: division by zero [-Wdiv-by-zero]\n",
+    "division_warning": true,
+    "scope": "Isolated synthetic host snippet, not a build of ECU firmware"
+  },
+  "implementation_sha256": {
+    "src/analysis/automotive_checks.py": "cf117252114ccacecd2cb21a4d49cc49131cea205e132c15a39554695f4f5b41",
+    "src/analysis/evidence_parser.py": "7d2b216370065dd639422c6a0321c120e394f68cb099835f8c5ead2f175a34a9",
+    "src/analysis/lexical.py": "142a4b49d16ab29c39a3382be2989657c6d89dfa94a63cbe0b562afb0a69ecee",
+    "src/analysis/repository_analyzer.py": "ab81fadbead7b205595cc0e834d3cccd9fd384c8c1b391d9f43556d925cb1933",
+    "src/analysis/static_analyzer.py": "b468c51ad9dd3c93203869142284dfca41ac6514c359fdb10fb0b33db237ebbb",
+    "src/analysis/__init__.py": "9cf9a6b98a2f87778b70815735c6e8281a99e050b02aae6cfec94f65d890a622",
+    "src/api/main.py": "0bc26eadddfd0f6341b475fd35d7afa33bd0eeccf8501bf85fab9fe4647d1be0",
+    "src/api/__init__.py": "1a48c47a0aa6c3995374deb239c17587a3213dd7f6d69010466d6036c0a68590",
+    "src/ingestion/ingest.py": "25685394f0fb81ec75d84cee5211ce09f2c088087e9c1c9a90b1f3d9e55c3172",
+    "src/ingestion/__init__.py": "7229a65e0a30b5c78076c3cdddc10b242f72b9ec119377d966671c371555f7e1",
+    "src/rag/automotive_retrieval.py": "26d2e6d3ab843aaf82c5b334b74ec121788287d5e9dacbc92f8b25d228458f2b",
+    "src/rag/orchestrator.py": "a3fd2e5f598ff01c621372cb1ef3ee69421897d973099194c2cc28ee91aac74e",
+    "src/rag/__init__.py": "8d7733a821e1e1332020a69e99e09c03ad0c8fc70986b8756f70a22806f11d4b",
+    "src/storage/review_store.py": "8c1352287b3e430fe14308cd5e903c8fbbea7e71deaf6e8b6d7f89409bebcd78",
+    "src/storage/__init__.py": "0f0ad7d29b11f5554189f08232dd67a964ad02acce20ec7116576465ab6b3b1b",
+    "src/ui/app.py": "3fdfbd3e90fd4521d19f16f9bc30d1d4b49e9cfa43bcd41e289fd4ab3c1ee431",
+    "src/ui/__init__.py": "3a8f1cbdf0e9064b7a25778406d445fd5d1a41bc6b1fff2486fb09c2da85bbfe"
+  },
+  "evidence_scope": [
+    "Component tests and API integration",
+    "Actual CLI SARIF and severity exit codes",
+    "Independent compiler warning",
+    "Live LLM and public corpus results are separate evidence files"
+  ]
+}

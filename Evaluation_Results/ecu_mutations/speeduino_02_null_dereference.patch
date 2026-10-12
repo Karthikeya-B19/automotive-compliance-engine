@@ -1,0 +1,11 @@
+--- baseline/speeduino/acc_mc33810.cpp
++++ mutant/speeduino/acc_mc33810.cpp
+@@ -18,6 +18,8 @@
+ 
+     void init(uint8_t pinNumber)
+     {
++    int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;
++
+         pin.setPin(pinNumber, OUTPUT);
+ 
+         //Set the output states to be off to fuel and ignition

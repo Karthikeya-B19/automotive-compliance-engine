@@ -1,73 +1,39 @@
-# Automotive Secure Code Review Assistant
+# ECU Review Studio User Guide
 
-## What it does
+Version 2.0. The app inspects C/C++ code, maps source modules and include dependencies, reports deterministic candidates, retrieves advisory rule cards, and records human review decisions.
 
-This application reviews an uploaded ZIP of a C or C++ repository without extracting or executing its contents. It validates the archive, scans supported source and header files, summarizes modules and functions, maps local quoted-header dependencies, identifies selected pointer, boundary, resource, and control-flow risks, and presents path-specific evidence and recommendations.
+## Starting the app
 
-It can also use a locally hosted language model and a local index of approved engineering guidance to explain findings. If those services are unavailable, it clearly labels the result as a deterministic fallback. Review results can be downloaded as JSON, and a human reviewer can record an Accepted, Rejected, or Needs changes decision. Source-code bodies are not stored in the review database.
+Install `requirements.txt` into a virtual environment and run `python run.py`. Open the Dashboard URL printed in the terminal. The launcher selects free ports and supplies matching API credentials to the interface. Keep the terminal running.
 
-This is an educational review assistant. It does not compile code, prove MISRA compliance, certify safety, or replace approved analyzers, testing, and qualified review.
+Optional RAG dependencies are a locally cached `all-MiniLM-L6-v2` model and a running Ollama service with `llama3.1`. No review-time model download occurs. A missing model is shown through the actual retrieval strategy or fallback mode.
 
-## How to use it
+## Repository reviews
 
-### Install
+Select **Repository ZIP review** and choose `uploaded-repository` for your own authorized upload. The named demonstration IDs apply narrower source-prefix permissions. Upload a ZIP containing UTF-8 `.c`, `.cc`, `.cpp`, `.cxx`, `.h` or `.hpp` files. Arduino `.ino` files are outside the present scope.
 
-Use Python 3.11 or newer. From the project directory:
+Optionally add warnings and text or SARIF build evidence. Enable local grounding to retrieve guidance for all detected candidates and request an LLM explanation for the highest-risk module. Click **Analyze repository**.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
+Inspect the module map and dependencies. Use severity, category and text filters to narrow candidates. Results display 20 candidates per page. Each candidate shows its source location, evidence and recommendation. A retrieved rule expander shows the advisory excerpt, assumptions and hash.
 
-Optional grounded explanations require a local Ollama installation and the configured model:
+Open **Retrieval evidence** to inspect queries, top-five candidates, lexical/dense scores and fusion scores. `supported-candidate` means the guidance applies to that candidate. `abstain` means the corpus did not supply a matching retrieved rule. Neither confirms a defect without review.
 
-```powershell
-ollama pull llama3.1
-python create_dummy_data.py
-python src/ingestion/ingest.py
-```
+Download the structured JSON for full findings and traces. Record your decision, reviewer name and rationale after confirming the result.
 
-The included guidance PDF is synthetic demonstration material, not the official MISRA standard.
+## Single file and history
 
-### Start
+**Single-file review** accepts pasted source or an uploaded supported source file, warnings and related modules. Click **Run secure review**. **Review history & metrics** displays saved reviews and their human dispositions.
 
-```powershell
-python run.py
-```
+## Manual examples
 
-Open `http://localhost:8501`. API documentation is available at `http://localhost:8000/docs`.
+The ZIPs in `demo/` provide faulty, cleaner and mixed source trees. The files in `Evaluation_Results/ecu_mutations/` contain actual Speeduino and rusEFI source with corresponding baseline and deliberately mutated versions. Upload a baseline and its matching mutant to compare the injected line. These are static-analysis examples, never deployable vehicle firmware.
 
-### Readable display
+## Verification lab
 
-The dashboard uses a high-contrast light theme. Text, inputs, placeholders, tabs, metrics, alerts, tables, expanders, and buttons have explicit readable foreground and background colors. If an earlier color remains visible after an update, stop the app, run `python run.py` again, and hard-refresh the browser with `Ctrl+Shift+R`.
+The Verification lab reads saved evidence from `Evaluation_Results/`. Expand and download the public repository records, retrieval comparison, actual local LLM outputs, ECU mutation study and component checks. Results are dated artifacts, not a claim that the benchmark reruns every time the page opens.
 
-### Review a repository
+## Interpreting modes
 
-1. Open **Repository ZIP review**.
-2. Enter the authorized repository ID. For the included samples use `automotive-ecu-demo`, `clean-speed-monitor`, or `mixed-sensor-network`.
-3. Upload a ZIP containing C/C++ files such as `.c`, `.cc`, `.cpp`, `.cxx`, `.h`, or `.hpp`.
-4. Optionally paste compiler warnings and upload build, runtime, JSON, XML, or SARIF evidence. SARIF files are structurally parsed.
-5. Leave local grounding enabled when Ollama and the local index are ready; otherwise disable it or allow the labeled fallback.
-6. Select **Analyze repository**.
-7. Inspect authorization status, repository summary, module table, dependency map, performance observations, skipped-file reasons, limitations, and findings.
-8. Download the JSON report.
-9. Record a human disposition with reviewer name and validation notes. Accepted findings can be reused as bounded historical context.
+`rag-assisted` means a local model generated a structured answer. Inspect `citation_validation` to see whether its citation passed. `retrieval-grounded-template` means retrieval succeeded but the LLM was unavailable. `deterministic-only` means no applicable model context was available. Repository modes carry a `repository-` prefix.
 
-For a single source file, use the **Single-file review** tab instead.
-
-### Try the included samples
-
-- `demo/CB.AI.U4AID23109_AutomotiveECURepository_v1.0.zip`: four intentional findings and an ignored vendor file.
-- `demo/CB.AI.U4AID23109_CleanSpeedMonitor_v1.0.zip`: a small repository expected to produce no deterministic findings.
-- `demo/CB.AI.U4AID23109_MixedSensorNetwork_v1.0.zip`: multiple modules, dependency edges, one intentional boundary finding, and an ignored generated file.
-
-### Run verification
-
-```powershell
-python -m pytest -q
-python evaluation/run_evaluation.py
-python evaluation/run_repository_evaluation.py
-```
-
-All AI output is advisory. Confirm findings by compiling the project, running tests, using approved static-analysis tools, and obtaining qualified human review.
+The active 20 rule cards are synthetic advisory guidance. Confidence is not a calibrated probability. The analyser uses heuristics and does not prove MISRA compliance, timing correctness, alias safety or absence of defects.

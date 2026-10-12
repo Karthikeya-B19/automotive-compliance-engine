@@ -1,0 +1,11 @@
+--- baseline/firmware/controllers/actuators/gppwm/gppwm.cpp
++++ mutant/firmware/controllers/actuators/gppwm/gppwm.cpp
+@@ -38,6 +38,8 @@
+ 
+ 
+ void initGpPwm() {
++    int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;
++
+ 	for (size_t i = 0; i < efi::size(channels); i++) {
+ 		auto& cfg = engineConfiguration->gppwm[i];
+ 

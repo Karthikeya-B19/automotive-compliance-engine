@@ -36,7 +36,7 @@ def as_sarif(result: dict) -> dict:
     rules = {}
     sarif_results = []
     for finding in findings:
-        rule_id = finding.get("cwe") or finding["category"].replace(" ", "-").lower()
+        rule_id = finding.get("rule_id") or finding["title"].lower().replace(" ", "-")
         rules[rule_id] = {
             "id": rule_id,
             "name": finding["title"],
@@ -90,6 +90,8 @@ def main() -> int:
     else:
         print(text)
     threshold = SEVERITY[args.fail_on]
+    if args.fail_on == 'None':
+        return 0
     return 1 if any(SEVERITY.get(item["severity"], 0) >= threshold for item in result["findings"]) else 0
 
 

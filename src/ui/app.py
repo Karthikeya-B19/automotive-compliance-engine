@@ -4,6 +4,7 @@ import base64
 import html
 import json
 import os
+from pathlib import Path
 from typing import Any, Dict, Optional
 
 import pandas as pd
@@ -25,14 +26,27 @@ st.markdown(
     """
     <style>
     :root {
-      --navy:#102433; --ink:#182b36; --muted:#4c5f68; --line:#cbd7db;
-      --paper:#f7faf9; --surface:#ffffff; --surface-muted:#e8f0f2;
-      --accent:#a94e26; --accent-hover:#853d1e; --on-dark:#f7fbfb;
+      --navy:#102b32; --ink:#182e35; --muted:#52676e; --line:#d6e2e4;
+      --paper:#f4f7f8; --surface:#ffffff; --surface-muted:#e9f1f2;
+      --accent:#087f75; --accent-hover:#075e58; --on-dark:#f7fbfb;
     }
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
       background:var(--paper) !important; color:var(--ink) !important;
     }
-    .block-container { max-width:1500px; padding:2rem 3rem 4rem; }
+    .block-container { max-width:1480px; padding:2.25rem 3rem 4rem; }
+    [data-testid="stSidebar"] { background:#eaf0f2; border-right:1px solid var(--line); }
+    [data-testid="stSidebar"] h2 { font-size:1.3rem; letter-spacing:-.04em; }
+    h1,h2,h3 { letter-spacing:-.035em; }
+    [data-baseweb="tab-list"] { gap:2rem; margin-bottom:1.2rem; }
+    button[data-baseweb="tab"] { font-size:.92rem; padding-bottom:1rem; }
+    [data-testid="stFileUploader"] { border:1px solid var(--line); border-radius:12px; padding:.7rem; background:white; }
+    [data-testid="stMetric"] { border-radius:12px; box-shadow:0 4px 16px #102b3205; }
+    [data-testid="stExpander"] details { border-radius:12px; }
+    button { border-radius:8px !important; }
+    .eyebrow { color:#93e0d5 !important; font-size:.7rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; }
+    .hero-meta { color:#a9c5cb !important; font-size:.8rem; padding-top:1rem; }
+    .empty-state { background:white; border:1px solid var(--line); border-radius:16px; padding:2rem; margin-top:1rem; }
+    .empty-state h3 { margin:.3rem 0 1rem; font-size:1.35rem; }
     [data-testid="stHeader"] { background:transparent; }
     h1,h2,h3,[data-testid="stMarkdownContainer"],[data-testid="stMarkdownContainer"] p,
     [data-testid="stMarkdownContainer"] li,label { color:#1f2937 !important; }
@@ -71,18 +85,21 @@ st.markdown(
     }
     button[kind="secondary"] { background:var(--surface) !important; color:var(--ink) !important; border-color:#9fb1b7 !important; }
     button[kind="secondary"] * { color:var(--ink) !important; }
-    .hero { background:var(--navy); border-left:8px solid var(--accent); color:#f5f8f7;
-            padding:1.5rem 2rem; margin-bottom:1.2rem; }
-    .hero h1 { margin:0; font-size:2rem; color:#f5f8f7 !important; }
+    .hero { background:linear-gradient(110deg,#102b32,#164b50); border:1px solid #246067; color:#f5f8f7;
+            border-radius:18px; padding:2rem 2.4rem; margin-bottom:1.2rem; }
+    .hero h1 { margin:.5rem 0; font-size:2.65rem; font-weight:650; color:#f5f8f7 !important; }
     .hero p { color:#c7d5d8 !important; margin:.45rem 0 0; }
     .badge { display:inline-block; padding:.2rem .55rem; margin-right:.35rem; border-radius:3px;
              background:#e8f0f2; color:#18364a; font-size:.78rem; font-weight:700; }
-    .section-label { color:#a94e26; font-size:.75rem; font-weight:700; letter-spacing:.08em;
+    .section-label { color:#087f75; font-size:.75rem; font-weight:700; letter-spacing:.08em;
                      text-transform:uppercase; margin:.25rem 0 .5rem; }
     .rule-reference { background:#e8f0f2; border-left:4px solid var(--accent); color:#1f2937;
                       padding:.9rem 1rem; overflow-wrap:anywhere; }
-    .finding { background:white; border:1px solid var(--line); border-left:5px solid var(--accent);
-               padding:1rem 1.1rem; margin:.6rem 0; }
+    .finding { background:white; border:1px solid var(--line); border-left:4px solid var(--accent);
+               border-radius:10px; padding:1.2rem 1.4rem; margin:.75rem 0; }
+    .finding.critical, .finding.high { border-left-color:#b83645; }
+    .finding.medium { border-left-color:#b36b19; }
+    .finding code { color:#203840; background:#edf3f4; overflow-wrap:anywhere; }
     ::selection { background:#f3c7b3; color:var(--navy); }
     </style>
     """,
@@ -261,6 +278,17 @@ def render_review(result: Dict[str, Any]) -> None:
     st.subheader("Structured findings")
     if not findings:
         st.success("No deterministic preflight candidates were detected. This is not proof of compliance.")
+    if findings:
+        filter_cols = st.columns([1, 1, 2])
+        selected_severity = filter_cols[0].multiselect('Severity', ['Critical', 'High', 'Medium', 'Low'], key=f"severity_{result.get('review_id')}")
+        selected_categories = filter_cols[1].multiselect('Category', sorted({f.get('category', 'General') for f in findings}), key=f"category_{result.get('review_id')}")
+        search = filter_cols[2].text_input('Find in results', placeholder='File, rule, evidence or title', key=f"search_{result.get('review_id')}")
+        findings = [f for f in findings if (not selected_severity or f.get('severity') in selected_severity)
+                    and (not selected_categories or f.get('category') in selected_categories)
+                    and (not search or search.casefold() in json.dumps(f).casefold())]
+        st.caption(f'{len(findings):,} matching candidates. Full evidence is available in the JSON download.')
+        page = st.number_input('Results page', min_value=1, max_value=max(1, (len(findings)+19)//20), value=1, key=f"page_{result.get('review_id')}")
+        findings = findings[(page-1)*20:page*20]
     for finding in findings:
         title = html.escape(str(finding.get("title", "Finding")))
         severity = html.escape(str(finding.get("severity", "Unknown")))
@@ -272,7 +300,7 @@ def render_review(result: Dict[str, Any]) -> None:
         cwe = html.escape(str(finding.get("cwe") or "No CWE mapping"))
         st.markdown(
             f"""
-            <div class="finding">
+            <div class="finding {severity.lower()}">
               <span class="badge">{severity}</span><span class="badge">{category}</span><span class="badge">{cwe}</span>
               <h4>{title}</h4>
               <p><strong>Location:</strong> {html.escape(location)} · {html.escape(str(function))}</p>
@@ -282,6 +310,28 @@ def render_review(result: Dict[str, Any]) -> None:
             """,
             unsafe_allow_html=True,
         )
+        grounding = finding.get('grounding') or {}
+        if grounding.get('rule_id'):
+            with st.expander(f"Retrieved guidance: {grounding['rule_id']}"):
+                st.write(grounding['excerpt'])
+                st.caption(grounding['authority'])
+                for assumption in grounding.get('assumptions', []): st.write(f'Assumption: {assumption}')
+                st.code(grounding['content_sha256'], language=None)
+
+    retrieval = result.get('retrieval_trace') or {}
+    if retrieval:
+        st.subheader('Retrieval evidence')
+        proof_cols = st.columns(3)
+        proof_cols[0].metric('Advisory rules indexed', retrieval.get('corpus_rule_count', 0))
+        proof_cols[1].metric('Supported candidates', retrieval.get('supported_count', 0))
+        proof_cols[2].metric('Abstained candidates', retrieval.get('abstained_count', 0))
+        st.caption('Support means the retrieved guidance applies to a candidate. Human review still determines whether the code has a real defect.')
+        with st.expander('Inspect queries, scores and citation decisions'):
+            for trace in retrieval.get('per_finding', [])[:50]:
+                st.write(f"{trace['expected_rule_id'] or 'Unknown rule'}: {trace['decision']} ({trace['strategy']})")
+                st.caption(trace['query'])
+                st.dataframe(pd.DataFrame([{'Rule': c['rule_id'], 'Lexical': c['lexical_score'], 'Dense': c['dense_score'], 'RRF': c['fusion_score']} for c in trace['candidates']]), hide_index=True, use_container_width=True)
+            if result.get('citation_validation'): st.json(result['citation_validation'])
 
     left, right = st.columns(2)
     with left:
@@ -334,8 +384,10 @@ def render_review(result: Dict[str, Any]) -> None:
 st.markdown(
     """
     <div class="hero">
-      <h1>Automotive Secure Code Review</h1>
-      <p>Local-first C/C++ preflight analysis, evidence-grounded guidance, and human approval workflow.</p>
+      <div class="eyebrow">Automotive engineering / Review workspace</div>
+      <h1>Confidence starts with evidence.</h1>
+      <p>Inspect embedded C/C++ repositories. Trace every candidate to its source and advisory guidance.</p>
+      <div class="hero-meta">LOCAL PROCESSING &nbsp; / &nbsp; TRACEABLE RETRIEVAL &nbsp; / &nbsp; HUMAN REVIEW</div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -345,17 +397,32 @@ st.caption(
     "validate every result with compilation, tests, certified tools, and a qualified reviewer."
 )
 
-repository_tab, review_tab, history_tab = st.tabs(
-    ["Repository ZIP review", "Single-file review", "Review history & metrics"]
+with st.sidebar:
+    st.markdown('## ECU Review Studio')
+    st.caption('Digital Track / Case Study 04')
+    st.divider()
+    st.markdown('**Review scope**')
+    st.write('C / C++ source')
+    st.write('Classical CAN and embedded heuristics')
+    st.write('20 synthetic advisory rules')
+    st.divider()
+    st.markdown('**Evidence matters**')
+    st.caption('Every supported finding exposes its retrieved excerpt, rule identity, assumptions and content hash.')
+    st.caption('Open Verification lab to inspect measured benchmark and RAG results.')
+    st.divider()
+    st.caption('Karthikeya Bellapukonda\n\nAmrita Vishwa Vidyapeetham')
+
+repository_tab, review_tab, history_tab, proof_tab = st.tabs(
+    ["Repository ZIP review", "Single-file review", "Review history & metrics", "Verification lab"]
 )
 
 with repository_tab:
     st.markdown('<div class="section-label">Repository input</div>', unsafe_allow_html=True)
     repo_left, repo_right = st.columns([1, 1])
     with repo_left:
-        repository_id = st.text_input(
+        repository_id = st.selectbox(
             "Authorized repository ID",
-            value="automotive-ecu-demo",
+            options=['uploaded-repository', 'automotive-ecu-demo', 'clean-speed-monitor', 'mixed-sensor-network'],
             help="This ID is checked against the optional repository permission policy.",
         )
         repository_archive = st.file_uploader(
@@ -395,6 +462,7 @@ with repository_tab:
             key="run_repository_review",
         )
     with repo_right:
+        st.markdown('<div class="empty-state"><div class="section-label">Repository intelligence</div><h3>A clear view of your codebase</h3><p>Module inventory, include dependencies, severity-ranked candidates and inspectable retrieval evidence in one review.</p></div>', unsafe_allow_html=True)
         st.markdown('<div class="section-label">Safe archive boundary</div>', unsafe_allow_html=True)
         st.markdown(
             "The service reads the ZIP in memory and never executes repository content. "
@@ -520,3 +588,33 @@ with history_tab:
             st.dataframe(pd.DataFrame(history), use_container_width=True, hide_index=True)
         else:
             st.info("No reviews have been recorded yet.")
+
+with proof_tab:
+    st.subheader('Measured verification, with inspectable evidence')
+    st.write('These results come from saved local runs. Download the underlying records to inspect source hashes, test cases, misses and limitations.')
+    root = Path(__file__).resolve().parents[2] / 'Evaluation_Results'
+    if not root.exists() and (root.parent.parent / 'Evaluation_Results').exists():
+        root = root.parent.parent / 'Evaluation_Results'
+    benchmark = root / 'public_benchmark' / 'summary.json'
+    if benchmark.exists():
+        report = json.loads(benchmark.read_text(encoding='utf-8'))
+        cols = st.columns(4)
+        for col,label,key in zip(cols,['Public repositories','Source files','Source lines','Scan failures'],['distinct_repositories','files','lines','failed']):
+            col.metric(label, f"{report.get(key, 0):,}")
+        st.caption('Public convenience sample. Candidates in unlabelled code do not establish detection accuracy.')
+    evidence_files = {
+        'Public benchmark summary': 'public_benchmark/summary.json',
+        'Public repository records': 'public_benchmark/results.json',
+        'Retrieval comparison and abstention controls': 'rag_evidence/retrieval_results.json',
+        'Actual local LLM review traces': 'rag_evidence/live_generation.json',
+        'Real ECU mutation study': 'ecu_mutations/results.json',
+        'Component verification matrix': 'component_evidence.json',
+    }
+    for label,relative in evidence_files.items():
+        path = root / relative
+        with st.expander(label):
+            if path.exists():
+                data = json.loads(path.read_text(encoding='utf-8'))
+                st.json(data.get('summary', data) if isinstance(data, dict) else {'record_count': len(data)})
+                st.download_button('Download evidence JSON', path.read_bytes(), file_name=path.name, mime='application/json', key='evidence_'+relative)
+            else: st.info('Evidence has not been generated in this installation yet.')

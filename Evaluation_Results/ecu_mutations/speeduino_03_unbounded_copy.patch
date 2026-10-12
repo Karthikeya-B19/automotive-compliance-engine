@@ -1,0 +1,11 @@
+--- baseline/speeduino/board_avr2560.cpp
++++ mutant/speeduino/board_avr2560.cpp
+@@ -142,6 +142,8 @@
+ 
+ void initBoard(uint32_t baudRate)
+ {
++    char ecu_proof_name[4]; strcpy(ecu_proof_name, "diagnostic request too long");
++
+     /*
+     ***********************************************************************************************************
+     * General

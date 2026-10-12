@@ -24,6 +24,7 @@ from src.analysis.repository_analyzer import RepositoryArchiveError, analyze_rep
 from src.analysis.evidence_parser import diagnostics_as_lines, parse_sarif
 from src.rag.orchestrator import review_code
 from src.storage.review_store import ReviewStore
+from src.rag.automotive_retrieval import ground_findings
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -114,6 +115,8 @@ class CodeReviewResponse(BaseModel):
     limitations: List[str] = Field(default_factory=list)
     retrieved_context: Optional[List[Dict[str, Any]]] = Field(default=None)
     parsed_evidence: Dict[str, Any] = Field(default_factory=dict)
+    retrieval_trace: Dict[str, Any] = Field(default_factory=dict)
+    citation_validation: Dict[str, Any] = Field(default_factory=dict)
 
 
 class RepositoryReviewRequest(BaseModel):
@@ -167,6 +170,9 @@ class RepositoryReviewResponse(BaseModel):
     parsed_evidence: Dict[str, Any] = Field(default_factory=dict)
     performance_observations: List[Dict[str, Any]] = Field(default_factory=list)
     authorization: Dict[str, Any] = Field(default_factory=dict)
+    retrieved_context: List[Dict[str, Any]] = Field(default_factory=list)
+    retrieval_trace: Dict[str, Any] = Field(default_factory=dict)
+    citation_validation: Dict[str, Any] = Field(default_factory=dict)
 
 
 class ReviewDispositionRequest(BaseModel):
@@ -398,6 +404,8 @@ async def review_endpoint(request: Request, payload: CodeReviewRequest) -> CodeR
         findings=findings.get("findings", []),
         limitations=findings.get("limitations", []),
         retrieved_context=findings.get("retrieved_context"),
+        retrieval_trace=findings.get("retrieval_trace", {}),
+        citation_validation=findings.get("citation_validation", {}),
         parsed_evidence=parsed_evidence,
     )
 
@@ -465,6 +473,9 @@ async def repository_review_endpoint(
         "review_mode": "deterministic-only",
     }
     if payload.use_rag:
+        findings, repository_trace = await run_in_threadpool(
+            partial(ground_findings, findings=findings, dense=os.getenv('REVIEW_DENSE_RETRIEVAL', 'true').lower() == 'true')
+        )
         related_files = [
             {"file_name": path, "content": content[:10000]}
             for path, content in sorted(source_files.items())
@@ -531,6 +542,9 @@ async def repository_review_endpoint(
             "allowed_path_prefixes": authorized_paths or ["*"],
             "permission_verified": bool(os.getenv("REVIEW_REPOSITORY_PERMISSIONS", "").strip()),
         },
+        retrieved_context=list(grounding.get('retrieved_context') or []),
+        retrieval_trace=repository_trace if payload.use_rag else {},
+        citation_validation=grounding.get('citation_validation', {}),
     )
 
     await run_in_threadpool(

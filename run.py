@@ -124,6 +124,7 @@ def main() -> None:
             {
                 "local-reviewer": {
                     "repositories": {
+                        "uploaded-repository": ["*"],
                         "automotive-ecu-demo": ["automotive_ecu_demo/"],
                         "clean-speed-monitor": ["clean_speed_monitor/"],
                         "mixed-sensor-network": ["mixed_sensor_network/"],

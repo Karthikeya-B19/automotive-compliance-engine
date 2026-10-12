@@ -1,0 +1,5 @@
+*.pdf binary
+*.pptx binary
+*.zip binary
+# Preserve upstream context in mutation evidence without newline conversion.
+*.patch -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab

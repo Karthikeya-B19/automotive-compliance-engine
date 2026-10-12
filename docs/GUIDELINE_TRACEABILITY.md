@@ -1,33 +1,23 @@
-# Case Study 4 Guideline Traceability
+# Version 2 Guideline Traceability
 
-This matrix distinguishes implemented pilot functionality from controls that require an organization’s production infrastructure. No roadmap item is represented as already deployed.
+Individual capstone: Karthikeya Bellapukonda, CB.AI.U4AID23109, Amrita Vishwa Vidyapeetham, Case Study 4.
 
-Public implementation repository: `https://github.com/Karthikeya-B19/automotive-compliance-engine`
+| Requirement or requested improvement | Implementation | Inspectable proof |
+| --- | --- | --- |
+| Repository-based review | Safe ZIP inspection, module/include map, per-file findings | Repository/API tests and public benchmark |
+| Local review and structured output | FastAPI, local heuristics, Ollama, JSON contracts | API integration and actual live-generation JSON |
+| Code/build evidence | Compiler text and structurally parsed SARIF | SARIF tests and independent GCC warning |
+| Access controls | API key and repository-prefix permissions | Positive and negative authentication/authorization tests |
+| Human review and history | SQLite responses, disposition and metrics | Persistence/API tests |
+| Automotive review conditions | 20 rule families with explicit assumptions | Positive and corrected counterexample tests |
+| RAG applicability | BM25/dense RRF, typed rule matching, abstention | Query ranking and corpus intervention results |
+| Citation validity | Exact applicable rule ID and extractive evidence | Forged/empty/unrelated citation rejection tests |
+| Many source scenarios | 100 actual public repository snapshots | Catalog, archive/file hashes, exclusions and scan results |
+| Real ECU injected defects | 40 mutations in 10 Speeduino/rusEFI files | Patches, baseline/mutant hashes and injected-line matches |
+| Inspectable user interface | Filters, pagination, trace expanders and Verification lab | Streamlit AppTest and declared contrast checks |
+| Final folder organization | Eight prescribed directories under individual root | Submission manifest and ZIP verification |
+| Presentation and preparation | Revised evidence deck and detailed v2 report | Documentation artifacts |
 
-| Guideline item | Submitted implementation | Verification evidence |
-|---|---|---|
-| Local/private AI | Ollama, local-only SentenceTransformer loading and local ChromaDB | Deterministic fallback test and runtime configuration |
-| Repository-aware retrieval | Safe all-file ZIP scan, module inventory, repository tree and include graph | Repository acceptance evaluation |
-| Authentication | `run.py` creates a random per-run API key and authenticated local identity | API rejects missing/invalid key in secure mode |
-| Repository permission | Repository ID mapped to authorized path prefixes | Permission test rejects source outside allowlist |
-| Compiler/log analysis | Warning and bounded evidence inputs | API tests |
-| Static-analysis reports | Structured SARIF 2.1 result extraction with rule, level, message and location | SARIF parser test |
-| Defect/root-cause assistance | Deterministic candidates plus optional grounded explanation | Five-case evaluation |
-| MISRA-oriented assistance | Approved local PDF retrieval and fail-closed rule-reference validation | Prompt guardrails and fallback behavior |
-| Security review | Pointer, boundary, resource and control-flow checks with CWE where applicable | Analyzer tests |
-| Performance investigation | Complexity estimates, branch/loop totals and dynamic-allocation observations | Performance-observation test |
-| Structured findings | File, function, line, evidence, severity, confidence, recommendation and status | API schema and JSON exports |
-| Historical approved findings | Findings from Accepted reviews retrieved as bounded context | ReviewStore `approved_findings` |
-| Human approval | Accepted, Rejected and Needs changes disposition with reviewer/notes/events | Workflow test |
-| Workflow integration | SQLite record plus CI JSON/SARIF export | Metrics, history and `tools/ci_review.py` |
-| CI/CD | Severity-gated CLI and example GitHub Actions SARIF workflow | Local CI command and workflow file |
-| Review interface accessibility | Explicit high-contrast light theme for application surfaces, text, inputs, tabs, metrics, alerts, tables and buttons | Theme configuration plus UI style rules; contrast ratios verified for normal, accent, placeholder and button text |
-| Prompt-injection boundary | Repository, logs, diagnostics and history delimited as data | Prompt guardrails |
-| Source confidentiality | Local processing; source body excluded from database and audit logs | Storage schema and tests |
-| Review metrics | Counts, findings, actionable-review rate and average disposition time | `/api/v1/metrics` |
-| Automatic merge/release | Deliberately absent | Human disposition remains separate and advisory |
-| Certified-tool replacement | Deliberately prohibited | Limitations shown in every report |
+Synthetic cards support advisory review only. Enterprise IAM, licensed normative standards, complete compiler data flow, hardware validation and production safety approval remain outside the demonstrated implementation.
 
-## Organization-provided production dependencies
-
-The following cannot be truthfully manufactured by a student artifact and must be supplied by the adopting organization: enterprise IAM/OIDC identities, provider-native Git permissions, licensed MISRA publications, production repositories, encryption keys and managed encrypted storage, firewall/egress policy, certified analyzers, real CI branch-protection rules, historical defect-leakage data, and qualified safety/compliance approvals.
+Deadline stated by student: 16 October 2026. Required official signatures and the student's actual demo recording must be completed by the student.

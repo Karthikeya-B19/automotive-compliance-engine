@@ -1,41 +1,15 @@
-# TechPulse Case Study 4 — Submission Package
+# TechPulse Case Study 4 Submission Package
 
-Student: Karthikeya Bellapukonda  
-Register number: CB.AI.U4AID23109  
-University: Amrita Vishwa Vidyapeetham  
-Submission type: Individual  
-Project: Automotive Secure Code Debugging and Review Assistant
+Karthikeya Bellapukonda, CB.AI.U4AID23109. Amrita Vishwa Vidyapeetham. Individual submission. Version 2.0, 12 October 2026.
 
-## Quick start
+The prescribed folders are Synopsis, Input_Data, Code, Model_Prompts_Config, Evaluation_Results, Documentation, Video and Declarations.
 
-From the `Code/` directory:
+From Code, install requirements in a virtual environment and run `python run.py`. Open the Dashboard URL printed by the launcher. Select `uploaded-repository` for an authorized manual ZIP upload.
 
-```powershell
-python -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-.venv\Scripts\python.exe run.py
-```
+Documentation contains the revised technical report, evidence presentation, user guide, file reference, evaluation guide and traceability material. Evaluation_Results contains the 100-public-repository benchmark, actual local RAG traces, retrieval comparison, component results and controlled ECU mutations. Input_Data includes synthetic demo repositories and manual ECU baseline/mutant pairs with preserved licenses.
 
-Open `http://localhost:8501`. For fully grounded RAG mode, pre-stage the approved SentenceTransformer model, start Ollama with the configured model, and use an approved/licensed local standards index. Without those dependencies, the application returns a clearly labeled deterministic fallback.
+The active advisory corpus contains 20 synthetic project rules, not official MISRA or ISO clauses. Local embeddings and Ollama enable full hybrid/model operation. Fallback modes are clearly labelled.
 
-## Demonstration inputs
+Before final delivery, obtain required faculty signatures, review and sign the declaration, and add your actual demonstration video. Those personal/official artifacts remain the student's responsibility. Recreate the ZIP after adding them.
 
-Open **Repository ZIP review** and upload one of the three ZIPs in `Input_Data/`:
-
-- `AutomotiveECURepository`: 3 scanned files, 2 internal dependencies, 4 intentional findings and an ignored vendor file.
-- `CleanSpeedMonitor`: 2 scanned files, 1 dependency and no target deterministic finding.
-- `MixedSensorNetwork`: 3 scanned files, 2 dependencies, 1 boundary finding and an ignored generated file.
-
-Optional compiler warnings and SARIF evidence are also provided. See `Documentation/CB.AI.U4AID23109_UserGuide_v1.4.md` for what the application does and how to use it.
-For a concise purpose-by-purpose map of the project materials, see `Documentation/CB.AI.U4AID23109_FileReference_v1.0.md`.
-
-The maintained public source repository is `https://github.com/Karthikeya-B19/automotive-compliance-engine`.
-
-## Mandatory before submission
-
-1. Obtain the faculty signature on page 3 of the synopsis.
-2. Review, tick, sign and date the declaration.
-3. Record a 5–10 minute video named `CB.AI.U4AID23109_Demo_v1.0.mp4` and place it in `Video/`.
-4. Recreate the ZIP after the signed documents and MP4 are added.
-
-The current ZIP is technically complete but intentionally contains unsigned approval/declaration fields and a video placeholder; those personal/official actions cannot be generated on the student’s behalf.
+Maintained source: https://github.com/Karthikeya-B19/automotive-compliance-engine

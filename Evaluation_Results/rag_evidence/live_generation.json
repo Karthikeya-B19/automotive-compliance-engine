@@ -1,0 +1,608 @@
+{
+  "generated_at": "2026-10-12T11:06:31.690832+00:00",
+  "local_models": {
+    "models": [
+      {
+        "name": "llama3.1:latest",
+        "model": "llama3.1:latest",
+        "modified_at": "2026-09-15T17:29:35.2732827+05:30",
+        "size": 4920753328,
+        "digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "llama",
+          "families": [
+            "llama"
+          ],
+          "parameter_size": "8.0B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 131072,
+          "embedding_length": 4096,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {
+      "case": "division_zero",
+      "source": "int rpm_rate(int rpm) { return rpm / 0; }",
+      "duration_seconds": 8.282,
+      "actual_llm_generation": true,
+      "result": {
+        "review_summary": "Model response failed citation validation. Use the independently reported deterministic candidates.",
+        "candidate_root_causes": [],
+        "suggested_remediation": "No model remediation passed evidence validation.",
+        "analysis_summary": "The function rpm_rate attempts to divide by zero, which is a critical arithmetic safety issue.",
+        "rule_reference": "No applicable rule found",
+        "source_evidence": [],
+        "confidence": "Low",
+        "retrieved_context": [
+          {
+            "assumptions": [
+              "32-bit int target for shift checks",
+              "Heuristic candidate requires human confirmation"
+            ],
+            "authority": "Advisory project rule, not a MISRA or ISO clause",
+            "category": "Arithmetic safety",
+            "cwe": "CWE-369",
+            "domain": "automotive-embedded",
+            "language": [
+              "C",
+              "C++"
+            ],
+            "origin": "synthetic-project-guidance",
+            "rule_id": "AUTO-DIV-ZERO",
+            "severity": "Critical",
+            "text": "Validate the denominator and define a safe fallback before dividing.",
+            "title": "Literal division or modulo by zero",
+            "version": "2.0",
+            "lexical_score": 34.579088,
+            "dense_score": 0.980945,
+            "fusion_score": 0.03278689,
+            "source": "automotive_rule_cards.json",
+            "chunk_index": 0,
+            "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+            "content_sha256": "9ed506776fd393542fefff529419dcd9fec4a2eced76874f8ce0d80adbcbb6b1",
+            "applicability": "supported-candidate",
+            "citation": "AUTO-DIV-ZERO"
+          }
+        ],
+        "citation_validation": {
+          "accepted": false,
+          "reason": "Unsupported citation or evidence rejected",
+          "proposed_rule_reference": "AUTO-DIV-ZERO",
+          "proposed_evidence": [
+            "int rpm_rate(int rpm) { return rpm / 0; }"
+          ],
+          "applicable_rule_ids": [
+            "AUTO-DIV-ZERO"
+          ]
+        },
+        "code_summary": {
+          "line_count": 1,
+          "function_count": 1,
+          "functions": [
+            {
+              "name": "rpm_rate",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "branch_count": 0,
+          "loop_count": 0,
+          "called_functions": [],
+          "related_file_count": 0,
+          "related_files": []
+        },
+        "findings": [
+          {
+            "finding_id": "1d285e6cbfc8",
+            "title": "Literal division or modulo by zero",
+            "category": "Arithmetic safety",
+            "severity": "Critical",
+            "line": 1,
+            "function": "rpm_rate",
+            "evidence": "int rpm_rate(int rpm) { return rpm / 0; }",
+            "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+            "rule_reference": "AUTO-DIV-ZERO (synthetic project guidance)",
+            "cwe": "CWE-369",
+            "confidence": "Medium",
+            "status": "Open",
+            "analysis_method": "deterministic-preflight",
+            "rule_id": "AUTO-DIV-ZERO",
+            "grounding": {
+              "rule_id": "AUTO-DIV-ZERO",
+              "source": "automotive_rule_cards.json",
+              "excerpt": "Validate the denominator and define a safe fallback before dividing.",
+              "content_sha256": "9ed506776fd393542fefff529419dcd9fec4a2eced76874f8ce0d80adbcbb6b1",
+              "assumptions": [
+                "32-bit int target for shift checks",
+                "Heuristic candidate requires human confirmation"
+              ],
+              "authority": "Advisory project rule, not a MISRA or ISO clause"
+            },
+            "file": "division_zero.c"
+          }
+        ],
+        "review_mode": "rag-assisted",
+        "limitations": [
+          "Findings are advisory and require compilation, tests, certified analysis, and qualified human review."
+        ],
+        "retrieval_trace": {
+          "architecture": "automotive-evidence-gated-retrieval-v2",
+          "corpus_sha256": "ba523dcb8d4d678774ed47d0432dffff096fb30d609b43062a780f065e9834a2",
+          "corpus_rule_count": 20,
+          "per_finding": [
+            {
+              "query": "Literal division or modulo by zero Arithmetic safety Validate the denominator and define a safe fallback before dividing.",
+              "strategy": "bm25+dense-rrf",
+              "dense_error": null,
+              "candidates": [
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "Arithmetic safety",
+                  "cwe": "CWE-369",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-DIV-ZERO",
+                  "severity": "Critical",
+                  "text": "Validate the denominator and define a safe fallback before dividing.",
+                  "title": "Literal division or modulo by zero",
+                  "version": "2.0",
+                  "lexical_score": 34.579088,
+                  "dense_score": 0.980945,
+                  "fusion_score": 0.03278689,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 0,
+                  "content": "Literal division or modulo by zero. Validate the denominator and define a safe fallback before dividing.",
+                  "content_sha256": "9ed506776fd393542fefff529419dcd9fec4a2eced76874f8ce0d80adbcbb6b1"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "Arithmetic safety",
+                  "cwe": "CWE-758",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-SHIFT-WIDTH",
+                  "severity": "High",
+                  "text": "Validate the shift count against the operand width.",
+                  "title": "Shift count outside fixed-width operand range",
+                  "version": "2.0",
+                  "lexical_score": 6.015769,
+                  "dense_score": 0.229631,
+                  "fusion_score": 0.03225806,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 2,
+                  "content": "Shift count outside fixed-width operand range. Validate the shift count against the operand width.",
+                  "content_sha256": "b3946b1d63b44e013fd2537b9d2e01426ad30f5135e6fe8850da5ed56830a64e"
+                },
+                {
+                  "assumptions": [
+                    "Field can_dlc denotes classical CAN length",
+                    "CAN FD needs a separate protocol profile"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "Protocol safety",
+                  "cwe": "CWE-20",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-CAN-DLC",
+                  "severity": "High",
+                  "text": "Validate classical CAN DLC in [0, 8]. Confirm CAN FD context separately.",
+                  "title": "Classical CAN DLC exceeds eight bytes",
+                  "version": "2.0",
+                  "lexical_score": 1.95859,
+                  "dense_score": 0.217563,
+                  "fusion_score": 0.03036577,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 10,
+                  "content": "Classical CAN DLC exceeds eight bytes. Validate classical CAN DLC in [0, 8]. Confirm CAN FD context separately.",
+                  "content_sha256": "d8165b94f0275bc0dd67d139cfcc36aa5edde23ffb5c2475e7cf4902b1a7d008"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-NULL",
+                  "text": "Do not dereference a null pointer. Check validity and define failure behaviour.",
+                  "title": "Possible null-pointer dereference",
+                  "version": "2.0",
+                  "lexical_score": 2.515672,
+                  "dense_score": 0.148791,
+                  "fusion_score": 0.03030999,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 17,
+                  "content": "Possible null-pointer dereference. Do not dereference a null pointer. Check validity and define failure behaviour.",
+                  "content_sha256": "0870f6192bffbf11593a188faa7b42389f058230c1e97de7d592f28d5798f2bc"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-SPRINTF",
+                  "text": "Use a bounded formatted write and inspect the return value for truncation.",
+                  "title": "Potential unbounded formatted write",
+                  "version": "2.0",
+                  "lexical_score": 2.056214,
+                  "dense_score": 0.187702,
+                  "fusion_score": 0.03030999,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 16,
+                  "content": "Potential unbounded formatted write. Use a bounded formatted write and inspect the return value for truncation.",
+                  "content_sha256": "30714d8be8f27ab0629be8c7809a427aa387781617a7bb8e241fd56f62beefff"
+                }
+              ],
+              "finding_id": "1d285e6cbfc8",
+              "expected_rule_id": "AUTO-DIV-ZERO",
+              "decision": "supported-candidate",
+              "cited_rule_id": "AUTO-DIV-ZERO"
+            }
+          ],
+          "supported_count": 1,
+          "abstained_count": 0,
+          "limitations": [
+            "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+            "Synthetic rule cards do not establish MISRA or ISO compliance"
+          ]
+        }
+      }
+    },
+    {
+      "case": "unbounded_copy",
+      "source": "void diagnostic_name(const char *request) { char name[8]; strcpy(name, request); }",
+      "duration_seconds": 4.991,
+      "actual_llm_generation": true,
+      "result": {
+        "review_summary": "Potential unbounded string copy",
+        "candidate_root_causes": [
+          "strcpy function without proving destination capacity and source length"
+        ],
+        "suggested_remediation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+        "analysis_summary": "The strcpy function is used without verifying the destination capacity and source length, which can lead to a potential unbounded string copy.",
+        "rule_reference": "AUTO-STRCPY",
+        "source_evidence": [
+          "For strcpy, prove destination capacity and source length including the terminator."
+        ],
+        "confidence": "High",
+        "retrieved_context": [
+          {
+            "assumptions": [
+              "32-bit int target for shift checks",
+              "Heuristic candidate requires human confirmation"
+            ],
+            "authority": "Advisory project rule, not a MISRA or ISO clause",
+            "category": "C/C++ safety",
+            "domain": "automotive-embedded",
+            "language": [
+              "C",
+              "C++"
+            ],
+            "origin": "synthetic-project-guidance",
+            "rule_id": "AUTO-STRCPY",
+            "text": "For strcpy, prove destination capacity and source length including the terminator.",
+            "title": "Potential unbounded string copy",
+            "version": "2.0",
+            "lexical_score": 17.890445,
+            "dense_score": 0.825394,
+            "fusion_score": 0.03278689,
+            "source": "automotive_rule_cards.json",
+            "chunk_index": 14,
+            "content": "Potential unbounded string copy. For strcpy, prove destination capacity and source length including the terminator.",
+            "content_sha256": "8da01980892d3d67528c8ba8f5388aff37c861e9b490222a50f38b8562074a40",
+            "applicability": "supported-candidate",
+            "citation": "AUTO-STRCPY"
+          }
+        ],
+        "citation_validation": {
+          "accepted": true,
+          "reason": "Exact applicable citation and extractive evidence",
+          "proposed_rule_reference": "AUTO-STRCPY",
+          "proposed_evidence": [
+            "For strcpy, prove destination capacity and source length including the terminator."
+          ],
+          "applicable_rule_ids": [
+            "AUTO-STRCPY"
+          ]
+        },
+        "code_summary": {
+          "line_count": 1,
+          "function_count": 1,
+          "functions": [
+            {
+              "name": "diagnostic_name",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "branch_count": 0,
+          "loop_count": 0,
+          "called_functions": [
+            "strcpy"
+          ],
+          "related_file_count": 0,
+          "related_files": []
+        },
+        "findings": [
+          {
+            "finding_id": "694e2bccc0ab",
+            "title": "Potential unbounded string copy",
+            "category": "Boundary safety",
+            "severity": "High",
+            "line": 1,
+            "function": "diagnostic_name",
+            "evidence": "void diagnostic_name(const char *request) { char name[8]; strcpy(name, request); }",
+            "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+            "rule_reference": "AUTO-STRCPY (synthetic project guidance)",
+            "cwe": "CWE-120",
+            "confidence": "High",
+            "status": "Open",
+            "analysis_method": "deterministic-preflight",
+            "grounding": {
+              "rule_id": "AUTO-STRCPY",
+              "source": "automotive_rule_cards.json",
+              "excerpt": "For strcpy, prove destination capacity and source length including the terminator.",
+              "content_sha256": "8da01980892d3d67528c8ba8f5388aff37c861e9b490222a50f38b8562074a40",
+              "assumptions": [
+                "32-bit int target for shift checks",
+                "Heuristic candidate requires human confirmation"
+              ],
+              "authority": "Advisory project rule, not a MISRA or ISO clause"
+            },
+            "file": "unbounded_copy.c"
+          }
+        ],
+        "review_mode": "rag-assisted",
+        "limitations": [
+          "Findings are advisory and require compilation, tests, certified analysis, and qualified human review."
+        ],
+        "retrieval_trace": {
+          "architecture": "automotive-evidence-gated-retrieval-v2",
+          "corpus_sha256": "ba523dcb8d4d678774ed47d0432dffff096fb30d609b43062a780f065e9834a2",
+          "corpus_rule_count": 20,
+          "per_finding": [
+            {
+              "query": "Potential unbounded string copy Boundary safety Use a size-aware copy and prove that the destination capacity includes the terminator.",
+              "strategy": "bm25+dense-rrf",
+              "dense_error": null,
+              "candidates": [
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-STRCPY",
+                  "text": "For strcpy, prove destination capacity and source length including the terminator.",
+                  "title": "Potential unbounded string copy",
+                  "version": "2.0",
+                  "lexical_score": 17.890445,
+                  "dense_score": 0.825394,
+                  "fusion_score": 0.03278689,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 14,
+                  "content": "Potential unbounded string copy. For strcpy, prove destination capacity and source length including the terminator.",
+                  "content_sha256": "8da01980892d3d67528c8ba8f5388aff37c861e9b490222a50f38b8562074a40"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-STRCAT",
+                  "text": "For strcat, prove remaining destination capacity before appending.",
+                  "title": "Potential unbounded string concatenation",
+                  "version": "2.0",
+                  "lexical_score": 11.679545,
+                  "dense_score": 0.57429,
+                  "fusion_score": 0.03225806,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 15,
+                  "content": "Potential unbounded string concatenation. For strcat, prove remaining destination capacity before appending.",
+                  "content_sha256": "88bdfb5c21f280ef880f61efc0f848bfb4541fa2202d3f778c8ee844b864380f"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-SPRINTF",
+                  "text": "Use a bounded formatted write and inspect the return value for truncation.",
+                  "title": "Potential unbounded formatted write",
+                  "version": "2.0",
+                  "lexical_score": 6.431634,
+                  "dense_score": 0.422857,
+                  "fusion_score": 0.03149802,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 16,
+                  "content": "Potential unbounded formatted write. Use a bounded formatted write and inspect the return value for truncation.",
+                  "content_sha256": "30714d8be8f27ab0629be8c7809a427aa387781617a7bb8e241fd56f62beefff"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "Boundary safety",
+                  "cwe": "CWE-125",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-ARRAY-BOUND",
+                  "severity": "High",
+                  "text": "Keep the index in [0, capacity) and test the boundary.",
+                  "title": "Constant array index outside declared capacity",
+                  "version": "2.0",
+                  "lexical_score": 8.856011,
+                  "dense_score": 0.331821,
+                  "fusion_score": 0.03102453,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 1,
+                  "content": "Constant array index outside declared capacity. Keep the index in [0, capacity) and test the boundary.",
+                  "content_sha256": "4124272145964736dd66ce29537a9fe94baa3c609dac572904d4b61bbb273220"
+                },
+                {
+                  "assumptions": [
+                    "32-bit int target for shift checks",
+                    "Heuristic candidate requires human confirmation"
+                  ],
+                  "authority": "Advisory project rule, not a MISRA or ISO clause",
+                  "category": "C/C++ safety",
+                  "domain": "automotive-embedded",
+                  "language": [
+                    "C",
+                    "C++"
+                  ],
+                  "origin": "synthetic-project-guidance",
+                  "rule_id": "AUTO-GETS",
+                  "text": "Avoid gets because it cannot enforce a destination bound.",
+                  "title": "Unbounded input function",
+                  "version": "2.0",
+                  "lexical_score": 3.853183,
+                  "dense_score": 0.39907,
+                  "fusion_score": 0.03100962,
+                  "source": "automotive_rule_cards.json",
+                  "chunk_index": 13,
+                  "content": "Unbounded input function. Avoid gets because it cannot enforce a destination bound.",
+                  "content_sha256": "8b558f9140b32f44d6724f7edc600bf739c691046ce582a26cbdc71742e50d35"
+                }
+              ],
+              "finding_id": "694e2bccc0ab",
+              "expected_rule_id": "AUTO-STRCPY",
+              "decision": "supported-candidate",
+              "cited_rule_id": "AUTO-STRCPY"
+            }
+          ],
+          "supported_count": 1,
+          "abstained_count": 0,
+          "limitations": [
+            "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+            "Synthetic rule cards do not establish MISRA or ISO compliance"
+          ]
+        }
+      }
+    },
+    {
+      "case": "no_supported_candidate",
+      "source": "int rpm_rate(int rpm) { return rpm / 2; }",
+      "duration_seconds": 0.001,
+      "actual_llm_generation": false,
+      "result": {
+        "review_summary": "No relevant coding-standard context was retrieved for this code snippet.",
+        "candidate_root_causes": [],
+        "suggested_remediation": "Add or index relevant MISRA or coding standard PDFs to the local standards directory before review.",
+        "rule_reference": "No applicable rule found",
+        "source_evidence": [],
+        "confidence": "Low",
+        "code_summary": {
+          "line_count": 1,
+          "function_count": 1,
+          "functions": [
+            {
+              "name": "rpm_rate",
+              "start_line": 1,
+              "end_line": 1
+            }
+          ],
+          "branch_count": 0,
+          "loop_count": 0,
+          "called_functions": [],
+          "related_file_count": 0,
+          "related_files": []
+        },
+        "findings": [],
+        "retrieved_context": [],
+        "review_mode": "deterministic-only",
+        "limitations": [
+          "No coding-standard evidence was retrieved; preflight candidates require human confirmation."
+        ],
+        "retrieval_trace": {
+          "architecture": "automotive-evidence-gated-retrieval-v2",
+          "corpus_sha256": "ba523dcb8d4d678774ed47d0432dffff096fb30d609b43062a780f065e9834a2",
+          "corpus_rule_count": 20,
+          "per_finding": [],
+          "supported_count": 0,
+          "abstained_count": 0,
+          "limitations": [
+            "Card applicability confirms guidance relevance, not that the candidate is a true defect",
+            "Synthetic rule cards do not establish MISRA or ISO compliance"
+          ]
+        }
+      }
+    }
+  ],
+  "implementation_sha256": {
+    "src/rag/orchestrator.py": "a3fd2e5f598ff01c621372cb1ef3ee69421897d973099194c2cc28ee91aac74e",
+    "src/rag/automotive_retrieval.py": "26d2e6d3ab843aaf82c5b334b74ec121788287d5e9dacbc92f8b25d228458f2b"
+  }
+}

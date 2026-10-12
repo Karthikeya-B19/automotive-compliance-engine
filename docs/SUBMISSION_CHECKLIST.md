@@ -1,28 +1,15 @@
-# Final Submission Checklist
+# Version 2 Submission Checklist
 
-Root folder: `AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_CS4_AIML`
+- Use the individually named university/student/register/CS4/AIML root folder.
+- Include all eight prescribed folders and descriptive register-prefixed versioned artifact names.
+- Use the v2 technical report and evidence presentation as current documents. Earlier versions are historical.
+- Include the active synthetic rule corpus, model configuration, prompt guardrails and environment template.
+- Include component tests, public benchmark catalog/results/summary, retrieval comparison, actual LLM traces and ECU mutation provenance.
+- Retain upstream license notices with redistributed ECU fixtures.
+- Confirm the ZIP contains no virtual environment, source cache, local database, API secret or Python cache.
+- Run the packaged tests and check archive CRC and required folders.
+- Obtain required faculty signature and sign the declaration after personal review.
+- Record and add the actual demonstration MP4, then rebuild the ZIP.
+- Keep the source repository synchronized with the revised implementation and documentation.
 
-## Mandatory student actions
-
-- [ ] Obtain faculty approval and signature on the synopsis approval record.
-- [ ] Review, tick, sign and date the Academic Integrity & AI Usage Declaration.
-- [ ] Record a 5–10 minute demo video named `CB.AI.U4AID23109_Demo_v1.0.mp4` and place it in `Video/`.
-- [ ] Restart the dashboard and verify readable text, inputs, tabs, metrics, alerts and buttons before recording.
-- [ ] Confirm the demonstrated build exactly matches the submitted code.
-- [ ] If using RAG mode, pre-stage the approved embedding model, local Ollama model and approved/licensed standards index.
-- [ ] Run `python -m pytest -q -p no:cacheprovider` and the evaluation script on the submission machine.
-- [ ] Open the technical report PDF and presentation on the submission machine.
-- [ ] Recreate the ZIP after adding the signed documents and video.
-
-## Presentation timing
-
-- 10 minutes: presentation
-- 10 minutes: working demonstration
-- 8 minutes: questions and answers
-- 2 minutes: transition
-
-## Claims to avoid
-
-- Do not claim production readiness, certified static-analysis equivalence or MISRA compliance.
-- Do not describe the synthetic standards sample as an official MISRA document.
-- Do not present the five-case benchmark as a general accuracy estimate.
+Evidence proves the stated test contracts, not unrestricted correctness or automotive safety certification.

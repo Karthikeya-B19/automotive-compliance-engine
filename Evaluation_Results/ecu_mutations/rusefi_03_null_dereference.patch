@@ -1,0 +1,11 @@
+--- baseline/firmware/controllers/actuators/dc_motors.cpp
++++ mutant/firmware/controllers/actuators/dc_motors.cpp
+@@ -84,6 +84,8 @@
+ static DcHardware dcHardware[ETB_COUNT + DC_PER_STEPPER];
+ 
+ DcHardware *getPrimaryDCHardwareForLogging() {
++    int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;
++
+ 	return &dcHardware[0];
+ }
+ 

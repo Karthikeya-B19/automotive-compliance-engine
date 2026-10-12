@@ -1,0 +1,11 @@
+--- baseline/speeduino/SD_logger.cpp
++++ mutant/speeduino/SD_logger.cpp
+@@ -279,6 +279,8 @@
+ 
+ void initSD()
+ {
++    int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;
++
+   //Set default state to ready. If any stage of the init fails, this will be changed
+   SD_status = SD_STATUS_READY; 
+ 

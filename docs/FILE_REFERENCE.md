@@ -28,7 +28,7 @@ This guide explains the purpose of every maintained file in the Automotive Secur
 | `src/ingestion/__init__.py` | Marks the ingestion directory as a Python package. |
 | `src/ingestion/ingest.py` | Loads and chunks the local automotive-standard reference for retrieval. |
 | `src/rag/__init__.py` | Marks the RAG directory as a Python package. |
-| `src/rag/orchestrator.py` | Retrieves relevant standard excerpts and, when configured, requests an Ollama explanation grounded in those excerpts. |
+| `src/rag/orchestrator.py` | Requests local Ollama explanations from retrieved applicable advisory cards, validates citations and labels fallback modes. |
 | `src/storage/__init__.py` | Marks the storage directory as a Python package. |
 | `src/storage/review_store.py` | Provides local SQLite persistence for review records, authentication data, and workflow state. |
 | `src/ui/__init__.py` | Marks the user-interface directory as a Python package. |
@@ -113,10 +113,50 @@ This guide explains the purpose of every maintained file in the Automotive Secur
 | `assets/repository_review_evidence.png` | Screenshot evidence of a repository-upload review. |
 | `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.2.docx` | Earlier editable technical-report revision, retained for revision history. |
 | `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.2.pdf` | Earlier PDF technical-report revision, retained for revision history. |
-| `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.docx` | Current editable technical report for submission. |
-| `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.pdf` | Current PDF technical report for submission. |
+| `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.docx` | Historical editable report for the previous implementation. |
+| `deliverables/CB.AI.U4AID23109_TechnicalReport_v1.3.pdf` | Historical PDF report for the previous implementation. |
 | `deliverables/CB.AI.U4AID23109_Presentation_v1.4.pptx` | Earlier presentation revision, retained for revision history. |
-| `deliverables/CB.AI.U4AID23109_Presentation_v1.5.pptx` | Current presentation deck for submission and evaluation. |
+| `deliverables/CB.AI.U4AID23109_Presentation_v1.5.pptx` | Earlier presentation, with local student revisions preserved. |
+
+## Version 2 additions
+
+| File or evidence group | Purpose |
+| --- | --- |
+| `src/analysis/lexical.py` | Masks comments and literals while preserving source offsets and lines. |
+| `src/analysis/automotive_checks.py` | Implements 13 additional ECU-oriented heuristic rule families. |
+| `src/rag/automotive_retrieval.py` | Implements BM25, optional local dense ranking, RRF, typed applicability, hashes and citation validation. |
+| `data/standards/automotive_rule_cards.json` | Inspectable versioned corpus of 20 explicitly synthetic advisory cards. |
+| `tools/build_rule_corpus.py` | Exports the advisory corpus from its maintained definitions. |
+| `tools/build_evidence_report.py` | Generates the current report PDF from Markdown and measured evidence; requires reportlab as an authoring dependency. |
+| `tools/package_submission.py` | Creates a fresh v2 package, preserves available earlier synopsis/declaration files, hashes contents and verifies the final ZIP. |
+| `evaluation/benchmark_public_repos.py` | Downloads/caches public snapshots and scans eligible C/C++ files through bounded production-scanner partitions. |
+| `evaluation/ecu_mutation_study.py` | Builds baseline/mutant ECU fixtures, readable patches and injected-line detection results. |
+| `evaluation/prove_rag.py` | Measures independent retrieval queries and corpus/citation intervention controls. |
+| `evaluation/prove_live_rag.py` | Captures actual local Ollama execution, output and citation outcomes. |
+| `evaluation/component_verification.py` | Records pytest/JUnit evidence, actual CLI gates and an optional independent GCC warning. |
+| `tests/test_expanded_scenarios.py` | Positive, corrected, lexical, scope, adversarial, fallback and API evidence-preservation tests. |
+| `tests/test_ui.py` | Streamlit rendering, retrieval-widget and declared text-contrast tests. |
+| `docs/TECHNICAL_REPORT_v2.md` | Current detailed implementation explanation and oral-examination preparation material. |
+| `docs/SYNOPSIS_ADDENDUM_v2.md` | Records the revised method and evidence alongside the original synopsis without replacing faculty approval. |
+| `docs/THIRD_PARTY_NOTICE.md` | Explains source provenance, retained licenses and deliberate ECU mutations. |
+| `deliverables/CB.AI.U4AID23109_TechnicalReport_v2.0.pdf` | Current rendered technical report. |
+| `deliverables/CB.AI.U4AID23109_RAGEvidencePresentation_v2.0.pptx` | Current editable evidence and RAG presentation. |
+| `Evaluation_Results/component_evidence.json` | Per-test outcomes, CLI/compiler checks and implementation hashes. |
+| `Evaluation_Results/tests_v2.0.xml` | Machine-readable JUnit test outcomes. |
+| `Evaluation_Results/CB.AI.U4AID23109_TestLog_v2.0.txt` | Full current automated-test execution log. |
+| `Evaluation_Results/automotive_ecu_demo_v2.0.sarif` | Actual CLI findings for the faulty synthetic demo. |
+| `Evaluation_Results/clean_speed_monitor_v2.0.sarif` | Actual CLI comparison for the cleaner demo. |
+| `Evaluation_Results/public_benchmark/catalog.json` | Public repository discovery metadata and query provenance. |
+| `Evaluation_Results/public_benchmark/results.json` | Repository-level outcomes, per-file hashes, exclusions and candidate locations. |
+| `Evaluation_Results/public_benchmark/summary.json` | Corpus totals, timing scope and analyzer implementation hashes. |
+| `Evaluation_Results/rag_evidence/retrieval_results.json` | Every labelled query, ranking, score and abstention control. |
+| `Evaluation_Results/rag_evidence/live_generation.json` | Actual local model availability, generation outputs and citation checks. |
+| `Evaluation_Results/ecu_mutations/results.json` | Real ECU provenance and results for each controlled mutation. |
+| `Evaluation_Results/ecu_mutations/*_baseline.zip` | Licensed original ECU source fixtures for manual comparison. |
+| `Evaluation_Results/ecu_mutations/*_mutant.zip` | Matching licensed source fixtures containing a clearly identified educational mutation. |
+| `Evaluation_Results/ecu_mutations/*.patch` | One readable baseline-to-mutant change per case. |
+
+Files inside each ECU fixture include the selected source, upstream license, `PROVENANCE.json` (origin and hashes), and `MUTATION_NOTICE.txt` (educational-use notice). `benchmark_cache/` stores replay snapshots locally and is deliberately excluded from Git and submission ZIPs.
 
 ## Package Copies and Generated Local Files
 

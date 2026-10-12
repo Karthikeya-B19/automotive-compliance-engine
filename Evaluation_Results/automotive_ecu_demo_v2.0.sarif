@@ -1,0 +1,133 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Automotive Secure Code Review",
+          "rules": [
+            {
+              "id": "possible-null-pointer-dereference",
+              "name": "Possible null-pointer dereference",
+              "shortDescription": {
+                "text": "Pointer safety"
+              },
+              "help": {
+                "text": "Prove 'target' is non-null before dereference and handle the failure path."
+              }
+            },
+            {
+              "id": "potential-unbounded-string-copy",
+              "name": "Potential unbounded string copy",
+              "shortDescription": {
+                "text": "Boundary safety"
+              },
+              "help": {
+                "text": "Use a size-aware copy and prove that the destination capacity includes the terminator."
+              }
+            },
+            {
+              "id": "allocated-resource-may-not-be-released",
+              "name": "Allocated resource may not be released",
+              "shortDescription": {
+                "text": "Resource management"
+              },
+              "help": {
+                "text": "Define ownership for 'work_buffer' and release it on every exit path, or use a scoped wrapper."
+              }
+            },
+            {
+              "id": "switch-statement-has-no-default-branch",
+              "name": "Switch statement has no default branch",
+              "shortDescription": {
+                "text": "Control flow"
+              },
+              "help": {
+                "text": "Add an explicit default branch that reaches a defined safe state."
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "possible-null-pointer-dereference",
+          "level": "error",
+          "message": {
+            "text": "Possible null-pointer dereference"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "automotive_ecu_demo/src/vehicle_state.c"
+                },
+                "region": {
+                  "startLine": 12
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "potential-unbounded-string-copy",
+          "level": "error",
+          "message": {
+            "text": "Potential unbounded string copy"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "automotive_ecu_demo/src/vehicle_state.c"
+                },
+                "region": {
+                  "startLine": 11
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "allocated-resource-may-not-be-released",
+          "level": "warning",
+          "message": {
+            "text": "Allocated resource may not be released"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "automotive_ecu_demo/src/vehicle_state.c"
+                },
+                "region": {
+                  "startLine": 8
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "switch-statement-has-no-default-branch",
+          "level": "warning",
+          "message": {
+            "text": "Switch statement has no default branch"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "automotive_ecu_demo/src/vehicle_state.c"
+                },
+                "region": {
+                  "startLine": 14
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

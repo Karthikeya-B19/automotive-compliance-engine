@@ -1,0 +1,1321 @@
+{
+  "summary": {
+    "generated_at": "2026-10-12T10:40:09.493663+00:00",
+    "upstream_projects": 2,
+    "actual_source_files": 10,
+    "mutation_cases": 40,
+    "detected": 40,
+    "limitations": [
+      "Statements injected into real functions are controlled synthetic defects",
+      "No claim that upstream projects contain these injected defects",
+      "Mutation score measures only these four supported defect families",
+      "No hardware execution, firmware compilation, timing or safety certification"
+    ]
+  },
+  "provenance": [
+    {
+      "repository": "speeduino/speeduino",
+      "url": "https://github.com/speeduino/speeduino",
+      "snapshot_root": "speeduino-speeduino-b39d27c",
+      "archive_sha256": "65ddae865c26b41d0f35a9e9c17dd72a45d9d4d55e3b1f14e2b2fca6c1a1de5c",
+      "source_files": [
+        "speeduino/SD_logger.cpp",
+        "speeduino/acc_mc33810.cpp",
+        "speeduino/board_avr2560.cpp",
+        "speeduino/board_native.cpp",
+        "speeduino/board_stm32_official.cpp"
+      ],
+      "license_files": [
+        "LICENSE"
+      ],
+      "scope": "Five actual ECU source files; controlled statements inserted into existing functions, not discovered upstream bugs"
+    },
+    {
+      "repository": "rusefi/rusefi",
+      "url": "https://github.com/rusefi/rusefi",
+      "snapshot_root": "rusefi-0a4b38b9250a981261dc59658b56794dee0e1567",
+      "archive_sha256": "6f240193cd627bf501b3c28885ded52b9e943abd0b48fbf055812fc58c5482bd",
+      "source_files": [
+        "firmware/controllers/actuators/alternator_controller.cpp",
+        "firmware/controllers/actuators/boost_control.cpp",
+        "firmware/controllers/actuators/dc_motors.cpp",
+        "firmware/controllers/actuators/electronic_throttle.cpp",
+        "firmware/controllers/actuators/gppwm/gppwm.cpp"
+      ],
+      "license_files": [
+        "license.txt"
+      ],
+      "scope": "Five actual ECU source files; controlled statements inserted into existing functions, not discovered upstream bugs"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "speeduino_01_division_zero",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/SD_logger.cpp",
+      "function": "initSD",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 282,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "19ace68f1e9d",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 282,
+          "function": "initSD",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "600064ea3936fde5531d67f006611c73bec52625732f41522d230f9a7af91bbb",
+      "mutant_sha256": "853743e5f798fa5e3de9fd1566a7730a73c1c5679d5a838d5692fb17961eb1bf",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "speeduino_01_null_dereference",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/SD_logger.cpp",
+      "function": "initSD",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 282,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "c48f98eb8cc1",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 282,
+          "function": "initSD",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "600064ea3936fde5531d67f006611c73bec52625732f41522d230f9a7af91bbb",
+      "mutant_sha256": "050db99e275f582a1aac78801b13a939040d53e47b639e08d69b60f32addd614",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "speeduino_01_out_of_bounds",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/SD_logger.cpp",
+      "function": "initSD",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 282,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "924b70866633",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 282,
+          "function": "initSD",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "600064ea3936fde5531d67f006611c73bec52625732f41522d230f9a7af91bbb",
+      "mutant_sha256": "5220c092f9ef23a991032b1492370f1eeabcabf4a760ec5fdb3dcdb6c94f7b87",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "speeduino_01_unbounded_copy",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/SD_logger.cpp",
+      "function": "initSD",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 282,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "bca4751ed5d8",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 282,
+          "function": "initSD",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "600064ea3936fde5531d67f006611c73bec52625732f41522d230f9a7af91bbb",
+      "mutant_sha256": "b211a499295c29b3c4ec007e0a9de19ecd037e26d4f16b9a86620357f9894e42",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "speeduino_02_division_zero",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/acc_mc33810.cpp",
+      "function": "init",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 21,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "e5f5dc8d026f",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 21,
+          "function": "init",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "751d5203bbedc982abe292dce0024a1b7cad9ff29d03a379d52e8a5c2ec99b37",
+      "mutant_sha256": "4fb6c8b7dc846bc3c0dbc1455bb9236bfbbd93b56e2b0da3738b3c3b4490b0c0"
+    },
+    {
+      "case_id": "speeduino_02_null_dereference",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/acc_mc33810.cpp",
+      "function": "init",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 21,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "242b1d744fd9",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 21,
+          "function": "init",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "751d5203bbedc982abe292dce0024a1b7cad9ff29d03a379d52e8a5c2ec99b37",
+      "mutant_sha256": "3a877077e8ffb2bf0fefd0674a25b9da915016cbf730b3a93d854fa13d4ffa74"
+    },
+    {
+      "case_id": "speeduino_02_out_of_bounds",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/acc_mc33810.cpp",
+      "function": "init",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 21,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "1425332da96a",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 21,
+          "function": "init",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "751d5203bbedc982abe292dce0024a1b7cad9ff29d03a379d52e8a5c2ec99b37",
+      "mutant_sha256": "c1fc0a09493f7cdab8ae07e30838049473c140fe751c379298e47402216bdab9"
+    },
+    {
+      "case_id": "speeduino_02_unbounded_copy",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/acc_mc33810.cpp",
+      "function": "init",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 21,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "1561588d2a38",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 21,
+          "function": "init",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "751d5203bbedc982abe292dce0024a1b7cad9ff29d03a379d52e8a5c2ec99b37",
+      "mutant_sha256": "699c850721e9af4b153f81a9587773ebbb3c8fdde868cdea4f407f6be67490d2"
+    },
+    {
+      "case_id": "speeduino_03_division_zero",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_avr2560.cpp",
+      "function": "initBoard",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 145,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "f942cabafb97",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 145,
+          "function": "initBoard",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "bf7f2f839c6f4dfb0fb4c054c839e0224fec2f63ec851aa4e761113cf9b3e873",
+      "mutant_sha256": "c3a4ccbb902e730b80dcbf51c17b5b59f6befbf34b13b340178d8afadcafc876"
+    },
+    {
+      "case_id": "speeduino_03_null_dereference",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_avr2560.cpp",
+      "function": "initBoard",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 145,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "741ba4817f0f",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 145,
+          "function": "initBoard",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "bf7f2f839c6f4dfb0fb4c054c839e0224fec2f63ec851aa4e761113cf9b3e873",
+      "mutant_sha256": "76ab0766526699f71e8e6fc559d5703fb56eca3649681a5dfcb1428056a3bbcb"
+    },
+    {
+      "case_id": "speeduino_03_out_of_bounds",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_avr2560.cpp",
+      "function": "initBoard",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 145,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "6f2119f78649",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 145,
+          "function": "initBoard",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "bf7f2f839c6f4dfb0fb4c054c839e0224fec2f63ec851aa4e761113cf9b3e873",
+      "mutant_sha256": "d408c87005366196bda28e2bebef7ac7030843c4469fc5411c0df57208cabe0b"
+    },
+    {
+      "case_id": "speeduino_03_unbounded_copy",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_avr2560.cpp",
+      "function": "initBoard",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 145,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "e03066768ffc",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 145,
+          "function": "initBoard",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "bf7f2f839c6f4dfb0fb4c054c839e0224fec2f63ec851aa4e761113cf9b3e873",
+      "mutant_sha256": "b76a0b12522f05e5380f32a1cca30cc0733935f3c7c5846f12a0d66319fb2f34"
+    },
+    {
+      "case_id": "speeduino_04_division_zero",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_native.cpp",
+      "function": "initBoard",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 76,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "e21e96c32985",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 76,
+          "function": "initBoard",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "e3655fdbd8a2d762bc9e74f3e6135fbba5309c4e8be15f78da6ce3ad2f125a22",
+      "mutant_sha256": "efc621e9e5b8b1cb792bc14e918b55ce9db17d51c4654fdfc044340b5bf140c3"
+    },
+    {
+      "case_id": "speeduino_04_null_dereference",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_native.cpp",
+      "function": "initBoard",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 76,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "7295f7de42f5",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 76,
+          "function": "initBoard",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "e3655fdbd8a2d762bc9e74f3e6135fbba5309c4e8be15f78da6ce3ad2f125a22",
+      "mutant_sha256": "f605196162db50ab20a5599bc04e137dbb440c2c99ce0e2af61632e96ef443b1"
+    },
+    {
+      "case_id": "speeduino_04_out_of_bounds",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_native.cpp",
+      "function": "initBoard",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 76,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "a6ae1e4ebc16",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 76,
+          "function": "initBoard",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "e3655fdbd8a2d762bc9e74f3e6135fbba5309c4e8be15f78da6ce3ad2f125a22",
+      "mutant_sha256": "386ac1e72419fc878a466ed334349ef98280da5a4c1d5c7f111faf7730c1ec8e"
+    },
+    {
+      "case_id": "speeduino_04_unbounded_copy",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_native.cpp",
+      "function": "initBoard",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 76,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "7308d3f63041",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 76,
+          "function": "initBoard",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "e3655fdbd8a2d762bc9e74f3e6135fbba5309c4e8be15f78da6ce3ad2f125a22",
+      "mutant_sha256": "a51076acac9c86d7ac6ceff03a334a790063242dc20fc78e073d8a740763cc77"
+    },
+    {
+      "case_id": "speeduino_05_division_zero",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_stm32_official.cpp",
+      "function": "__wrap_pinMode",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 18,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "de6c296bc054",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 18,
+          "function": "__wrap_pinMode",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "03d6acf52f1bdcbf4be6a83d810b2eed34ab8d53c134a1c52c173f2ef3a7e3c8",
+      "mutant_sha256": "9313876857081942d2f89131304809b16b1bd3d695fb3d5fca1e3c87837acf37"
+    },
+    {
+      "case_id": "speeduino_05_null_dereference",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_stm32_official.cpp",
+      "function": "__wrap_pinMode",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 18,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "04877297dea9",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 18,
+          "function": "__wrap_pinMode",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "03d6acf52f1bdcbf4be6a83d810b2eed34ab8d53c134a1c52c173f2ef3a7e3c8",
+      "mutant_sha256": "a6637eac092afe49084cd1b39114064cc6ccbd631a957aa646361502270522b5"
+    },
+    {
+      "case_id": "speeduino_05_out_of_bounds",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_stm32_official.cpp",
+      "function": "__wrap_pinMode",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 18,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "151c6782fd05",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 18,
+          "function": "__wrap_pinMode",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "03d6acf52f1bdcbf4be6a83d810b2eed34ab8d53c134a1c52c173f2ef3a7e3c8",
+      "mutant_sha256": "d5fd78cf542175d183a5195c751877b91cbc71d32cd27b4fb71935c63e20becc"
+    },
+    {
+      "case_id": "speeduino_05_unbounded_copy",
+      "repository": "speeduino/speeduino",
+      "file": "speeduino/board_stm32_official.cpp",
+      "function": "__wrap_pinMode",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 18,
+      "detected": true,
+      "baseline_candidate_count": 5,
+      "mutant_candidate_count": 6,
+      "matching_findings": [
+        {
+          "finding_id": "f81bbe5d32b0",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 18,
+          "function": "__wrap_pinMode",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "03d6acf52f1bdcbf4be6a83d810b2eed34ab8d53c134a1c52c173f2ef3a7e3c8",
+      "mutant_sha256": "4843b0f02899d7f49cb90a707061140dedd9f28da8183b288d4ec6a85ef42615"
+    },
+    {
+      "case_id": "rusefi_01_division_zero",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/alternator_controller.cpp",
+      "function": "initAlternatorCtrl",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 90,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "2f1cafe8c0e4",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 90,
+          "function": "initAlternatorCtrl",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "9bf549f2d708341733b2935dbc1a1b9646cf2871afe9a8fb9fe8fdd52c59db61",
+      "mutant_sha256": "2f200603a30cf92424cb73a48d122fc4bcfc62529b246cf5417b55467322efa6",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "rusefi_01_null_dereference",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/alternator_controller.cpp",
+      "function": "initAlternatorCtrl",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 90,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "165d156744e5",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 90,
+          "function": "initAlternatorCtrl",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "9bf549f2d708341733b2935dbc1a1b9646cf2871afe9a8fb9fe8fdd52c59db61",
+      "mutant_sha256": "da0ee76b5ebd1c714a44bd5a3ee185d196e98cb337d6fab5abb34b0aad784643",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "rusefi_01_out_of_bounds",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/alternator_controller.cpp",
+      "function": "initAlternatorCtrl",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 90,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "3c3a72cb55bb",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 90,
+          "function": "initAlternatorCtrl",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "9bf549f2d708341733b2935dbc1a1b9646cf2871afe9a8fb9fe8fdd52c59db61",
+      "mutant_sha256": "253be9a72c79315518dcf2a80cf1481c013e092288b82ad6badfecacaccbd3a6",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "rusefi_01_unbounded_copy",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/alternator_controller.cpp",
+      "function": "initAlternatorCtrl",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 90,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "34f3dca1aa15",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 90,
+          "function": "initAlternatorCtrl",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "9bf549f2d708341733b2935dbc1a1b9646cf2871afe9a8fb9fe8fdd52c59db61",
+      "mutant_sha256": "72ece379f76e8db46fd01a856ce465f982922ab9e9575e22c80e0a0a3d18ff5c",
+      "upload_path_detected": true
+    },
+    {
+      "case_id": "rusefi_02_division_zero",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/boost_control.cpp",
+      "function": "isBoostControlSolenoidMode",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 251,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "eddb6deff34a",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 251,
+          "function": "isBoostControlSolenoidMode",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "ff12e896269621b860137e5422a7f0702d8af7905dd1583b083ffcf2599956f3",
+      "mutant_sha256": "9cb63a5c63bac722faa6c90e0722c77c3ec297d9b9911df7cf2ee791ac11b4d1"
+    },
+    {
+      "case_id": "rusefi_02_null_dereference",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/boost_control.cpp",
+      "function": "isBoostControlSolenoidMode",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 251,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "54191dd9bb3c",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 251,
+          "function": "isBoostControlSolenoidMode",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "ff12e896269621b860137e5422a7f0702d8af7905dd1583b083ffcf2599956f3",
+      "mutant_sha256": "8364dd6ae6552f19695aea9cccf2d9bb1d330a825db61a8d851cac3c61a08ea9"
+    },
+    {
+      "case_id": "rusefi_02_out_of_bounds",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/boost_control.cpp",
+      "function": "isBoostControlSolenoidMode",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 251,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "0a301fede136",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 251,
+          "function": "isBoostControlSolenoidMode",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "ff12e896269621b860137e5422a7f0702d8af7905dd1583b083ffcf2599956f3",
+      "mutant_sha256": "e9ba3ba9476c5bbc163160dfd894d35d579c69459e0435f96cd05e19e3b469b4"
+    },
+    {
+      "case_id": "rusefi_02_unbounded_copy",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/boost_control.cpp",
+      "function": "isBoostControlSolenoidMode",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 251,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "71f6e8347b66",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 251,
+          "function": "isBoostControlSolenoidMode",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "ff12e896269621b860137e5422a7f0702d8af7905dd1583b083ffcf2599956f3",
+      "mutant_sha256": "cfc450ce7209e509d887cf3fd0d0321644a651290d96f636fa0183c707b6194e"
+    },
+    {
+      "case_id": "rusefi_03_division_zero",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/dc_motors.cpp",
+      "function": "getPrimaryDCHardwareForLogging",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 87,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "a8783c8e93cd",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 87,
+          "function": "getPrimaryDCHardwareForLogging",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "310a61fd78ff44ff12186d9242914f95830be6ed071caea5851b88643fd48359",
+      "mutant_sha256": "7d8891187a334f9fe2e0e7ca41bb45b83f4b09cf2a190c6982732e2ac1199d7b"
+    },
+    {
+      "case_id": "rusefi_03_null_dereference",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/dc_motors.cpp",
+      "function": "getPrimaryDCHardwareForLogging",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 87,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "8464c77fd04b",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 87,
+          "function": "getPrimaryDCHardwareForLogging",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "310a61fd78ff44ff12186d9242914f95830be6ed071caea5851b88643fd48359",
+      "mutant_sha256": "8e080a2199e7210b0b7231e14a4d934ce9e14eb94ca133e4738ce65f3c681d14"
+    },
+    {
+      "case_id": "rusefi_03_out_of_bounds",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/dc_motors.cpp",
+      "function": "getPrimaryDCHardwareForLogging",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 87,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "eb6eecd91c84",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 87,
+          "function": "getPrimaryDCHardwareForLogging",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "310a61fd78ff44ff12186d9242914f95830be6ed071caea5851b88643fd48359",
+      "mutant_sha256": "f0f9432a017ede83817ff5a8faaa9cf5059348d7332801bd1af5affbc858bd90"
+    },
+    {
+      "case_id": "rusefi_03_unbounded_copy",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/dc_motors.cpp",
+      "function": "getPrimaryDCHardwareForLogging",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 87,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "7a5b1b735572",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 87,
+          "function": "getPrimaryDCHardwareForLogging",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "310a61fd78ff44ff12186d9242914f95830be6ed071caea5851b88643fd48359",
+      "mutant_sha256": "e9e5b9b2d7f96b971e2c931bddf4068c9bab2fd5b21e769709daaf864ad368a6"
+    },
+    {
+      "case_id": "rusefi_04_division_zero",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/electronic_throttle.cpp",
+      "function": "setHitachiEtbBiasBins",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 83,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "c9558f44dedc",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 83,
+          "function": "setHitachiEtbBiasBins",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "1becce878e18e3b7938cc077a8e4a0707d46ce4d1e98852b3738268b0e1a519d",
+      "mutant_sha256": "77e6fb413609186660e9e13fc57f5fb62d3a6203886a39059dde8f6c43f01378"
+    },
+    {
+      "case_id": "rusefi_04_null_dereference",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/electronic_throttle.cpp",
+      "function": "setHitachiEtbBiasBins",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 83,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "402f440ae26a",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 83,
+          "function": "setHitachiEtbBiasBins",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "1becce878e18e3b7938cc077a8e4a0707d46ce4d1e98852b3738268b0e1a519d",
+      "mutant_sha256": "fd63db887af836aefde42f8a3e234f06c7bc544d28d1bad223a06302796eff1f"
+    },
+    {
+      "case_id": "rusefi_04_out_of_bounds",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/electronic_throttle.cpp",
+      "function": "setHitachiEtbBiasBins",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 83,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "701f8a41e7a1",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 83,
+          "function": "setHitachiEtbBiasBins",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "1becce878e18e3b7938cc077a8e4a0707d46ce4d1e98852b3738268b0e1a519d",
+      "mutant_sha256": "ea251a0bf2cd082d86e65d62c704395719247fbc7dce051159484d3f95e5cb71"
+    },
+    {
+      "case_id": "rusefi_04_unbounded_copy",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/electronic_throttle.cpp",
+      "function": "setHitachiEtbBiasBins",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 83,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "0b37f7c26907",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 83,
+          "function": "setHitachiEtbBiasBins",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "1becce878e18e3b7938cc077a8e4a0707d46ce4d1e98852b3738268b0e1a519d",
+      "mutant_sha256": "451225f94853df4621a4e052af9a00b94b9b93a9ac86b7c4c1095761ed626446"
+    },
+    {
+      "case_id": "rusefi_05_division_zero",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/gppwm/gppwm.cpp",
+      "function": "initGpPwm",
+      "mutation": "volatile int ecu_proof_division = 12 / 0;",
+      "expected_title": "Literal division or modulo by zero",
+      "injected_line": 41,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "a66269bcae0c",
+          "title": "Literal division or modulo by zero",
+          "category": "Arithmetic safety",
+          "severity": "Critical",
+          "line": 41,
+          "function": "initGpPwm",
+          "evidence": "volatile int ecu_proof_division = 12 / 0;",
+          "recommendation": "Validate the denominator and define a safe fallback before dividing.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-369",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-DIV-ZERO"
+        }
+      ],
+      "baseline_sha256": "506f627495b69eb0a102c9e03fd6b9dc18d49e4235f5e460c3054587f4ed0f6c",
+      "mutant_sha256": "8619c9bc9a7aa1997d5172e5958c5e5f15eaf32540a6db12e503af3cf8b2d97a"
+    },
+    {
+      "case_id": "rusefi_05_null_dereference",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/gppwm/gppwm.cpp",
+      "function": "initGpPwm",
+      "mutation": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+      "expected_title": "Possible null-pointer dereference",
+      "injected_line": 41,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "cc07ca2ee6ae",
+          "title": "Possible null-pointer dereference",
+          "category": "Pointer safety",
+          "severity": "Critical",
+          "line": 41,
+          "function": "initGpPwm",
+          "evidence": "int *ecu_proof_pointer = NULL; *ecu_proof_pointer = 1;",
+          "recommendation": "Prove 'ecu_proof_pointer' is non-null before dereference and handle the failure path.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-476",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "506f627495b69eb0a102c9e03fd6b9dc18d49e4235f5e460c3054587f4ed0f6c",
+      "mutant_sha256": "456bad1b742e638804982d065e51d251f80ed6e8da8588cac79ab72a4b8272ee"
+    },
+    {
+      "case_id": "rusefi_05_out_of_bounds",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/gppwm/gppwm.cpp",
+      "function": "initGpPwm",
+      "mutation": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+      "expected_title": "Constant array index outside declared capacity",
+      "injected_line": 41,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "c247a6402306",
+          "title": "Constant array index outside declared capacity",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 41,
+          "function": "initGpPwm",
+          "evidence": "int ecu_proof_samples[4]; ecu_proof_samples[4] = 1;",
+          "recommendation": "Keep the index in [0, capacity) and test the boundary.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-125",
+          "confidence": "Medium",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight",
+          "rule_id": "AUTO-ARRAY-BOUND"
+        }
+      ],
+      "baseline_sha256": "506f627495b69eb0a102c9e03fd6b9dc18d49e4235f5e460c3054587f4ed0f6c",
+      "mutant_sha256": "bf143dcb36de77f0794de285073c70925c6307d5ca1949b9cbfa20f28561cf66"
+    },
+    {
+      "case_id": "rusefi_05_unbounded_copy",
+      "repository": "rusefi/rusefi",
+      "file": "firmware/controllers/actuators/gppwm/gppwm.cpp",
+      "function": "initGpPwm",
+      "mutation": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+      "expected_title": "Potential unbounded string copy",
+      "injected_line": 41,
+      "detected": true,
+      "baseline_candidate_count": 0,
+      "mutant_candidate_count": 1,
+      "matching_findings": [
+        {
+          "finding_id": "f7e93a22e9f5",
+          "title": "Potential unbounded string copy",
+          "category": "Boundary safety",
+          "severity": "High",
+          "line": 41,
+          "function": "initGpPwm",
+          "evidence": "char ecu_proof_name[4]; strcpy(ecu_proof_name, \"diagnostic request too long\");",
+          "recommendation": "Use a size-aware copy and prove that the destination capacity includes the terminator.",
+          "rule_reference": "Requires confirmation against an approved coding standard",
+          "cwe": "CWE-120",
+          "confidence": "High",
+          "status": "Open",
+          "analysis_method": "deterministic-preflight"
+        }
+      ],
+      "baseline_sha256": "506f627495b69eb0a102c9e03fd6b9dc18d49e4235f5e460c3054587f4ed0f6c",
+      "mutant_sha256": "d6b808a661e9a64189e5e0149f69a2ecd1ad0f024303c489cd6b870afae4ece0"
+    }
+  ]
+}

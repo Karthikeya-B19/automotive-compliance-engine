@@ -1,58 +1,47 @@
-# Evaluation Guide
+# Evaluation Evidence Guide
 
-## One-sentence pitch
+Version 2.0. The evidence is divided by the question each experiment answers.
 
-This project is a local-first, repository-scale automotive C/C++ review workflow that safely maps an uploaded ZIP, combines deterministic safety checks with evidence-grounded AI, and requires an auditable human decision.
+| Evidence | What it demonstrates | What it does not establish |
+| --- | --- | --- |
+| `Evaluation_Results/component_evidence.json` and `tests_v2.0.xml` | Actual component/API/UI tests, persistence, archive controls and CLI gates | Universal correctness |
+| `Evaluation_Results/public_benchmark/summary.json` and `results.json` | Scan robustness across 100 distinct actual public source trees | Precision/recall on real defects or 100 production ECUs |
+| `Evaluation_Results/ecu_mutations/results.json` | Expected defect detected at each injected line in 40 mutations across 10 real ECU files | Unknown defect coverage or firmware build correctness |
+| `Evaluation_Results/rag_evidence/retrieval_results.json` | Lexical versus actual dense hybrid ranking and intervention controls | Large-corpus generalization |
+| `Evaluation_Results/rag_evidence/live_generation.json` | Actual local Ollama generation and citation decisions | A guarantee that every model sentence is correct |
+| `Evaluation_Results/*_v2.0.sarif` | Actual SARIF output and severity exit codes | Certified static analysis |
 
-## Recommended live flow
+## Reproduce
 
-1. Start with the confidentiality problem: public AI can expose proprietary ECU source.
-2. Show the architecture diagram in the README.
-3. Upload `demo/CB.AI.U4AID23109_AutomotiveECURepository_v1.0.zip` and its warning file.
-4. Show the repository tree, scanned modules, internal dependencies, ignored vendor path, and archive safety boundary.
-5. Explain the difference between all-file deterministic findings and bounded RAG guidance; show file, function, line, evidence, severity, CWE mapping, confidence, and remediation.
-6. Emphasize that the system refuses unsupported rule citations and labels degraded mode.
-7. Download the structured JSON report.
-8. Record a human disposition and show the audit history/metrics tab.
-9. Close with the production roadmap: Clang AST/data flow, provider-native Git checkout, enterprise OIDC/RBAC, encrypted storage, and larger benchmark evaluation. Repository/path authorization, structured SARIF and a CI gate are implemented in the pilot.
+Run from the repository root with the project environment active:
 
-## Likely evaluator questions
+```powershell
+python tools/build_rule_corpus.py
+python evaluation/component_verification.py
+python evaluation/prove_rag.py
+python evaluation/prove_live_rag.py
+python evaluation/ecu_mutation_study.py
+python evaluation/benchmark_public_repos.py --target 100 --workers 6
+```
 
-**Why use both deterministic rules and an LLM?**
+Ollama must be running for actual generation. Local embeddings must already exist for dense retrieval. The scripts report the actual strategy and mode. A mocked response is not counted as a live-generation result.
 
-Deterministic rules give reproducible high-signal checks and exact locations. The LLM explains context and retrieves approved guidance. Neither is treated as autonomous approval.
+The first public/ECU runs need Internet access. Snapshots are retained under ignored `benchmark_cache/`. Keep that cache for exact byte-for-byte replay. Catalog refresh is explicit through `--refresh-catalog`; a refreshed branch can change source bytes. The snapshot root and archive/file hashes document what was scanned.
 
-**How do you prevent hallucinated MISRA rules?**
+## Benchmark scope
 
-The model can only cite retrieved local context. The orchestrator verifies that the returned reference exists in that context; otherwise it forces `No applicable rule found` and low confidence.
+Public snapshots are unlabelled convenience samples. All eligible supported C/C++ files are passed through the actual ZIP scanner in bounded partitions. Ignored directories, encoding problems and oversized sources are listed. Dependencies across partitions are incomplete. The app's ordinary upload limits remain in force.
 
-**What happens if Ollama is down?**
+The 100-repository run covers 6,721 eligible files and 2,650,420 lines. Findings are candidates, not confirmed vulnerabilities. Timings include cache/download and scan effects. Consult the final summary for implementation hashes and exact totals.
 
-The app returns a labeled deterministic fallback report and does not invent evidence. This keeps the demo and core preflight useful while making the limitation visible.
+## ECU mutations
 
-**Is source code stored?**
+Speeduino and rusEFI source files retain their licenses in the manual fixtures. Forty educational injections cover zero division, null dereference, fixed array bounds and unbounded copy. Detection requires the expected title at the injected line. Baseline counts, mutant counts, hashes and patches remain available. Full firmware was not compiled or executed.
 
-The workflow database stores a SHA-256 hash and the generated report, not the submitted source body. Source remains in process memory for the review request.
+## Retrieval measurements
 
-**Does it really review a repository?**
+Twenty author-labelled natural-language queries test the 20 advisory rules. Lexical recall@5 is 0.90 and top-one accuracy is 0.70. Actual hybrid recall@5 is 0.95 and top-one accuracy is 0.85. Misses remain visible. Corpus-removal, unrelated-context and forged-citation controls verify abstention and rejection.
 
-Yes. The repository endpoint validates a ZIP without extracting or executing it, scans every supported C/C++ file within bounded limits, builds module and include-dependency maps, and reports path-specific findings. Only the optional contextual RAG step is deliberately bounded.
+## UI verification
 
-**Is this MISRA compliant?**
-
-No compliance claim is made. It is review assistance and must be used with licensed standards, compilation, tests, certified tools, and qualified reviewers.
-
-**How would this scale to a company?**
-
-Connect the pilot’s authentication, repository/path permission, SARIF and CI controls to enterprise identity, provider-native Git permissions, project-isolated collections, encrypted storage, production observability, and benchmark gates.
-
-## Final pre-presentation checklist
-
-- Ollama service running and `llama3.1` available.
-- Standards PDF indexed successfully.
-- `python -m pytest -q -p no:cacheprovider` passes.
-- Dashboard and API docs open in separate tabs.
-- Verify that text, inputs, tabs, metrics, alerts and buttons remain readable on their displayed backgrounds.
-- Demo repository ZIP and warnings ready.
-- A fallback explanation ready if the local model is slow.
-- Never describe the synthetic MISRA-style PDF as the official MISRA standard.
+Streamlit AppTest checks actual screen construction, review/evidence rendering and controls. A numeric WCAG AA check covers declared foreground/background pairs. Connected browser surfaces were unavailable during this revision, so these tests must not be described as full browser visual or accessibility certification.

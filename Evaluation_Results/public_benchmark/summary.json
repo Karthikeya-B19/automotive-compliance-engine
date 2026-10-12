@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-10-12T11:02:18.451554+00:00",
+  "distinct_repositories": 100,
+  "implementation_sha256": {
+    "src/analysis/automotive_checks.py": "cf117252114ccacecd2cb21a4d49cc49131cea205e132c15a39554695f4f5b41",
+    "src/analysis/evidence_parser.py": "7d2b216370065dd639422c6a0321c120e394f68cb099835f8c5ead2f175a34a9",
+    "src/analysis/lexical.py": "142a4b49d16ab29c39a3382be2989657c6d89dfa94a63cbe0b562afb0a69ecee",
+    "src/analysis/repository_analyzer.py": "ab81fadbead7b205595cc0e834d3cccd9fd384c8c1b391d9f43556d925cb1933",
+    "src/analysis/static_analyzer.py": "b468c51ad9dd3c93203869142284dfca41ac6514c359fdb10fb0b33db237ebbb",
+    "src/analysis/__init__.py": "9cf9a6b98a2f87778b70815735c6e8281a99e050b02aae6cfec94f65d890a622"
+  },
+  "target": 100,
+  "attempted": 100,
+  "failed": 0,
+  "files": 6721,
+  "lines": 2650420,
+  "candidate_findings": 2017,
+  "p50_total_seconds": 0.679,
+  "metric_scope": "Download + scan time, not analyzer-only latency",
+  "limitations": [
+    "Public convenience sample, not 100 production ECUs",
+    "Unlabelled candidates do not measure precision or recall",
+    "No upstream code executed or built",
+    "Cross-partition dependencies are not resolved",
+    "Snapshot hashes and per-file hashes support audit; cache needed for exact replay"
+  ]
+}

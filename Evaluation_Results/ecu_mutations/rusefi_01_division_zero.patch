@@ -1,0 +1,11 @@
+--- baseline/firmware/controllers/actuators/alternator_controller.cpp
++++ mutant/firmware/controllers/actuators/alternator_controller.cpp
+@@ -87,6 +87,8 @@
+ }
+ 
+ void initAlternatorCtrl() {
++    volatile int ecu_proof_division = 12 / 0;
++
+ 	if (!isBrainPinValid(engineConfiguration->alternatorControlPin))
+ 		return;
+ 
