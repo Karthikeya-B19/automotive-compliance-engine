@@ -60,6 +60,7 @@ submission_v1.4/
 submission_v1.5/
 submission_v1.6/
 submission_v2.0/
+submission_v2.0.1/
 benchmark_cache/
 
 # Publish only the current evaluator-facing report and presentation.

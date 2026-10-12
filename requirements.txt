@@ -22,6 +22,8 @@ fpdf2==2.7.9
 requests==2.32.2
 numpy==1.26.4
 pandas==2.2.3
+# Streamlit tables: pin the NumPy-1-compatible release validated locally and in CI.
+pyarrow==25.0.1
 
 # Security / auth / logging
 passlib[bcrypt]==1.7.4

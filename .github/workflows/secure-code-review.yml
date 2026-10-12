@@ -14,18 +14,22 @@ jobs:
   repository-review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install deterministic review dependencies
         run: pip install -r requirements.txt
+      - name: Verify installed dependency compatibility
+        run: |
+          python -m pip check
+          python -c "import numpy, pyarrow; print('NumPy', numpy.__version__, 'PyArrow', pyarrow.__version__); print(pyarrow.array(numpy.array([1, 2, 3])))"
       - name: Run component and adversarial regression tests
         run: python -m pytest -q
       - name: Review repository and emit SARIF
         run: python tools/ci_review.py demo/repository/clean_speed_monitor --format sarif --output automotive-review.sarif --fail-on High
       - name: Upload SARIF
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+        if: ${{ !cancelled() && hashFiles('automotive-review.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: automotive-review.sarif

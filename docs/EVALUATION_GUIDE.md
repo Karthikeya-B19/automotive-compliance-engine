@@ -44,4 +44,8 @@ Twenty author-labelled natural-language queries test the 20 advisory rules. Lexi
 
 ## UI verification
 
+### Fresh-install CI compatibility patch (2.0.1)
+
+The initial Ubuntu/Python 3.12 CI run passed 92 tests and failed one UI test because unpinned PyArrow 26 required NumPy 2 while the project uses NumPy 1.26.4. Requirements now explicitly pin PyArrow 25.0.1, the working local version. CI checks dependency metadata and an actual NumPy-to-Arrow conversion before running the full suite. SARIF upload is conditional on the report existing, preventing a missing-report error from obscuring an earlier failure. Action versions were updated to checkout v5, setup-python v6 and upload-sarif v4. The analyser, RAG architecture and v2 report/presentation measurements are unchanged by this packaging/CI patch. Use the latest successful GitHub Actions run as the fresh-install evidence, not the earlier failed run.
+
 Streamlit AppTest checks actual screen construction, review/evidence rendering and controls. A numeric WCAG AA check covers declared foreground/background pairs. Connected browser surfaces were unavailable during this revision, so these tests must not be described as full browser visual or accessibility certification.

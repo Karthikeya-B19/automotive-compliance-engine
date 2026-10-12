@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import zipfile
@@ -9,7 +10,8 @@ import zipfile
 ROOT=Path(__file__).resolve().parents[1]
 NAME='AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_CS4_AIML'
 REGISTER='CB.AI.U4AID23109'
-PACKAGE=ROOT/'submission_v2.0'/NAME
+VERSION='2.0'
+PACKAGE=ROOT/f'submission_v{VERSION}'/NAME
 PREVIOUS=ROOT/'submission_v1.6'/NAME
 REQUIRED=['Synopsis','Input_Data','Code','Model_Prompts_Config','Evaluation_Results','Documentation','Video','Declarations']
 
@@ -53,7 +55,7 @@ def main():
     shutil.copy2(ROOT/'docs'/'SYNOPSIS_ADDENDUM_v2.md',PACKAGE/'Synopsis'/f'{REGISTER}_SynopsisAddendum_v2.0.md')
     shutil.copy2(ROOT/'docs'/'THIRD_PARTY_NOTICE.md',PACKAGE/'Declarations'/f'{REGISTER}_ThirdPartyNotice_v2.0.md')
     shutil.copy2(ROOT/'docs'/'PACKAGE_README.md',PACKAGE/'README.md')
-    manifest=dict(version='2.0',generated_at=datetime.now(timezone.utc).isoformat(),required_folders=REQUIRED,
+    manifest=dict(version=VERSION,generated_at=datetime.now(timezone.utc).isoformat(),required_folders=REQUIRED,
                   student='Karthikeya Bellapukonda',register_number=REGISTER,submission_type='Individual',
                   repository='https://github.com/Karthikeya-B19/automotive-compliance-engine',
                   pending_student_actions=['Obtain required faculty signature','Review and sign declaration','Record and add actual demonstration MP4'],
@@ -65,7 +67,7 @@ def main():
 
 
 def archive():
-    destination=PACKAGE.parent/(NAME+'_v2.0.zip')
+    destination=PACKAGE.parent/(NAME+f'_v{VERSION}.zip')
     if destination.exists(): raise FileExistsError(destination)
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED) as z:
         for path in sorted(PACKAGE.rglob('*')):
@@ -83,5 +85,8 @@ def archive():
 
 if __name__=='__main__':
     import argparse
-    parser=argparse.ArgumentParser();parser.add_argument('--archive',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--archive',action='store_true');parser.add_argument('--version',default='2.0');args=parser.parse_args()
+    if not re.fullmatch(r'\d+\.\d+(?:\.\d+)?',args.version): parser.error('Version must be numeric, for example 2.0.1')
+    VERSION=args.version
+    PACKAGE=ROOT/f'submission_v{VERSION}'/NAME
     archive() if args.archive else main()
