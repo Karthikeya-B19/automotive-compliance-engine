@@ -13,4 +13,4 @@ Allow 8 to 10 minutes. Use the current app and the evidence deck.
 9. Filter candidates by severity/category, download a full JSON report and record a human disposition.
 10. Close with concrete limits: text heuristics, target-width assumptions, classical CAN scope, no full ECU build or hardware timing, and future compiler AST/profile integration.
 
-Record only local demonstration data. Save the final video in the package Video directory as `CB.AI.U4AID23109_Demo_v2.0.mp4`. Regenerate the ZIP after adding the video and any signed documents.
+Record only local demonstration data from the submitted Code folder. Save the new video in the package Video directory as `CB.AI.U4AID23109_Demo_v3.0.mp4`. The October 7 recording is historical and does not demonstrate the current UI/RAG revision. Rebuild the manifest and ZIP after adding the new video and signed documents; do not relabel the historical recording as current.

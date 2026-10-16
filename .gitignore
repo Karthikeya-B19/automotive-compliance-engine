@@ -75,6 +75,8 @@ deliverables/*
 !deliverables/CB.AI.U4AID23109_RAGEvidencePresentation_v2.0.pptx
 !deliverables/CB.AI.U4AID23109_RAGProof_v2.1.pptx
 submission_v2.0.2/
+submission_v3.0/
+!deliverables/CB.AI.U4AID23109_TechnicalReport_v3.0.pdf
 
 # Node optional tooling (not required for this project)
 node_modules/

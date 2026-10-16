@@ -27,6 +27,9 @@ Open **Verification lab** for the measured public benchmark, RAG experiments, ac
 ## Reference material
 
 - [User guide](USER_GUIDE.md)
+- [Current submission report](deliverables/CB.AI.U4AID23109_TechnicalReport_v3.0.pdf)
+- [Final package guide and completion requirements](docs/FINAL_SUBMISSION_GUIDE.md)
+- [Evaluator setup and local-model dependencies](docs/SETUP_AND_DEPENDENCIES.md)
 - [Detailed technical report and examination preparation](docs/TECHNICAL_REPORT_v2.md)
 - [Testing evidence and reproduction commands](docs/EVALUATION_GUIDE.md)
 - [File reference](docs/FILE_REFERENCE.md)

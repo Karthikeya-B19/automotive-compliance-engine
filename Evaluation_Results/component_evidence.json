@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T11:06:26.469073+00:00",
+  "generated_at": "2026-10-16T06:53:27.581017+00:00",
   "summary": {
     "test_cases": 93,
     "passed": 93,
@@ -11,49 +11,49 @@
     {
       "name": "test_health_endpoint_returns_ok",
       "module": "tests.test_api",
-      "seconds": "0.017",
+      "seconds": "0.014",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_review_endpoint_returns_validated_response",
       "module": "tests.test_api",
-      "seconds": "0.047",
+      "seconds": "0.030",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_review_rejects_unsupported_file_type",
       "module": "tests.test_api",
-      "seconds": "0.014",
+      "seconds": "0.009",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_repository_review_scans_entire_zip_and_persists_result",
       "module": "tests.test_api",
-      "seconds": "0.025",
+      "seconds": "0.019",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_repository_review_rejects_invalid_archive",
       "module": "tests.test_api",
-      "seconds": "0.009",
+      "seconds": "0.008",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_synthetic_evaluation_dataset_matches_expected_patterns",
       "module": "tests.test_evaluation",
-      "seconds": "0.001",
+      "seconds": "0.002",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_positive_rule_and_line_mapping[-AUTO-DIV-ZERO-int f(int rpm) { return rpm / 0; }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.000",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -74,7 +74,7 @@
     {
       "name": "test_positive_rule_and_line_mapping[-AUTO-ASSIGN-COND-int f(int state) { if (state = 2) return 1; return 0; }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -165,7 +165,7 @@
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ASSIGN-COND-int f(int state) { if (state = 2) return 1; return 0; }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.000",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -179,7 +179,7 @@
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); free(p); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.000",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -193,7 +193,7 @@
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-ISR-HEAP-void CAN_IRQHandler(void) { void *p=malloc(8); free(p); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -214,21 +214,21 @@
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-CAN-DLC-void f(void) { struct can_frame frame; frame.can_dlc=12; }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.000",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-BUSY-WAIT-void f(void) { while (1) {} }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_positive_rule_and_line_mapping[// example strcpy(x,y);\\n/* gets(p); */\\n-AUTO-SHELL-void f(char *cmd) { system(cmd); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -270,7 +270,7 @@
     {
       "name": "test_corrected_counterexample[AUTO-DOUBLE-FREE-void f(void) { char *p=malloc(8); free(p); p=malloc(8); free(p); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -284,7 +284,7 @@
     {
       "name": "test_corrected_counterexample[AUTO-ISR-HEAP-void background(void) { void *p=malloc(8); free(p); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -424,7 +424,7 @@
     {
       "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-RECURSION-int f(int a) { return f(a); }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.002",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -438,7 +438,7 @@
     {
       "name": "test_each_new_detector_can_retrieve_applicable_guidance[AUTO-BUSY-WAIT-void f(void) { while (1) {} }]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.002",
       "passed": true,
       "skipped": false
     },
@@ -487,7 +487,7 @@
     {
       "name": "test_model_citation_gate[AUTO-DIV-ZERO-evidence4-False]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.000",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -508,7 +508,7 @@
     {
       "name": "test_hostile_archive_paths[../bad.c]",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -543,7 +543,7 @@
     {
       "name": "test_cached_retrieval_cannot_be_mutated_by_caller",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.002",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
@@ -564,7 +564,7 @@
     {
       "name": "test_api_preserves_real_grounding_trace",
       "module": "tests.test_expanded_scenarios",
-      "seconds": "0.024",
+      "seconds": "0.018",
       "passed": true,
       "skipped": false
     },
@@ -599,28 +599,28 @@
     {
       "name": "test_api_authenticates_and_checks_repository_permission",
       "module": "tests.test_guideline_alignment",
-      "seconds": "0.022",
+      "seconds": "0.015",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_repository_zip_maps_modules_dependencies_and_findings",
       "module": "tests.test_repository_analyzer",
-      "seconds": "0.010",
+      "seconds": "0.001",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_repository_zip_rejects_path_traversal",
       "module": "tests.test_repository_analyzer",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_repository_zip_rejects_symbolic_links",
       "module": "tests.test_repository_analyzer",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     },
@@ -641,21 +641,21 @@
     {
       "name": "test_workspace_renders_all_review_areas",
       "module": "tests.test_ui",
-      "seconds": "4.917",
+      "seconds": "5.794",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_review_renders_findings_and_retrieval_proof",
       "module": "tests.test_ui",
-      "seconds": "4.185",
+      "seconds": "4.159",
       "passed": true,
       "skipped": false
     },
     {
       "name": "test_theme_text_pairs_meet_wcag_aa_normal_text",
       "module": "tests.test_ui",
-      "seconds": "0.001",
+      "seconds": "0.000",
       "passed": true,
       "skipped": false
     }

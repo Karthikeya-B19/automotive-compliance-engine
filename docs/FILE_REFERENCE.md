@@ -26,11 +26,11 @@ This guide explains the purpose of every maintained file in the Automotive Secur
 | `src/analysis/repository_analyzer.py` | Safely examines an uploaded repository or ZIP, applies scope limits, traverses source files, and aggregates findings. |
 | `src/analysis/evidence_parser.py` | Parses uploaded compiler or SARIF evidence into normalized review findings. |
 | `src/ingestion/__init__.py` | Marks the ingestion directory as a Python package. |
-| `src/ingestion/ingest.py` | Loads and chunks the local automotive-standard reference for retrieval. |
+| `src/ingestion/ingest.py` | Supplies the local embedding wrapper; also retains legacy PDF chunking/Chroma ingestion utilities not used by active rule-card review. |
 | `src/rag/__init__.py` | Marks the RAG directory as a Python package. |
 | `src/rag/orchestrator.py` | Requests local Ollama explanations from retrieved applicable advisory cards, validates citations and labels fallback modes. |
 | `src/storage/__init__.py` | Marks the storage directory as a Python package. |
-| `src/storage/review_store.py` | Provides local SQLite persistence for review records, authentication data, and workflow state. |
+| `src/storage/review_store.py` | Provides local SQLite persistence for review outputs, human dispositions and audit events. API credentials are configured separately. |
 | `src/ui/__init__.py` | Marks the user-interface directory as a Python package. |
 | `src/ui/app.py` | Streamlit interface for code, repository, and evidence reviews; includes readable theme and accessible contrast styling. |
 | `tools/ci_review.py` | Command-line/CI entry point that runs a review and emits a machine-readable result. |
@@ -48,7 +48,7 @@ This guide explains the purpose of every maintained file in the Automotive Secur
 
 | File | Purpose |
 | --- | --- |
-| `data/standards/MISRA_C_Mock_Standard.pdf` | Local reference document used as the retrieval corpus for standards-grounded explanations. |
+| `data/standards/MISRA_C_Mock_Standard.pdf` | Historical synthetic PDF for legacy ingestion experiments. It is not the active rule-card corpus or licensed MISRA text. |
 | `tests/test_api.py` | Verifies API health and review request behaviour. |
 | `tests/test_evaluation.py` | Checks evaluation logic and expected findings against labelled cases. |
 | `tests/test_guideline_alignment.py` | Tests the implementation against the stated case-study and submission requirements. |
@@ -64,7 +64,7 @@ This guide explains the purpose of every maintained file in the Automotive Secur
 | `Evaluation_Results/CB.AI.U4AID23109_SampleReview_v1.0.json` | Example structured output from a review. |
 | `Evaluation_Results/CB.AI.U4AID23109_TestLog_v1.0.txt` | Initial automated-test execution record. |
 | `Evaluation_Results/CB.AI.U4AID23109_TestLog_v1.1.txt` | Updated automated-test execution record. |
-| `Evaluation_Results/CB.AI.U4AID23109_TestLog_v1.2.txt` | Current recorded automated-test execution evidence. |
+| `Evaluation_Results/CB.AI.U4AID23109_TestLog_v1.2.txt` | Historical test execution record from the earlier implementation. |
 
 ## Demonstration Inputs
 
@@ -172,3 +172,17 @@ During normal use, the app may also create local SQLite data, Chroma/RAG indexes
 | `Evaluation_Results/rag_evidence/control_interventions.json` | Preserves all nine control checks, full ranked results, unchanged detector inputs, hashes and validator decisions. Programmatic controls are separate from actual LLM evidence. |
 | `docs/RAG_PROOF_GUIDE.md` | Explains all measured evaluation metrics, the RAG proof argument, reproduction commands and professor demonstration. |
 | `deliverables/CB.AI.U4AID23109_RAGProof_v2.1.pptx` | Dedicated 20-slide editable evaluation/RAG presentation with detailed speaker notes and all 20 query ranks. |
+
+## Final release audit and packaging
+
+| File | Purpose |
+| --- | --- |
+| `evaluation/audit_submission_evidence.py` | Reconciles repository/file/line/candidate totals, recalculates retrieval metrics and checks implementation hashes; exports file-size, extension, duplicate and exclusion analysis. |
+| `Evaluation_Results/CB.AI.U4AID23109_EvidenceAudit_v3.0.json` | Current numerical/hash checks and corpus EDA, including statistical-independence and author-label limitations. |
+| `tools/build_final_documents.py` | Authors the current technical report, synopsis and two separate unsigned declaration PDFs. It never supplies signatures or faculty approval. ReportLab is an optional authoring dependency. |
+| `tools/prepare_final_submission.py` | Builds the eight-folder final release, runs packaged tests and real HTTP checks, validates artifact names and seals the ZIP with hashes. Existing releases are not overwritten. |
+| `docs/FINAL_SUBMISSION_REPORT_ADDENDUM.md` | Updated rubric, configuration, EDA, reflection and explicit incomplete official/personal requirements. |
+| `docs/FINAL_SUBMISSION_GUIDE.md` | Evaluator-facing package overview, readiness status and how to run/use the application. |
+| `docs/SETUP_AND_DEPENDENCIES.md` | Clean setup, optional local model staging, authoring dependencies and privacy/deployment boundaries. |
+
+Historical reports, screenshots, v1 test logs and draft decks referenced above are revision history, not evidence of the current implementation. The final package includes only selected current artifacts and a clearly labelled historical recording. Final native source filenames remain unchanged so imports, tests, CI and runtime evidence paths continue to work.

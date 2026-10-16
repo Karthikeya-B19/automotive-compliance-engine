@@ -1,0 +1,153 @@
+{
+  "generated_at": "2026-10-16T07:05:15.518053+00:00",
+  "checks": {
+    "packaged_tests_pass": true,
+    "api_health": true,
+    "streamlit_health": true,
+    "authentication_rejects_missing_key": true,
+    "all_19_manual_archives_pass_http": true,
+    "all_8_manual_mutations_match_expected_line": true,
+    "all_8_pairs_add_one_candidate": true,
+    "saved_review_retrievable": true,
+    "human_disposition_endpoint": true,
+    "traversal_rejected_http": true,
+    "unauthorized_repository_rejected": true,
+    "required_folder_set": true,
+    "no_private_runtime_artifacts": true,
+    "evaluator_artifact_names_valid": true
+  },
+  "sample_uploads": [
+    {
+      "file": "CB.AI.U4AID23109_AutomotiveECURepository_v1.0.zip",
+      "http_status": 200,
+      "source_files": 3,
+      "finding_count": 4
+    },
+    {
+      "file": "CB.AI.U4AID23109_CleanSpeedMonitor_v1.0.zip",
+      "http_status": 200,
+      "source_files": 2,
+      "finding_count": 0
+    },
+    {
+      "file": "CB.AI.U4AID23109_MixedSensorNetwork_v1.0.zip",
+      "http_status": 200,
+      "source_files": 3,
+      "finding_count": 1
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_division_zero_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 0
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_division_zero_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 1,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_null_dereference_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 0
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_null_dereference_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 1,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_out_of_bounds_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 0
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_out_of_bounds_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 1,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_unbounded_copy_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 0
+    },
+    {
+      "file": "CB.AI.U4AID23109_rusefi_01_unbounded_copy_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 1,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_division_zero_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 5
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_division_zero_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 6,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_null_dereference_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 5
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_null_dereference_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 6,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_out_of_bounds_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 5
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_out_of_bounds_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 6,
+      "expected_mutation_at_injected_line": true
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_unbounded_copy_baseline_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 5
+    },
+    {
+      "file": "CB.AI.U4AID23109_speeduino_01_unbounded_copy_mutant_v2.0.zip",
+      "http_status": 200,
+      "source_files": 1,
+      "finding_count": 6,
+      "expected_mutation_at_injected_line": true
+    }
+  ],
+  "pending_actions": [
+    "Faculty approval of the current synopsis is unsigned.",
+    "Student academic-integrity declaration is unsigned.",
+    "Student AI-tool/model-use declaration and personal Y/N verification are unsigned.",
+    "A fresh 5-10-minute recording of the submitted version is missing; the included recording is historical.",
+    "Student/institution must confirm approved encrypted storage, network isolation and evaluator slot."
+  ],
+  "pytest_summary": "93 passed, 1 warning in 12.29s",
+  "invalid_runtime_files": [],
+  "invalid_artifact_names": []
+}

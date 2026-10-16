@@ -1,4 +1,6 @@
-# TechPulse Case Study 4 Submission Package
+# Historical Version 2 Package Guide
+
+This document describes the earlier package. For the current release use docs/FINAL_SUBMISSION_GUIDE.md and tools/prepare_final_submission.py; the current report is v3.0 and the old recording remains historical evidence only.
 
 Karthikeya Bellapukonda, CB.AI.U4AID23109. Amrita Vishwa Vidyapeetham. Individual submission. Version 2.0, 12 October 2026.
 

@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-10-16T06:53:27.711627+00:00",
+  "checks": {
+    "distinct_repositories_match": true,
+    "file_counts_match": true,
+    "line_counts_match": true,
+    "candidate_counts_match": true,
+    "all_repositories_scanned": true,
+    "source_hashes_present": true,
+    "lexical_metrics_recalculate": true,
+    "hybrid_metrics_recalculate": true
+  },
+  "implementation_hash_mismatches": {
+    "component_evidence.json": [],
+    "public_benchmark/summary.json": [],
+    "rag_evidence/live_generation.json": [],
+    "rag_evidence/control_interventions.json": []
+  },
+  "corpus_eda": {
+    "repositories": 100,
+    "source_files": 6721,
+    "extension_counts": {
+      ".h": 3448,
+      ".c": 3137,
+      ".hpp": 3,
+      ".cpp": 132,
+      ".cc": 1
+    },
+    "source_bytes": 105296667,
+    "file_bytes_min": 0,
+    "file_bytes_median": 3916,
+    "file_bytes_p95": 76231,
+    "file_bytes_max": 261307,
+    "unique_content_hashes": 5542,
+    "duplicate_content_instances": 1179,
+    "hashes_shared_between_repositories": 193,
+    "exclusion_reasons": {
+      "ignored-directory": 584,
+      "non-UTF8": 46,
+      "source-size-limit": 94
+    },
+    "license_metadata": {
+      "NOASSERTION": 10,
+      "AGPL-3.0": 3,
+      "MIT": 17,
+      "None": 40,
+      "BSD-3-Clause": 4,
+      "GPL-2.0": 7,
+      "GPL-3.0": 7,
+      "Apache-2.0": 9,
+      "MPL-2.0": 1,
+      "LGPL-2.1": 1,
+      "Unlicense": 1
+    }
+  },
+  "interpretation": [
+    "No supervised model training or train/test split occurs; pretrained models remain frozen.",
+    "Duplicate contents remain in the robustness corpus and reduce statistical independence. No accuracy inference uses these counts.",
+    "Retrieval queries and advisory rules have author-provided labels; independent expert adjudication and an unseen holdout are absent.",
+    "Baseline and mutant files intentionally share source as paired controls, not independent samples.",
+    "Embeddings are semantic representations; PCA and supervised feature selection were not used and are not claimed.",
+    "The active vector index is an in-memory cached card matrix; persistent FAISS/Chroma integration is not active."
+  ]
+}
