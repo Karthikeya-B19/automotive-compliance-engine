@@ -221,7 +221,13 @@ def verify():
             report['checks']['unauthorized_repository_rejected']=denied.status_code==403
         finally:
             for process in processes:
-                if process.poll() is None: process.terminate()
+                if process.poll() is None:
+                    if sys.platform.startswith('win'):
+                        # A Windows venv executable can be a launcher with a child interpreter.
+                        # Stop only this subprocess tree before its parent loses child ownership.
+                        subprocess.run(['taskkill','/PID',str(process.pid),'/T','/F'],capture_output=True,check=False)
+                    else:
+                        process.terminate()
             for process in processes:
                 try: process.wait(timeout=10)
                 except subprocess.TimeoutExpired: process.kill();process.wait()
