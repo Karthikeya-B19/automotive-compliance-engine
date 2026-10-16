@@ -1,23 +1,27 @@
-# Individual capstone submission - release 3.0
+# Individual capstone submission - release 3.1
 
 Karthikeya Bellapukonda, CB.AI.U4AID23109, Amrita Vishwa Vidyapeetham. Digital Track, TechPulse, Case Study 4: Secure Code Debugging and Review Assistant. Prepared 16 October 2026.
 
 ## Readiness
 
-Technical packaging and automated checks are recorded in the submission manifest and verification report. The package must not be represented as administratively complete until the student supplies faculty approval, signs both declarations and records the submitted version. The supplied October 7 video is clearly historical. No official approval or personal signature has been invented.
+Technical packaging and automated checks are recorded in the submission manifest and verification report. The student reports that the synopsis is already approved and explicitly directed that all signature handling be excluded from this packaging task. That approval was not independently inspected or bundled. The supplied forms remain unsigned reference copies; no approval or signature has been invented.
+
+The student also explicitly chose the existing October 7 recording, with no replacement requested. It is included in full as a smaller re-encoded copy, retaining the historical label because it shows the earlier implementation. This choice does not establish compliance with the instructions' signed-declaration and current-version demonstration requirements. These are acknowledged exceptions, not additional packaging tasks being requested from the student.
+
+The v3.0 report records the audit before this clarification. This release 3.1 guide and manifest record the later user directions. Technical artifacts retain their individual versions because application logic and measured experiments are unchanged. Storage encryption, network isolation and evaluator arrangements remain institutional/student responsibilities.
 
 ## Folder contents
 
 | Folder | What to inspect |
 | --- | --- |
-| Synopsis | Current synopsis with an uncompleted faculty approval record |
+| Synopsis | Current technical synopsis reference; student reports approved synopsis held separately |
 | Input_Data | Synthetic demo ZIPs, actual ECU baseline/mutant fixtures and input catalog |
 | Code | Runnable source, tests, canonical evidence, configuration and source documentation |
 | Model_Prompts_Config | Model/configuration details, prompt guardrails and synthetic advisory corpus |
 | Evaluation_Results | Register-prefixed metric/audit records and a complete raw-evidence ZIP |
 | Documentation | Current technical report PDF/source, user and RAG guides, rubric map and presentations |
 | Video | Historical recording, provenance/review note and updated recording script |
-| Declarations | Separate integrity and AI-use forms for student review/signature, plus third-party notice |
+| Declarations | Separate unsigned integrity and AI-use reference forms, plus third-party notice; signatures excluded by user direction |
 
 Evaluator-facing artifacts use the register-number, descriptive artifact and version convention. Native Python, package, CI, Docker, source-fixture and canonical machine-readable filenames inside Code and archive payloads retain their required functional names. Renaming importable modules or fixed runtime paths would break the code. This source-layout exception is explicit in the manifest. Input ZIP fixtures retain upstream filenames and license notices internally.
 

@@ -19,15 +19,18 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 REG='CB.AI.U4AID23109'
-VERSION='3.0'
+VERSION='3.1'
 NAME='AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_CS4_AIML'
-PACKAGE=ROOT/'submission_v3.0'/NAME
+PACKAGE=ROOT/f'submission_v{VERSION}'/NAME
 FOLDERS=['Synopsis','Input_Data','Code','Model_Prompts_Config','Evaluation_Results','Documentation','Video','Declarations']
-PENDING=['Faculty approval of the current synopsis is unsigned.',
-         'Student academic-integrity declaration is unsigned.',
-         'Student AI-tool/model-use declaration and personal Y/N verification are unsigned.',
-         'A fresh 5-10-minute recording of the submitted version is missing; the included recording is historical.',
-         'Student/institution must confirm approved encrypted storage, network isolation and evaluator slot.']
+PENDING=[]
+COMPLIANCE_NOTES=[
+    'Student reports an approved synopsis is held separately; that approval was not independently inspected or bundled.',
+    'At the student\'s explicit direction, signature collection/verification is outside this packaging task; supplied forms remain unsigned.',
+    'At the student\'s explicit direction, the existing October 7 recording is retained. It shows the earlier implementation, not the revised RAG/UI.',
+    'The assessment instructions require signed declarations and a submitted-version demonstration. User packaging choices do not establish compliance with those requirements.',
+    'Encrypted storage, network isolation and evaluator arrangements remain institutional/student responsibilities, not checks completed by this package.',
+]
 CURRENT_EVIDENCE=['component_evidence.json','tests_v2.0.xml','CB.AI.U4AID23109_TestLog_v2.0.txt',
     'automotive_ecu_demo_v2.0.sarif','clean_speed_monitor_v2.0.sarif','CB.AI.U4AID23109_EvidenceAudit_v3.0.json']
 
@@ -93,7 +96,7 @@ def build():
         copy(ROOT/'docs'/original,PACKAGE/'Model_Prompts_Config'/f'{REG}_{label}_v3.0.md')
     copy(ROOT/'data/standards/automotive_rule_cards.json',PACKAGE/'Model_Prompts_Config'/f'{REG}_AdvisoryRuleCorpus_v3.0.json')
     copy(ROOT/'docs/THIRD_PARTY_NOTICE.md',PACKAGE/'Declarations'/f'{REG}_ThirdPartyNotice_v3.0.md')
-    copy(ROOT/'docs/FINAL_SUBMISSION_GUIDE.md',PACKAGE/f'{REG}_SubmissionGuide_v3.0.md')
+    copy(ROOT/'docs/FINAL_SUBMISSION_GUIDE.md',PACKAGE/f'{REG}_SubmissionGuide_v{VERSION}.md')
     for original,label in [('Instructions1.pdf','AssessmentInstructionsPart1'),('Instructions2.pdf','FacultyEvaluationChecklist'),
                            ('Evaluation_Rubrics.pdf','EvaluationRubric'),('Automotive_Engineering_AI_Project_Case_Studies.pdf','CaseStudyBrief')]:
         copy(ROOT/original,PACKAGE/'Documentation/Reference_Guidelines'/f'{REG}_{label}_v1.0.pdf')
@@ -124,12 +127,14 @@ def build():
         source_created_at='2026-10-07T15:04:04Z',dimensions=[2558,1388],fps=30,
         processing='Whole recording re-encoded H.264 CRF20 and AAC128k, no cuts, same resolution/fps; original unchanged.',
         review='Sampled frames at 25, 120, 260 and 410 seconds show the older three-tab UI.',
-        current_version_demonstrated=False,required_action='Record the submitted version for 5-10 minutes.'))
+        current_version_demonstrated=False,student_direction='Use this existing recording; no replacement requested.',
+        guideline_exception='The recording predates the submitted RAG/UI revision.'))
     (PACKAGE/'Video'/f'{REG}_RecordingReview_v3.0.md').write_text(
         '# Recording review\n\nThe included historical recording is 7 minutes 15.77 seconds and meets duration only. '
         'Its October 7 UI predates the submitted RAG pipeline and Verification lab. It must not be presented as current-version evidence. '
-        'Record a new 5-10-minute demonstration of the Code folder, including retrieval/citation evidence. '
-        'Use the included recording script. The original file remains untouched outside the package.\n',encoding='utf-8')
+        'The student explicitly chose to retain this recording, with no replacement requested. '
+        'This choice does not demonstrate the updated RAG/UI or satisfy the submitted-version video requirement by itself. '
+        'The recording script remains as optional reference. The original file remains untouched outside the package.\n',encoding='utf-8')
     print(PACKAGE)
 
 
@@ -141,7 +146,7 @@ def available_port():
 def verify():
     import requests
     code=PACKAGE/'Code'
-    report=dict(generated_at=datetime.now(timezone.utc).isoformat(),checks={},sample_uploads=[],pending_actions=PENDING)
+    report=dict(generated_at=datetime.now(timezone.utc).isoformat(),checks={},sample_uploads=[],pending_actions=PENDING,compliance_notes=COMPLIANCE_NOTES)
     with tempfile.TemporaryDirectory(prefix='techpulse-final-check-') as scratch:
         env=os.environ.copy();env.update(PYTHONDONTWRITEBYTECODE='1',REVIEW_DATABASE=str(Path(scratch)/'reviews.db'))
         tests=subprocess.run([sys.executable,'-m','pytest','-q','-p','no:cacheprovider'],cwd=code,env=env,capture_output=True,text=True)
@@ -236,26 +241,26 @@ def verify():
             bad_names.append(p.relative_to(PACKAGE).as_posix())
     report['checks']['evaluator_artifact_names_valid']=not bad_names
     report['invalid_artifact_names']=bad_names
-    write_json(PACKAGE/'Evaluation_Results'/f'{REG}_PackageVerification_v3.0.json',report)
+    write_json(PACKAGE/'Evaluation_Results'/f'{REG}_PackageVerification_v{VERSION}.json',report)
     print(json.dumps(report,indent=2))
     if not all(report['checks'].values()): raise SystemExit('Package verification failed; ZIP not sealed.')
 
 
 def seal():
-    verification=PACKAGE/'Evaluation_Results'/f'{REG}_PackageVerification_v3.0.json'
+    verification=PACKAGE/'Evaluation_Results'/f'{REG}_PackageVerification_v{VERSION}.json'
     if not verification.exists() or not all(json.loads(verification.read_text())['checks'].values()):
         raise ValueError('Run and pass --verify before sealing.')
-    manifest_path=PACKAGE/f'{REG}_SubmissionManifest_v3.0.json'
+    manifest_path=PACKAGE/f'{REG}_SubmissionManifest_v{VERSION}.json'
     manifest=dict(version=VERSION,prepared_date='2026-10-16',student='Karthikeya Bellapukonda',
         university='Amrita Vishwa Vidyapeetham',register_number=REG,case_study='CS4',submission_type='Individual',
-        folders=FOLDERS,status='TECHNICAL_CHECKS_PASSED_PERSONAL_AND_OFFICIAL_ACTIONS_PENDING',pending_actions=PENDING,
+        folders=FOLDERS,status='TECHNICAL_CHECKS_PASSED_USER_ACKNOWLEDGED_EXCEPTIONS',pending_actions=PENDING,compliance_notes=COMPLIANCE_NOTES,
         naming_policy='Evaluator-facing artifacts use register_artifact_version. Native source and archive payload names remain functional.',
         files=[dict(path=p.relative_to(PACKAGE).as_posix(),bytes=p.stat().st_size,sha256=sha(p))
             for p in sorted(PACKAGE.rglob('*')) if p.is_file() and p!=manifest_path])
     write_json(manifest_path,manifest)
     mismatches=[item['path'] for item in manifest['files'] if sha(PACKAGE/item['path'])!=item['sha256']]
     if mismatches: raise ValueError(mismatches)
-    destination=PACKAGE.parent/f'{REG}_Submission_v3.0.zip'
+    destination=PACKAGE.parent/f'{REG}_Submission_v{VERSION}.zip'
     if destination.exists(): raise FileExistsError(destination)
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
         for p in sorted(PACKAGE.rglob('*')):
