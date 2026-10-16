@@ -1,14 +1,14 @@
-# Individual capstone submission - release 3.2
+# Individual capstone submission - release 3.3
 
 Karthikeya Bellapukonda, CB.AI.U4AID23109, Amrita Vishwa Vidyapeetham. Digital Track, TechPulse, Case Study 4: Secure Code Debugging and Review Assistant. Prepared 16 October 2026.
 
 ## Readiness
 
-Technical packaging and automated checks are recorded in the submission manifest and verification report. The student reports that the synopsis is already approved and explicitly directed that all signature handling be excluded from this packaging task. That approval was not independently inspected or bundled. At the student's request, the combined academic-integrity and AI-usage declarations are the exact PDF and Word files from submission v1.6, retaining their own v1.1 artifact names and original contents. Signature status is not inferred and no approval or signature has been invented. Declaration provenance records and byte comparisons establish that these files are unchanged.
+Technical packaging and automated checks are recorded in the submission manifest and verification report. The student reports that the synopsis is already approved; that approval was not independently inspected or bundled. At the student's request, the combined declaration from submission v1.6 now has four confirmation ticks, the typed name Karthikeya Bellapukonda and date 16 October 2026. Place remains blank. Only those fields and cover revision/date metadata changed in the PDF, now artifact v1.2. No handwritten or cryptographic signature was generated. The original Word v1.1 is unchanged under Declarations/Reference_Source and is an unfilled reference, not the completed PDF. Word rendering was unavailable, so an edited Word copy is not presented as verified.
 
 The student also explicitly chose the existing October 7 recording, with no replacement requested. It is included in full as a smaller re-encoded copy, retaining the historical label because it shows the earlier implementation. This choice does not establish compliance with the instructions' signed-declaration and current-version demonstration requirements. These are acknowledged exceptions, not additional packaging tasks being requested from the student.
 
-The v3.0 report records the audit before these clarifications, including the then-prepared v3.0 unsigned templates. Those templates are not the declarations chosen for this release. This release 3.2 guide and manifest record the later user directions and the unchanged v1.6-package declaration selection. Other technical artifacts retain their individual versions because application logic and measured experiments are unchanged. Storage encryption, network isolation and evaluator arrangements remain institutional/student responsibilities.
+The v3.0 report records the audit before these clarifications, including the then-prepared v3.0 unsigned templates. Those templates are not the declarations chosen for this release. This release 3.3 guide and manifest record the later user directions and the v1.6-based form with its requested field completion. Other technical artifacts retain their individual versions because application logic and measured experiments are unchanged. Storage encryption, network isolation and evaluator arrangements remain institutional/student responsibilities.
 
 ## Folder contents
 
@@ -21,7 +21,7 @@ The v3.0 report records the audit before these clarifications, including the the
 | Evaluation_Results | Register-prefixed metric/audit records and a complete raw-evidence ZIP |
 | Documentation | Current technical report PDF/source, user and RAG guides, rubric map and presentations |
 | Video | Historical recording, provenance/review note and updated recording script |
-| Declarations | Combined integrity/AI-usage PDF and Word copied unchanged from submission v1.6, provenance hashes and third-party notice |
+| Declarations | Completed v1.2 integrity/AI-usage PDF based on submission v1.6, original Word reference, field-change provenance and third-party notice |
 
 Evaluator-facing artifacts use the register-number, descriptive artifact and version convention. Native Python, package, CI, Docker, source-fixture and canonical machine-readable filenames inside Code and archive payloads retain their required functional names. Renaming importable modules or fixed runtime paths would break the code. This source-layout exception is explicit in the manifest. Input ZIP fixtures retain upstream filenames and license notices internally.
 
