@@ -19,14 +19,16 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 REG='CB.AI.U4AID23109'
-VERSION='3.1'
+VERSION='3.2'
 NAME='AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_CS4_AIML'
 PACKAGE=ROOT/f'submission_v{VERSION}'/NAME
+DECLARATION_SOURCE=ROOT/'submission_v1.6'/NAME/'Declarations'
+DECLARATION_FILES=[f'{REG}_Declarations_v1.1.pdf',f'{REG}_Declarations_v1.1.docx']
 FOLDERS=['Synopsis','Input_Data','Code','Model_Prompts_Config','Evaluation_Results','Documentation','Video','Declarations']
 PENDING=[]
 COMPLIANCE_NOTES=[
     'Student reports an approved synopsis is held separately; that approval was not independently inspected or bundled.',
-    'At the student\'s explicit direction, signature collection/verification is outside this packaging task; supplied forms remain unsigned.',
+    'At the student\'s explicit direction, declarations are copied unchanged from submission v1.6; signature collection/verification is outside this task. No signature status is inferred.',
     'At the student\'s explicit direction, the existing October 7 recording is retained. It shows the earlier implementation, not the revised RAG/UI.',
     'The assessment instructions require signed declarations and a submitted-version demonstration. User packaging choices do not establish compliance with those requirements.',
     'Encrypted storage, network isolation and evaluator arrangements remain institutional/student responsibilities, not checks completed by this package.',
@@ -86,12 +88,17 @@ def build():
     report += '\n\n'+(ROOT/'docs/FINAL_SUBMISSION_REPORT_ADDENDUM.md').read_text(encoding='utf-8')
     (PACKAGE/'Documentation'/f'{REG}_TechnicalReportSource_v3.0.md').write_text(report,encoding='utf-8')
     artifacts={'TechnicalReport_v3.0.pdf':'Documentation','Synopsis_v3.0.pdf':'Synopsis',
-        'AcademicIntegrityDeclaration_v3.0.pdf':'Declarations','AIToolUsageDeclaration_v3.0.pdf':'Declarations',
         'RAGEvidencePresentation_v2.0.pptx':'Documentation','RAGProof_v2.1.pptx':'Documentation'}
     for artifact,folder in artifacts.items():
         filename=f'{REG}_{artifact}'
         copy(ROOT/'deliverables'/filename,PACKAGE/folder/filename)
         copy(ROOT/'deliverables'/filename,code/'deliverables'/filename)
+    for filename in DECLARATION_FILES:
+        copy(DECLARATION_SOURCE/filename,PACKAGE/'Declarations'/filename)
+    write_json(PACKAGE/'Declarations'/f'{REG}_DeclarationProvenance_v{VERSION}.json',dict(
+        source_package='submission_v1.6',selection='Combined academic-integrity and AI-usage declarations, preserved unchanged at student request.',
+        signature_verification='Outside task scope; no status inferred.',
+        files=[dict(file=n,sha256=sha(DECLARATION_SOURCE/n)) for n in DECLARATION_FILES]))
     for original,label in [('MODEL_CONFIG.md','ModelConfig'),('PROMPT_GUARDRAILS.md','PromptGuardrails')]:
         copy(ROOT/'docs'/original,PACKAGE/'Model_Prompts_Config'/f'{REG}_{label}_v3.0.md')
     copy(ROOT/'data/standards/automotive_rule_cards.json',PACKAGE/'Model_Prompts_Config'/f'{REG}_AdvisoryRuleCorpus_v3.0.json')
@@ -234,6 +241,11 @@ def verify():
             log_file.close()
         copy(Path(scratch)/'services.log',PACKAGE/'Evaluation_Results'/f'{REG}_HTTPServiceLog_v3.0.txt')
     report['checks']['required_folder_set']=set(p.name for p in PACKAGE.iterdir() if p.is_dir())==set(FOLDERS)
+    chosen={p.name for p in (PACKAGE/'Declarations').iterdir() if p.suffix.lower() in {'.pdf','.docx'}}
+    report['checks']['version_1_6_declarations_only_and_byte_identical']=(chosen==set(DECLARATION_FILES)
+        and all(sha(DECLARATION_SOURCE/n)==sha(PACKAGE/'Declarations'/n) for n in DECLARATION_FILES)
+        and not any((code/'deliverables'/f'{REG}_{kind}_v3.0.pdf').exists()
+            for kind in ['AcademicIntegrityDeclaration','AIToolUsageDeclaration']))
     invalid=[]
     for p in PACKAGE.rglob('*'):
         if not p.is_file(): continue
