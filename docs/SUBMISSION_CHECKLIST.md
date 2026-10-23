@@ -1,8 +1,9 @@
-# Release 3.3 Submission Packaging Checklist
+# Release 3.4 Submission Packaging Checklist
 
 - Use the individually named university/student/register/CS4/AIML root folder.
 - Include all eight prescribed folders and descriptive register-prefixed versioned artifact names.
-- Use the v3.0 technical report and synopsis reference, the field-completed v1.2 declaration PDF based on submission v1.6, v2.0 overview presentation and v2.1 RAG proof deck. The original v1.1 Word file is reference only. Artifact versions identify their own last revision; the submission release is 3.3.
+- Use the v3.0 technical report and synopsis reference, the field-completed v1.2 declaration PDF based on submission v1.6, v2.0 overview presentation and v2.1 RAG proof deck. The original v1.1 Word file is reference only. Artifact versions identify their own last revision; the submission release is 3.4.
+- Enforce ZIP size strictly below 25,000,000 bytes. Preserve the full recording timeline using the v1.1 size-optimized historical video; retain every report, source file and evidence record selected for the package.
 - Include the active synthetic rule corpus, model configuration, prompt guardrails and environment template.
 - Include component tests, public benchmark catalog/results/summary, retrieval comparison, actual LLM traces and ECU mutation provenance.
 - Retain upstream license notices with redistributed ECU fixtures.

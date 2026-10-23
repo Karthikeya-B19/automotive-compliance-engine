@@ -1,6 +1,6 @@
-# Individual capstone submission - release 3.3
+# Individual capstone submission - release 3.4
 
-Karthikeya Bellapukonda, CB.AI.U4AID23109, Amrita Vishwa Vidyapeetham. Digital Track, TechPulse, Case Study 4: Secure Code Debugging and Review Assistant. Prepared 16 October 2026.
+Karthikeya Bellapukonda, CB.AI.U4AID23109, Amrita Vishwa Vidyapeetham. Digital Track, TechPulse, Case Study 4: Secure Code Debugging and Review Assistant. Packaging revised 23 October 2026.
 
 ## Readiness
 
@@ -8,7 +8,11 @@ Technical packaging and automated checks are recorded in the submission manifest
 
 The student also explicitly chose the existing October 7 recording, with no replacement requested. It is included in full as a smaller re-encoded copy, retaining the historical label because it shows the earlier implementation. This choice does not establish compliance with the instructions' signed-declaration and current-version demonstration requirements. These are acknowledged exceptions, not additional packaging tasks being requested from the student.
 
-The v3.0 report records the audit before these clarifications, including the then-prepared v3.0 unsigned templates. Those templates are not the declarations chosen for this release. This release 3.3 guide and manifest record the later user directions and the v1.6-based form with its requested field completion. Other technical artifacts retain their individual versions because application logic and measured experiments are unchanged. Storage encryption, network isolation and evaluator arrangements remain institutional/student responsibilities.
+The v3.0 report records the audit before these clarifications, including the then-prepared v3.0 unsigned templates. Those templates are not the declarations chosen for this release. This release 3.4 guide and manifest record the later user directions and the v1.6-based form with its requested field completion. Other technical artifacts retain their individual versions because application logic and measured experiments are unchanged. Storage encryption, network isolation and evaluator arrangements remain institutional/student responsibilities.
+
+## Upload size
+
+The final ZIP must be strictly smaller than 25,000,000 bytes (decimal 25 MB, also below 25 MiB). The packaging tool refuses to report success for an oversized archive. Release 3.4 retains the complete original recording's audio/video timeline, re-encoded directly from the original at 1920x1042, 30 fps, H.264 CRF24 and AAC96k. No scenes were cut and the original is unchanged. All reports, source, evidence and declarations remain included. The manifest hashes every packaged file; sealing rechecks ZIP CRC, archive root and member hashes. Check the final archive's actual byte size rather than the uncompressed folder size.
 
 ## Folder contents
 

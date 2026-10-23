@@ -160,7 +160,7 @@ Files inside each ECU fixture include the selected source, upstream license, `PR
 
 ## Package Copies and Generated Local Files
 
-The `submission_v*` folders and their ZIP files are versioned, self-contained copies prepared for final delivery. They repeat the maintained materials above under the prescribed submission folder structure. They are deliberately not tracked by Git to avoid duplicating the repository content.
+The `submission_v*` folders and their ZIP files are versioned, self-contained copies prepared for final delivery. They repeat the maintained materials above under the prescribed submission folder structure. They are deliberately not tracked by Git to avoid duplicating the repository content. Release 3.4 uses a full-length, size-optimized historical video and enforces a strict ZIP limit below 25,000,000 bytes; reports, code, evidence and declarations are retained.
 
 During normal use, the app may also create local SQLite data, Chroma/RAG indexes, temporary extracted uploads, and Python cache folders. These files are operational state rather than submission artifacts; they are excluded by `.gitignore` and should not be committed or submitted unless an evaluator explicitly requests them.
 

@@ -19,7 +19,8 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 REG='CB.AI.U4AID23109'
-VERSION='3.3'
+VERSION='3.4'
+MAX_ZIP_BYTES=25_000_000  # Strict decimal MB limit, also below 25 MiB.
 NAME='AmritaVishwaVidyapeetham_KarthikeyaBellapukonda_CB.AI.U4AID23109_CS4_AIML'
 PACKAGE=ROOT/f'submission_v{VERSION}'/NAME
 DECLARATION_SOURCE=ROOT/'submission_v1.6'/NAME/'Declarations'
@@ -129,13 +130,13 @@ def build():
         copy(ROOT/'Evaluation_Results'/original,PACKAGE/'Evaluation_Results'/f'{REG}_{label}_v3.0.json')
     archive_tree(code/'Evaluation_Results',PACKAGE/'Evaluation_Results'/f'{REG}_RawEvaluationEvidence_v3.0.zip')
     copy(ROOT/'docs/VIDEO_SCRIPT.md',PACKAGE/'Video'/f'{REG}_RecordingScript_v3.0.md')
-    historical=ROOT/'.build/submission_audit/CB.AI.U4AID23109_HistoricalDemo_v1.0.mp4'
+    historical=ROOT/'.build/submission_size25/CB.AI.U4AID23109_HistoricalDemo_v1.1.mp4'
     copy(historical,PACKAGE/'Video'/historical.name)
-    write_json(PACKAGE/'Video'/f'{REG}_RecordingProvenance_v3.0.json',dict(
+    write_json(PACKAGE/'Video'/f'{REG}_RecordingProvenance_v3.4.json',dict(
         source_file='Tata recording.mp4',source_sha256=sha(ROOT/'Tata recording.mp4'),
         packaged_file=historical.name,packaged_sha256=sha(historical),duration_seconds=435.77,
-        source_created_at='2026-10-07T15:04:04Z',dimensions=[2558,1388],fps=30,
-        processing='Whole recording re-encoded H.264 CRF20 and AAC128k, no cuts, same resolution/fps; original unchanged.',
+        source_created_at='2026-10-07T15:04:04Z',dimensions=[1920,1042],fps=30,
+        processing='Whole original recording re-encoded H.264 CRF24 fast, scaled to 1920x1042, AAC96k; no cuts, same fps, original unchanged. Reduced for the strict 25 MB submission limit.',
         review='Sampled frames at 25, 120, 260 and 410 seconds show the older three-tab UI.',
         current_version_demonstrated=False,student_direction='Use this existing recording; no replacement requested.',
         guideline_exception='The recording predates the submitted RAG/UI revision.'))
@@ -275,10 +276,11 @@ def seal():
     if not verification.exists() or not all(json.loads(verification.read_text())['checks'].values()):
         raise ValueError('Run and pass --verify before sealing.')
     manifest_path=PACKAGE/f'{REG}_SubmissionManifest_v{VERSION}.json'
-    manifest=dict(version=VERSION,prepared_date='2026-10-16',student='Karthikeya Bellapukonda',
+    manifest=dict(version=VERSION,prepared_date=datetime.now().date().isoformat(),student='Karthikeya Bellapukonda',
         university='Amrita Vishwa Vidyapeetham',register_number=REG,case_study='CS4',submission_type='Individual',
         folders=FOLDERS,status='TECHNICAL_CHECKS_PASSED_USER_ACKNOWLEDGED_EXCEPTIONS',pending_actions=PENDING,compliance_notes=COMPLIANCE_NOTES,
         naming_policy='Evaluator-facing artifacts use register_artifact_version. Native source and archive payload names remain functional.',
+        zip_size_limit_bytes_exclusive=MAX_ZIP_BYTES,
         files=[dict(path=p.relative_to(PACKAGE).as_posix(),bytes=p.stat().st_size,sha256=sha(p))
             for p in sorted(PACKAGE.rglob('*')) if p.is_file() and p!=manifest_path])
     write_json(manifest_path,manifest)
@@ -286,7 +288,7 @@ def seal():
     if mismatches: raise ValueError(mismatches)
     destination=PACKAGE.parent/f'{REG}_Submission_v{VERSION}.zip'
     if destination.exists(): raise FileExistsError(destination)
-    with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+    with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
         for p in sorted(PACKAGE.rglob('*')):
             if p.is_file(): z.write(p,NAME+'/'+p.relative_to(PACKAGE).as_posix())
     with zipfile.ZipFile(destination) as z:
@@ -294,7 +296,10 @@ def seal():
         if {n.split('/')[0] for n in z.namelist()}!={NAME}: raise ValueError('Wrong archive root')
         for item in manifest['files']:
             if hashlib.sha256(z.read(NAME+'/'+item['path'])).hexdigest()!=item['sha256']: raise ValueError(item['path'])
+    if destination.stat().st_size>=MAX_ZIP_BYTES:
+        raise ValueError(f'Archive exceeds strict upload limit: {destination.stat().st_size} >= {MAX_ZIP_BYTES}. Do not submit it.')
     print(json.dumps(dict(folder=str(PACKAGE),zip=str(destination),files=len(manifest['files']),zip_bytes=destination.stat().st_size,
+        strict_size_limit_passed=True,zip_size_limit_bytes_exclusive=MAX_ZIP_BYTES,
         zip_sha256=sha(destination),status=manifest['status']),indent=2))
 
 
